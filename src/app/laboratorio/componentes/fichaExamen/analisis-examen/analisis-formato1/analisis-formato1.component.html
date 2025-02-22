@@ -1,16 +1,16 @@
 <h2 mat-dialog-title>INGRESO EXAMEN {{ data.fichaC.examen?.nombre }}</h2>
 
 <mat-dialog-content
-  [formGroup]="ingresaFormato1"
+  [formGroup]="ingresaFormato1()"
   name="agregaFormato1"
   class="agrega-container"
 >
-  <mat-accordion class="example-headers-align" multi>
+  <mat-accordion class="example-headers-align largoAcordion" multi>
     <mat-expansion-panel>
       <mat-expansion-panel-header>
         <mat-panel-title> </mat-panel-title>
-        <mat-panel-description>
-          Ficha Paciente
+        <mat-panel-description class="fuente">
+          FICHA PACIENTE
           <mat-icon>account_circle</mat-icon>
         </mat-panel-description>
       </mat-expansion-panel-header>
@@ -37,7 +37,7 @@
           UNIDAD
         </div>
         <div
-          class="col-md-6 border border-dark border-left-0 border-end-0 alineaVertical destacado"
+          class="col-md-6 border border-dark border-left-0 alineaVertical destacado"
         >
           VALORES DE REFERENCIA
         </div>
@@ -58,12 +58,23 @@
               type="number"
               matInput
               placeholder="Ingrese Valor"
-              [formControl]="srAlbumina"
+              formControlName="{{ 'input_' + datoResultadoFormato1_._id }}"
               (keydown)="KeyDown($event)"
               [ngStyle]="{
-                'font-weight': srAlbuminaFlag == true ? 'bold' : 'normal'
+                'font-weight':
+                  datoResultadoFormato1_.flagNegrilla == true
+                    ? 'bold'
+                    : 'normal'
               }"
-              (blur)="srAlbuminaFormula()"
+              (blur)="
+                campoFormula(
+                  $event,
+                  datoResultadoFormato1_._id!,
+                  datoResultadoFormato1_.desde!,
+                  datoResultadoFormato1_.hasta!,
+                  datoResultadoFormato1_.logica
+                )
+              "
             />
           </mat-form-field>
         </div>
@@ -73,7 +84,7 @@
           {{ datoResultadoFormato1_.unidadMedida }}
         </div>
         <div
-          class="col-md-6 border border-dark border-left-0 border-top-0 border-end-0 alineaVertical"
+          class="col-md-6 border border-dark border-left-0 border-top-0 alineaVertical"
         >
           {{ datoResultadoFormato1_.referencia }}
         </div>
@@ -109,7 +120,7 @@
       class="colorFondoBotonGrabar"
       mat-raised-button
       (click)="enviar()"
-      [disabled]="ingresaFormato1.invalid"
+      [disabled]="ingresaFormato1().invalid"
     >
       GRABAR
     </button>

@@ -8,12 +8,21 @@
   width: 95%;
 }
 
+.largoAcordion{
+  align-self: center;
+ width: 60% !important;
+}
+
 .mat-mdc-raised-button {
   min-width: 100%;
 }
 
 .mat-mdc-form-field {
   width: 100%;
+}
+
+.fuente{
+font-size: 20px;
 }
 
 .ancho {
@@ -32,6 +41,7 @@
 
 .anchoTituloLinea1 {
   width: 99%;
+  height: 45px;
   text-align: left;
   outline: none;
 }

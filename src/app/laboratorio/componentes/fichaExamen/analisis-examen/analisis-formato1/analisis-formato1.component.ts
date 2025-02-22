@@ -126,26 +126,28 @@ export class AnalisisFormato1Component implements OnInit {
   srProteinasTotales = new FormControl('', [Validators.required]);
   observaciones = new FormControl('', [Validators.required]);
 
-  ingresaFormato1: FormGroup = new FormGroup({
-    srAlbumina: this.srAlbumina,
-    srBilirrubinaTotal: this.srBilirrubinaTotal,
-    srBilirrubinaIndirecta: this.srBilirrubinaIndirecta,
-    srBilirrubinaDirecta: this.srBilirrubinaDirecta,
-    srCalcio: this.srCalcio,
-    srColesterol: this.srColesterol,
-    srCreatinina: this.srCreatinina,
-    srFosfatasaAlcalina: this.srFosfatasaAlcalina,
-    srFosforo: this.srFosforo,
-    srGGT: this.srGGT,
-    srGlobulinas: this.srGlobulinas,
-    srGPT: this.srGPT,
-    srGOT: this.srGOT,
-    srGlucosa: this.srGlucosa,
-    srUrea: this.srUrea,
-    srNitrogenoUreicoS: this.srNitrogenoUreicoS,
-    srProteinasTotales: this.srProteinasTotales,
-    observaciones: this.observaciones,
-  });
+  ingresaFormato1 = signal<FormGroup>(
+    new FormGroup({
+      srAlbumina: this.srAlbumina,
+      srBilirrubinaTotal: this.srBilirrubinaTotal,
+      srBilirrubinaIndirecta: this.srBilirrubinaIndirecta,
+      srBilirrubinaDirecta: this.srBilirrubinaDirecta,
+      srCalcio: this.srCalcio,
+      srColesterol: this.srColesterol,
+      srCreatinina: this.srCreatinina,
+      srFosfatasaAlcalina: this.srFosfatasaAlcalina,
+      srFosforo: this.srFosforo,
+      srGGT: this.srGGT,
+      srGlobulinas: this.srGlobulinas,
+      srGPT: this.srGPT,
+      srGOT: this.srGOT,
+      srGlucosa: this.srGlucosa,
+      srUrea: this.srUrea,
+      srNitrogenoUreicoS: this.srNitrogenoUreicoS,
+      srProteinasTotales: this.srProteinasTotales,
+      observaciones: this.observaciones,
+    })
+  );
 
   getErrorMessage(campo: string) {
     /*
@@ -226,9 +228,7 @@ export class AnalisisFormato1Component implements OnInit {
 
   ngOnInit() {
     this.getEstructuraExamen();
-    this.ingresaFormato1.get('srBilirrubinaIndirecta')!.disable();
-    this.ingresaFormato1.get('srGlobulinas')!.disable();
-    this.ingresaFormato1.get('srNitrogenoUreicoS')!.disable();
+
     //  this.getExamen();
     if (
       this.data.fichaC.validador!.nombreFirma == 'sinFirma.jpg' ||
@@ -252,6 +252,7 @@ export class AnalisisFormato1Component implements OnInit {
         next: (res) => {
           console.log('examen especie:', res);
           this.datoResultadoFormato1.set(res.data.resultadoEspecie.resultado);
+          this.creaCampos();
         },
 
         error: (error) => {
@@ -260,29 +261,53 @@ export class AnalisisFormato1Component implements OnInit {
       });
   }
 
-  srAlbuminaFormula() {
-    this.srGlobulinasFormula();
+  creaCampos() {
+    for (const campo of this.datoResultadoFormato1()) {
+      this.ingresaFormato1().addControl(
+        'input_' + campo._id,
+        new FormControl('')
+      );
+    }
+  }
 
-    if (this.data.fichaC.especie!.nombre.toUpperCase() == 'CANINO') {
-      if (
-        this.ingresaFormato1.get('srAlbumina')!.value < 2.6 ||
-        this.ingresaFormato1.get('srAlbumina')!.value > 3.3
-      ) {
-        this.srAlbuminaFlag = true;
-      } else {
-        this.srAlbuminaFlag = false;
-      }
-    } else {
-      if (
-        this.ingresaFormato1.get('srAlbumina')!.value < 2.1 ||
-        this.ingresaFormato1.get('srAlbumina')!.value > 3.3
-      ) {
-        this.srAlbuminaFlag = true;
-      } else {
-        this.srAlbuminaFlag = false;
-      }
+  campoFormula(
+    evento: any,
+    id: string,
+    desde: string,
+    hasta: string,
+    logica: string
+  ) {
+    let valor = evento.target.value;
+    let variableflag = false;
+    switch (logica) {
+      case '-':
+        if (valor < desde || valor > hasta) variableflag = true;
+        else variableflag = false;
+        break;
+      case '<':
+        if (valor < desde) variableflag = true;
+        else variableflag = false;
+        break;
+      default:
+        if (valor > desde) variableflag = true;
+        else variableflag = false;
     }
 
+    this.datoResultadoFormato1.update((preResultado) =>
+      preResultado.map((resultado) =>
+        resultado._id === id
+          ? { ...resultado, flagNegrilla: variableflag, resultado: valor }
+          : resultado
+      )
+    );
+    /*
+    const pos = this.datoResultadoFormato1()
+      .map((val) => val._id)
+      .indexOf(id);
+
+    this.datoResultadoFormato1()[pos].flagNegrilla = variableflag;
+*/
+    console.log('valor flag:', this.datoResultadoFormato1());
     //  this.sumaTotal();
   }
 
@@ -290,11 +315,11 @@ export class AnalisisFormato1Component implements OnInit {
     if (this.data.fichaC.especie!.nombre.toUpperCase() == 'CANINO') {
       console.log(
         'valor srBilirrubinaTotal:',
-        this.ingresaFormato1.get('srBilirrubinaTotal')!.value
+        this.ingresaFormato1().get('srBilirrubinaTotal')!.value
       );
       if (
-        this.ingresaFormato1.get('srBilirrubinaTotal')!.value < 0.1 ||
-        this.ingresaFormato1.get('srBilirrubinaTotal')!.value > 0.7
+        this.ingresaFormato1().get('srBilirrubinaTotal')!.value < 0.1 ||
+        this.ingresaFormato1().get('srBilirrubinaTotal')!.value > 0.7
       ) {
         this.srBilirrubinaTotalFlag = true;
       } else {
@@ -302,8 +327,8 @@ export class AnalisisFormato1Component implements OnInit {
       }
     } else {
       if (
-        this.ingresaFormato1.get('srBilirrubinaTotal')!.value < 0.1 ||
-        this.ingresaFormato1.get('srBilirrubinaTotal')!.value > 0.7
+        this.ingresaFormato1().get('srBilirrubinaTotal')!.value < 0.1 ||
+        this.ingresaFormato1().get('srBilirrubinaTotal')!.value > 0.7
       ) {
         this.srBilirrubinaTotalFlag = true;
       } else {
@@ -316,23 +341,23 @@ export class AnalisisFormato1Component implements OnInit {
   srBilirrubinaIndirectaFormula() {
     let total = (
       this.retorna0NaN(
-        parseFloat(this.ingresaFormato1.get('srBilirrubinaTotal')!.value)
+        parseFloat(this.ingresaFormato1().get('srBilirrubinaTotal')!.value)
       ) -
       this.retorna0NaN(
-        parseFloat(this.ingresaFormato1.get('srBilirrubinaDirecta')!.value)
+        parseFloat(this.ingresaFormato1().get('srBilirrubinaDirecta')!.value)
       )
     ).toFixed(2); //Redonmdea a 2 decimales
 
-    this.ingresaFormato1.get('srBilirrubinaIndirecta')!.setValue(total);
+    this.ingresaFormato1().get('srBilirrubinaIndirecta')!.setValue(total);
 
     if (this.data.fichaC.especie!.nombre.toUpperCase() == 'CANINO') {
       console.log(
         'valor srBilirrubinaIndirecta:',
-        this.ingresaFormato1.get('srBilirrubinaIndirecta')!.value
+        this.ingresaFormato1().get('srBilirrubinaIndirecta')!.value
       );
       if (
-        this.ingresaFormato1.get('srBilirrubinaIndirecta')!.value < 0.1 ||
-        this.ingresaFormato1.get('srBilirrubinaIndirecta')!.value > 0.49
+        this.ingresaFormato1().get('srBilirrubinaIndirecta')!.value < 0.1 ||
+        this.ingresaFormato1().get('srBilirrubinaIndirecta')!.value > 0.49
       ) {
         this.srBilirrubinaIndirectaFlag = true;
       } else {
@@ -340,8 +365,8 @@ export class AnalisisFormato1Component implements OnInit {
       }
     } else {
       if (
-        this.ingresaFormato1.get('srBilirrubinaIndirecta')!.value < 0.1 ||
-        this.ingresaFormato1.get('srBilirrubinaIndirecta')!.value > 0.49
+        this.ingresaFormato1().get('srBilirrubinaIndirecta')!.value < 0.1 ||
+        this.ingresaFormato1().get('srBilirrubinaIndirecta')!.value > 0.49
       ) {
         this.srBilirrubinaIndirectaFlag = true;
       } else {
@@ -355,11 +380,11 @@ export class AnalisisFormato1Component implements OnInit {
     if (this.data.fichaC.especie!.nombre.toUpperCase() == 'CANINO') {
       console.log(
         'valor srBilirrubinaDirecta:',
-        this.ingresaFormato1.get('srBilirrubinaDirecta')!.value
+        this.ingresaFormato1().get('srBilirrubinaDirecta')!.value
       );
       if (
-        this.ingresaFormato1.get('srBilirrubinaDirecta')!.value < 0 ||
-        this.ingresaFormato1.get('srBilirrubinaDirecta')!.value > 0.3
+        this.ingresaFormato1().get('srBilirrubinaDirecta')!.value < 0 ||
+        this.ingresaFormato1().get('srBilirrubinaDirecta')!.value > 0.3
       ) {
         this.srBilirrubinaDirectaFlag = true;
       } else {
@@ -367,8 +392,8 @@ export class AnalisisFormato1Component implements OnInit {
       }
     } else {
       if (
-        this.ingresaFormato1.get('srBilirrubinaDirecta')!.value < 0 ||
-        this.ingresaFormato1.get('srBilirrubinaDirecta')!.value > 0.3
+        this.ingresaFormato1().get('srBilirrubinaDirecta')!.value < 0 ||
+        this.ingresaFormato1().get('srBilirrubinaDirecta')!.value > 0.3
       ) {
         this.srBilirrubinaDirectaFlag = true;
       } else {
@@ -382,11 +407,11 @@ export class AnalisisFormato1Component implements OnInit {
     if (this.data.fichaC.especie!.nombre.toUpperCase() == 'CANINO') {
       console.log(
         'valor srCalcio:',
-        this.ingresaFormato1.get('srCalcio')!.value
+        this.ingresaFormato1().get('srCalcio')!.value
       );
       if (
-        this.ingresaFormato1.get('srCalcio')!.value < 9 ||
-        this.ingresaFormato1.get('srCalcio')!.value > 12
+        this.ingresaFormato1().get('srCalcio')!.value < 9 ||
+        this.ingresaFormato1().get('srCalcio')!.value > 12
       ) {
         this.srCalcioFlag = true;
       } else {
@@ -394,8 +419,8 @@ export class AnalisisFormato1Component implements OnInit {
       }
     } else {
       if (
-        this.ingresaFormato1.get('srCalcio')!.value < 9 ||
-        this.ingresaFormato1.get('srCalcio')!.value > 12
+        this.ingresaFormato1().get('srCalcio')!.value < 9 ||
+        this.ingresaFormato1().get('srCalcio')!.value > 12
       ) {
         this.srCalcioFlag = true;
       } else {
@@ -409,11 +434,11 @@ export class AnalisisFormato1Component implements OnInit {
     if (this.data.fichaC.especie!.nombre.toUpperCase() == 'CANINO') {
       console.log(
         'valor srColesterol:',
-        this.ingresaFormato1.get('srColesterol')!.value
+        this.ingresaFormato1().get('srColesterol')!.value
       );
       if (
-        this.ingresaFormato1.get('srColesterol')!.value < 105 ||
-        this.ingresaFormato1.get('srColesterol')!.value > 300
+        this.ingresaFormato1().get('srColesterol')!.value < 105 ||
+        this.ingresaFormato1().get('srColesterol')!.value > 300
       ) {
         this.srColesterolFlag = true;
       } else {
@@ -421,8 +446,8 @@ export class AnalisisFormato1Component implements OnInit {
       }
     } else {
       if (
-        this.ingresaFormato1.get('srColesterol')!.value < 70 ||
-        this.ingresaFormato1.get('srColesterol')!.value > 200
+        this.ingresaFormato1().get('srColesterol')!.value < 70 ||
+        this.ingresaFormato1().get('srColesterol')!.value > 200
       ) {
         this.srColesterolFlag = true;
       } else {
@@ -436,11 +461,11 @@ export class AnalisisFormato1Component implements OnInit {
     if (this.data.fichaC.especie!.nombre.toUpperCase() == 'CANINO') {
       console.log(
         'valor srCreatinina:',
-        this.ingresaFormato1.get('srCreatinina')!.value
+        this.ingresaFormato1().get('srCreatinina')!.value
       );
       if (
-        this.ingresaFormato1.get('srCreatinina')!.value < 0.5 ||
-        this.ingresaFormato1.get('srCreatinina')!.value > 1.5
+        this.ingresaFormato1().get('srCreatinina')!.value < 0.5 ||
+        this.ingresaFormato1().get('srCreatinina')!.value > 1.5
       ) {
         this.srCreatininaFlag = true;
       } else {
@@ -448,8 +473,8 @@ export class AnalisisFormato1Component implements OnInit {
       }
     } else {
       if (
-        this.ingresaFormato1.get('srCreatinina')!.value < 0.8 ||
-        this.ingresaFormato1.get('srCreatinina')!.value > 1.8
+        this.ingresaFormato1().get('srCreatinina')!.value < 0.8 ||
+        this.ingresaFormato1().get('srCreatinina')!.value > 1.8
       ) {
         this.srCreatininaFlag = true;
       } else {
@@ -463,15 +488,15 @@ export class AnalisisFormato1Component implements OnInit {
     if (this.data.fichaC.especie!.nombre.toUpperCase() == 'CANINO') {
       console.log(
         'valor srFosfatasaAlcalina:',
-        this.ingresaFormato1.get('srFosfatasaAlcalina')!.value
+        this.ingresaFormato1().get('srFosfatasaAlcalina')!.value
       );
-      if (this.ingresaFormato1.get('srFosfatasaAlcalina')!.value >= 160) {
+      if (this.ingresaFormato1().get('srFosfatasaAlcalina')!.value >= 160) {
         this.srFosfatasaAlcalinaFlag = true;
       } else {
         this.srFosfatasaAlcalinaFlag = false;
       }
     } else {
-      if (this.ingresaFormato1.get('srFosfatasaAlcalina')!.value >= 85) {
+      if (this.ingresaFormato1().get('srFosfatasaAlcalina')!.value >= 85) {
         this.srFosfatasaAlcalinaFlag = true;
       } else {
         this.srFosfatasaAlcalinaFlag = false;
@@ -484,11 +509,11 @@ export class AnalisisFormato1Component implements OnInit {
     if (this.data.fichaC.especie!.nombre.toUpperCase() == 'CANINO') {
       console.log(
         'valor srFosforo:',
-        this.ingresaFormato1.get('srFosforo')!.value
+        this.ingresaFormato1().get('srFosforo')!.value
       );
       if (
-        this.ingresaFormato1.get('srFosforo')!.value < 2.6 ||
-        this.ingresaFormato1.get('srFosforo')!.value > 6.2
+        this.ingresaFormato1().get('srFosforo')!.value < 2.6 ||
+        this.ingresaFormato1().get('srFosforo')!.value > 6.2
       ) {
         this.srFosforoFlag = true;
       } else {
@@ -496,8 +521,8 @@ export class AnalisisFormato1Component implements OnInit {
       }
     } else {
       if (
-        this.ingresaFormato1.get('srFosforo')!.value < 4.5 ||
-        this.ingresaFormato1.get('srFosforo')!.value > 8.1
+        this.ingresaFormato1().get('srFosforo')!.value < 4.5 ||
+        this.ingresaFormato1().get('srFosforo')!.value > 8.1
       ) {
         this.srFosforoFlag = true;
       } else {
@@ -509,14 +534,14 @@ export class AnalisisFormato1Component implements OnInit {
 
   srGGTFormula() {
     if (this.data.fichaC.especie!.nombre.toUpperCase() == 'CANINO') {
-      console.log('valor srGGT:', this.ingresaFormato1.get('srGGT')!.value);
-      if (this.ingresaFormato1.get('srGGT')!.value >= 10) {
+      console.log('valor srGGT:', this.ingresaFormato1().get('srGGT')!.value);
+      if (this.ingresaFormato1().get('srGGT')!.value >= 10) {
         this.srGGTFlag = true;
       } else {
         this.srGGTFlag = false;
       }
     } else {
-      if (this.ingresaFormato1.get('srGGT')!.value >= 6.5) {
+      if (this.ingresaFormato1().get('srGGT')!.value >= 6.5) {
         this.srGGTFlag = true;
       } else {
         this.srGGTFlag = false;
@@ -528,23 +553,23 @@ export class AnalisisFormato1Component implements OnInit {
   srGlobulinasFormula() {
     let total = (
       this.retorna0NaN(
-        parseFloat(this.ingresaFormato1.get('srProteinasTotales')!.value)
+        parseFloat(this.ingresaFormato1().get('srProteinasTotales')!.value)
       ) -
       this.retorna0NaN(
-        parseFloat(this.ingresaFormato1.get('srAlbumina')!.value)
+        parseFloat(this.ingresaFormato1().get('srAlbumina')!.value)
       )
     ).toFixed(1); //Redonmdea a 1 decimales
 
-    this.ingresaFormato1.get('srGlobulinas')!.setValue(total);
+    this.ingresaFormato1().get('srGlobulinas')!.setValue(total);
 
     if (this.data.fichaC.especie!.nombre.toUpperCase() == 'CANINO') {
       console.log(
         'valor srGlobulinas:',
-        this.ingresaFormato1.get('srGlobulinas')!.value
+        this.ingresaFormato1().get('srGlobulinas')!.value
       );
       if (
-        this.ingresaFormato1.get('srGlobulinas')!.value < 2.6 ||
-        this.ingresaFormato1.get('srGlobulinas')!.value > 4.4
+        this.ingresaFormato1().get('srGlobulinas')!.value < 2.6 ||
+        this.ingresaFormato1().get('srGlobulinas')!.value > 4.4
       ) {
         this.srGlobulinasFlag = true;
       } else {
@@ -552,8 +577,8 @@ export class AnalisisFormato1Component implements OnInit {
       }
     } else {
       if (
-        this.ingresaFormato1.get('srGlobulinas')!.value < 2.6 ||
-        this.ingresaFormato1.get('srGlobulinas')!.value > 5.1
+        this.ingresaFormato1().get('srGlobulinas')!.value < 2.6 ||
+        this.ingresaFormato1().get('srGlobulinas')!.value > 5.1
       ) {
         this.srGlobulinasFlag = true;
       } else {
@@ -565,14 +590,14 @@ export class AnalisisFormato1Component implements OnInit {
 
   srGPTFormula() {
     if (this.data.fichaC.especie!.nombre.toUpperCase() == 'CANINO') {
-      console.log('valor srGPT:', this.ingresaFormato1.get('srGPT')!.value);
-      if (this.ingresaFormato1.get('srGPT')!.value >= 68) {
+      console.log('valor srGPT:', this.ingresaFormato1().get('srGPT')!.value);
+      if (this.ingresaFormato1().get('srGPT')!.value >= 68) {
         this.srGPTFlag = true;
       } else {
         this.srGPTFlag = false;
       }
     } else {
-      if (this.ingresaFormato1.get('srGPT')!.value >= 68) {
+      if (this.ingresaFormato1().get('srGPT')!.value >= 68) {
         this.srGPTFlag = true;
       } else {
         this.srGPTFlag = false;
@@ -583,14 +608,14 @@ export class AnalisisFormato1Component implements OnInit {
 
   srGOTFormula() {
     if (this.data.fichaC.especie!.nombre.toUpperCase() == 'CANINO') {
-      console.log('valor srGOT:', this.ingresaFormato1.get('srGOT')!.value);
-      if (this.ingresaFormato1.get('srGOT')!.value >= 55) {
+      console.log('valor srGOT:', this.ingresaFormato1().get('srGOT')!.value);
+      if (this.ingresaFormato1().get('srGOT')!.value >= 55) {
         this.srGOTFlag = true;
       } else {
         this.srGOTFlag = false;
       }
     } else {
-      if (this.ingresaFormato1.get('srGOT')!.value >= 55) {
+      if (this.ingresaFormato1().get('srGOT')!.value >= 55) {
         this.srGOTFlag = true;
       } else {
         this.srGOTFlag = false;
@@ -603,11 +628,11 @@ export class AnalisisFormato1Component implements OnInit {
     if (this.data.fichaC.especie!.nombre.toUpperCase() == 'CANINO') {
       console.log(
         'valor srGlucosa:',
-        this.ingresaFormato1.get('srGlucosa')!.value
+        this.ingresaFormato1().get('srGlucosa')!.value
       );
       if (
-        this.ingresaFormato1.get('srGlucosa')!.value < 65 ||
-        this.ingresaFormato1.get('srGlucosa')!.value > 118
+        this.ingresaFormato1().get('srGlucosa')!.value < 65 ||
+        this.ingresaFormato1().get('srGlucosa')!.value > 118
       ) {
         this.srGlucosaFlag = true;
       } else {
@@ -615,8 +640,8 @@ export class AnalisisFormato1Component implements OnInit {
       }
     } else {
       if (
-        this.ingresaFormato1.get('srGlucosa')!.value < 70 ||
-        this.ingresaFormato1.get('srGlucosa')!.value > 110
+        this.ingresaFormato1().get('srGlucosa')!.value < 70 ||
+        this.ingresaFormato1().get('srGlucosa')!.value > 110
       ) {
         this.srGlucosaFlag = true;
       } else {
@@ -630,11 +655,11 @@ export class AnalisisFormato1Component implements OnInit {
     if (this.data.fichaC.especie!.nombre.toUpperCase() == 'CANINO') {
       console.log(
         'valor srFosbUreasforo:',
-        this.ingresaFormato1.get('srUrea')!.value
+        this.ingresaFormato1().get('srUrea')!.value
       );
       if (
-        this.ingresaFormato1.get('srUrea')!.value < 21.5 ||
-        this.ingresaFormato1.get('srUrea')!.value > 64.5
+        this.ingresaFormato1().get('srUrea')!.value < 21.5 ||
+        this.ingresaFormato1().get('srUrea')!.value > 64.5
       ) {
         this.srUreaFlag = true;
       } else {
@@ -642,8 +667,8 @@ export class AnalisisFormato1Component implements OnInit {
       }
     } else {
       if (
-        this.ingresaFormato1.get('srUrea')!.value < 38.7 ||
-        this.ingresaFormato1.get('srUrea')!.value > 71
+        this.ingresaFormato1().get('srUrea')!.value < 38.7 ||
+        this.ingresaFormato1().get('srUrea')!.value > 71
       ) {
         this.srUreaFlag = true;
       } else {
@@ -655,19 +680,20 @@ export class AnalisisFormato1Component implements OnInit {
 
   srNitrogenoUreicoSFormula() {
     let total = (
-      this.retorna0NaN(parseFloat(this.ingresaFormato1.get('srUrea')!.value)) *
-      this.retorna0NaN(parseFloat('0.28'))
+      this.retorna0NaN(
+        parseFloat(this.ingresaFormato1().get('srUrea')!.value)
+      ) * this.retorna0NaN(parseFloat('0.28'))
     ).toFixed(1); //Redonmdea a 1 decimales
-    this.ingresaFormato1.get('srNitrogenoUreicoS')!.setValue(total);
+    this.ingresaFormato1().get('srNitrogenoUreicoS')!.setValue(total);
 
     if (this.data.fichaC.especie!.nombre.toUpperCase() == 'CANINO') {
       console.log(
         'valor srNitrogenoUreicoS:',
-        this.ingresaFormato1.get('srNitrogenoUreicoS')!.value
+        this.ingresaFormato1().get('srNitrogenoUreicoS')!.value
       );
       if (
-        this.ingresaFormato1.get('srNitrogenoUreicoS')!.value < 10 ||
-        this.ingresaFormato1.get('srNitrogenoUreicoS')!.value > 30
+        this.ingresaFormato1().get('srNitrogenoUreicoS')!.value < 10 ||
+        this.ingresaFormato1().get('srNitrogenoUreicoS')!.value > 30
       ) {
         this.srNitrogenoUreicoSFlag = true;
       } else {
@@ -675,8 +701,8 @@ export class AnalisisFormato1Component implements OnInit {
       }
     } else {
       if (
-        this.ingresaFormato1.get('srNitrogenoUreicoS')!.value < 18 ||
-        this.ingresaFormato1.get('srNitrogenoUreicoS')!.value > 33
+        this.ingresaFormato1().get('srNitrogenoUreicoS')!.value < 18 ||
+        this.ingresaFormato1().get('srNitrogenoUreicoS')!.value > 33
       ) {
         this.srNitrogenoUreicoSFlag = true;
       } else {
@@ -690,11 +716,11 @@ export class AnalisisFormato1Component implements OnInit {
     if (this.data.fichaC.especie!.nombre.toUpperCase() == 'CANINO') {
       console.log(
         'valor srProteinasTotales:',
-        this.ingresaFormato1.get('srProteinasTotales')!.value
+        this.ingresaFormato1().get('srProteinasTotales')!.value
       );
       if (
-        this.ingresaFormato1.get('srProteinasTotales')!.value < 5.5 ||
-        this.ingresaFormato1.get('srProteinasTotales')!.value > 7.5
+        this.ingresaFormato1().get('srProteinasTotales')!.value < 5.5 ||
+        this.ingresaFormato1().get('srProteinasTotales')!.value > 7.5
       ) {
         this.srProteinasTotalesFlag = true;
       } else {
@@ -702,8 +728,8 @@ export class AnalisisFormato1Component implements OnInit {
       }
     } else {
       if (
-        this.ingresaFormato1.get('srProteinasTotales')!.value < 5.4 ||
-        this.ingresaFormato1.get('srProteinasTotales')!.value > 7.8
+        this.ingresaFormato1().get('srProteinasTotales')!.value < 5.4 ||
+        this.ingresaFormato1().get('srProteinasTotales')!.value > 7.8
       ) {
         this.srProteinasTotalesFlag = true;
       } else {
@@ -746,7 +772,7 @@ export class AnalisisFormato1Component implements OnInit {
     this.IResultadoFormato1 = [
       {
         parametro: 'Albúmina',
-        resultado: this.ingresaFormato1
+        resultado: this.ingresaFormato1()
           .get('srAlbumina')!
           .value.toString()
           .replace('.', ','),
@@ -757,7 +783,7 @@ export class AnalisisFormato1Component implements OnInit {
       },
       {
         parametro: 'Bilirrubina Total',
-        resultado: this.ingresaFormato1
+        resultado: this.ingresaFormato1()
           .get('srBilirrubinaTotal')!
           .value.toString()
           .replace('.', ','),
@@ -768,7 +794,7 @@ export class AnalisisFormato1Component implements OnInit {
       },
       {
         parametro: 'Bilirrubina Indirecta',
-        resultado: this.ingresaFormato1
+        resultado: this.ingresaFormato1()
           .get('srBilirrubinaIndirecta')!
           .value.toString()
           .replace('.', ','),
@@ -779,7 +805,7 @@ export class AnalisisFormato1Component implements OnInit {
       },
       {
         parametro: 'Bilirrubina Directa',
-        resultado: this.ingresaFormato1
+        resultado: this.ingresaFormato1()
           .get('srBilirrubinaDirecta')!
           .value.toString()
           .replace('.', ','),
@@ -790,7 +816,7 @@ export class AnalisisFormato1Component implements OnInit {
       },
       {
         parametro: 'Calcio',
-        resultado: this.ingresaFormato1
+        resultado: this.ingresaFormato1()
           .get('srCalcio')!
           .value.toString()
           .replace('.', ','),
@@ -801,7 +827,7 @@ export class AnalisisFormato1Component implements OnInit {
       },
       {
         parametro: 'Colesterol',
-        resultado: this.ingresaFormato1
+        resultado: this.ingresaFormato1()
           .get('srColesterol')!
           .value.toString()
           .replace('.', ','),
@@ -812,7 +838,7 @@ export class AnalisisFormato1Component implements OnInit {
       },
       {
         parametro: 'Creatinina',
-        resultado: this.ingresaFormato1
+        resultado: this.ingresaFormato1()
           .get('srCreatinina')!
           .value.toString()
           .replace('.', ','),
@@ -823,7 +849,7 @@ export class AnalisisFormato1Component implements OnInit {
       },
       {
         parametro: 'Fosfatasa Alcalina',
-        resultado: this.ingresaFormato1
+        resultado: this.ingresaFormato1()
           .get('srFosfatasaAlcalina')!
           .value.toString()
           .replace('.', ','),
@@ -834,7 +860,7 @@ export class AnalisisFormato1Component implements OnInit {
       },
       {
         parametro: 'Fósforo',
-        resultado: this.ingresaFormato1
+        resultado: this.ingresaFormato1()
           .get('srFosforo')!
           .value.toString()
           .replace('.', ','),
@@ -845,7 +871,7 @@ export class AnalisisFormato1Component implements OnInit {
       },
       {
         parametro: 'GGT',
-        resultado: this.ingresaFormato1
+        resultado: this.ingresaFormato1()
           .get('srGGT')!
           .value.toString()
           .replace('.', ','),
@@ -856,7 +882,7 @@ export class AnalisisFormato1Component implements OnInit {
       },
       {
         parametro: 'Globulinas',
-        resultado: this.ingresaFormato1
+        resultado: this.ingresaFormato1()
           .get('srGlobulinas')!
           .value.toString()
           .replace('.', ','),
@@ -867,7 +893,7 @@ export class AnalisisFormato1Component implements OnInit {
       },
       {
         parametro: 'GPT (ALT)',
-        resultado: this.ingresaFormato1
+        resultado: this.ingresaFormato1()
           .get('srGPT')!
           .value.toString()
           .replace('.', ','),
@@ -878,7 +904,7 @@ export class AnalisisFormato1Component implements OnInit {
       },
       {
         parametro: 'GOT (AST)',
-        resultado: this.ingresaFormato1
+        resultado: this.ingresaFormato1()
           .get('srGOT')!
           .value.toString()
           .replace('.', ','),
@@ -889,7 +915,7 @@ export class AnalisisFormato1Component implements OnInit {
       },
       {
         parametro: 'Glucosa',
-        resultado: this.ingresaFormato1
+        resultado: this.ingresaFormato1()
           .get('srGlucosa')!
           .value.toString()
           .replace('.', ','),
@@ -900,7 +926,7 @@ export class AnalisisFormato1Component implements OnInit {
       },
       {
         parametro: 'Urea',
-        resultado: this.ingresaFormato1
+        resultado: this.ingresaFormato1()
           .get('srUrea')!
           .value.toString()
           .replace('.', ','),
@@ -911,7 +937,7 @@ export class AnalisisFormato1Component implements OnInit {
       },
       {
         parametro: 'Nitrógeno Ureico S.',
-        resultado: this.ingresaFormato1
+        resultado: this.ingresaFormato1()
           .get('srNitrogenoUreicoS')!
           .value.toString()
           .replace('.', ','),
@@ -922,7 +948,7 @@ export class AnalisisFormato1Component implements OnInit {
       },
       {
         parametro: 'Proteínas Totales',
-        resultado: this.ingresaFormato1
+        resultado: this.ingresaFormato1()
           .get('srProteinasTotales')!
           .value.toString()
           .replace('.', ','),
@@ -936,7 +962,7 @@ export class AnalisisFormato1Component implements OnInit {
     this.IFormato1 = {
       resultado: this.IResultadoFormato1,
       subTitulo: '',
-      observaciones: this.ingresaFormato1.get('observaciones')!.value,
+      observaciones: this.ingresaFormato1().get('observaciones')!.value,
     };
 
     this.datoFicha = {
