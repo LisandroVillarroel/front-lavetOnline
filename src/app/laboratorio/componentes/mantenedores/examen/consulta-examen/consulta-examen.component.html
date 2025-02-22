@@ -1,0 +1,66 @@
+<h2 mat-dialog-title>CONSULTA EXAMEN</h2>
+
+<mat-dialog-content name="consulta" class="consulta-container">
+  <mat-form-field class="inputInput">
+    <mat-label class="labelI">Código EXAMEN</mat-label>
+    <input
+      matInput
+      placeholder="Código EXAMEN"
+      value="{{ data.codigoExamen }}"
+      disabled="true"
+    />
+  </mat-form-field>
+
+  <mat-form-field class="inputInput">
+    <mat-label class="labelI">Nombre EXAMEN</mat-label>
+    <input matInput value="{{ data.nombre }}" disabled="true" />
+  </mat-form-field>
+
+  <mat-form-field class="inputInput">
+    <mat-label class="labelI">Sigla</mat-label>
+    <input matInput value="{{ data.sigla }}" disabled="true" />
+  </mat-form-field>
+
+  <mat-form-field class="inputInput">
+    <mat-label class="labelI">Precio</mat-label>
+    <input
+      matInput
+      placeholder="Precio"
+      value="{{ data.precio }}"
+      disabled="true"
+    />
+  </mat-form-field>
+
+  <mat-form-field class="inputInput">
+    <mat-label class="labelI">Tiempo Preparación</mat-label>
+    <input
+      matInput
+      placeholder="Tiempo Preparación"
+      value="{{ data.tiempoPreparacion }}"
+      disabled="true"
+    />
+  </mat-form-field>
+
+  <mat-form-field class="inputInput">
+    <mat-label class="labelI">Título EXAMEN</mat-label>
+    <input
+      matInput
+      placeholder="Título EXAMEN"
+      value="{{ data.tituloExamen }}"
+      disabled="true"
+    />
+  </mat-form-field>
+</mat-dialog-content>
+
+<mat-dialog-actions class="justify-content-center">
+  <div class="col-md-6">
+    <button
+      mat-raised-button
+      class="colorFondoBotonCancelar"
+      mat-dialog-close
+      [disabled]="false"
+    >
+      CERRAR
+    </button>
+  </div>
+</mat-dialog-actions>

@@ -1,0 +1,15 @@
+<ngx-charts-number-card
+  style="
+    width: 100%;
+    height: 150px;
+    display: block;
+    font-family: Lato;
+    font-size: 15px;
+  "
+  [scheme]="colorScheme"
+  [results]="single()"
+  [cardColor]="'#FAFAFA'"
+  [valueFormatting]="formatDataLabel"
+  (select)="onSelect($event)"
+>
+</ngx-charts-number-card>

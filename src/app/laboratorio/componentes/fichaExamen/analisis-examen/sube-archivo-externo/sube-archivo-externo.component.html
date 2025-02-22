@@ -1,0 +1,82 @@
+<h2 mat-dialog-title>Agrega Validador</h2>
+
+<mat-dialog-content
+  [formGroup]="ingresoPdf()"
+  name="ingresoPdf"
+  class="agrega-container"
+>
+  <ng-template matStepLabel>Datos Usuario Laboratorio</ng-template>
+  <!--
+      <image-upload class="customClass"
+      (removed)="onRemoved($any($event))"
+      (uploadFinished)="onUploadFinished($any($event))"
+      (uploadStateChanged)="onUploadStateChanged($any($event))"
+      buttonCaption="Presione para Seleccionar Firma"
+      dropBoxMessage="!Suelta tu imágen aquí!"
+      clearButtonCaption="Eliminar Imágen"
+      [extensions]="['pdf']"
+      [max]="1"
+      [maxFileSize]="500000"
+      [fileTooLargeMessage]="'El Archivo es demasiado grande y no se cargó. El tamaño máximo de archivo es 500 KB'"
+      >
+      </image-upload>
+     <div class="formatoLetra">(Tamaño máximo 500 KB)</div>
+-->
+
+  <div
+    class="file-upload-wrapper"
+    [class.success]="uploadSuccess"
+    [class.error]="uploadError"
+    (drop)="onFileDrop($event)"
+    (dragover)="onDragOver($event)"
+  >
+    <input
+      type="file"
+      accept="application/pdf"
+      (change)="onPdfSelecionadaDocumento($event)"
+      hidden
+      #fileInput
+    />
+    <div (click)="fileInput.click()">
+      <mat-icon class="mostrarPuntero">upload</mat-icon>
+      <p>{{ "ARRASTRAR Y SOLTAR / CLICK" }}</p>
+      @if(imageName()){ @if(selectedFile || pdfBase64()){
+      <img
+        src="./assets/imagenes/varios/pdfImg.png"
+        alt="Image Pdf"
+        class="image-preview"
+        width="10%"
+      />
+      <p>
+        <mat-icon class="delete-icon mostrarPuntero" (click)="removeImage()"
+          >delete</mat-icon
+        >
+        <span class="image-name">{{ imageName() }}</span> ({{ fileSize() }} KB)
+      </p>
+
+      } }
+    </div>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <div class="col-md-6">
+    <button
+      mat-raised-button
+      class="colorFondoBotonCancelar"
+      mat-dialog-close
+      [disabled]="false"
+    >
+      CANCELAR
+    </button>
+  </div>
+  <div class="col-md-6">
+    <button
+      class="colorFondoBotonGrabar"
+      mat-raised-button
+      (click)="enviar()"
+      [disabled]="ingresoPdf().invalid"
+    >
+      SUBIR
+    </button>
+  </div>
+</mat-dialog-actions>

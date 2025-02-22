@@ -1,0 +1,75 @@
+<h2 mat-dialog-title>MODIFICA PROPIETARIO</h2>
+
+<mat-dialog-content [formGroup]="modificaPropietario()" name="modificaPropietario" class="modifica-container">
+
+  <mat-form-field>
+    <mat-label class="labelI">Rut Propietario</mat-label>
+    <input matInput class="input-rut rut" [formControl]="rutPropietario" oninput="this.value = this.value.toUpperCase()"
+      (blur)="onBlurRut($event)" validaRut required>
+    @if(rutPropietario.invalid){
+    <mat-error>{{getErrorMessage()}}</mat-error>
+    }
+  </mat-form-field>
+
+
+
+  <mat-form-field>
+    <mat-label class="labelI">Nombres</mat-label>
+    <input matInput [formControl]="nombres" required>
+    @if(nombres.invalid){
+    <mat-error>{{getErrorMessage()}}</mat-error>
+    }
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label class="labelI">Apellido Paterno</mat-label>
+    <input matInput [formControl]="apellidoPaterno" required>
+    @if(apellidoPaterno.invalid){
+    <mat-error>{{getErrorMessage()}}</mat-error>
+    }
+  </mat-form-field>
+
+
+  <mat-form-field>
+    <mat-label class="labelI">Apellido Materno</mat-label>
+    <input matInput [formControl]="apellidoMaterno" required>
+    @if(apellidoMaterno.invalid){
+    <mat-error>{{getErrorMessage()}}</mat-error>
+    }
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label class="labelI">Dirección</mat-label>
+    <input matInput [formControl]="direccion" required>
+    @if(direccion.invalid){
+    <mat-error>{{getErrorMessage()}}</mat-error>
+    }
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label class="labelI">Teléfono</mat-label>
+    <input matInput [formControl]="telefono" required>
+    @if(telefono.invalid){
+    <mat-error>{{getErrorMessage()}}</mat-error>
+    }
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label class="labelI">Email</mat-label>
+    <input matInput [formControl]="email" required>
+    @if(email.invalid){
+    <mat-error>{{getErrorMessage()}}</mat-error>
+    }
+  </mat-form-field>
+
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <div class="col-md-6">
+    <button mat-raised-button class="colorFondoBotonCancelar" mat-dialog-close [disabled]=false>CANCELAR</button>
+  </div>
+  <div class="col-md-6">
+    <button class="colorFondoBotonGrabar" mat-raised-button (click)="enviar()"
+      [disabled]="modificaPropietario().invalid">GRABAR</button>
+  </div>
+</mat-dialog-actions>

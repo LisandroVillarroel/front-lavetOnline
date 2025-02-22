@@ -1,0 +1,48 @@
+
+table {
+  width: 100%;
+}
+
+.mat-mdc-form-field {
+  width: 100%;
+}
+
+
+.mat-icon-button {
+  width: 30px;
+  height: 30px;
+}
+
+::ng-deep.mat-mdc-form-field-subscript-wrapper {
+  height: 2px !important;
+}
+
+.w5{
+  width: 5%;
+}
+
+.w10{
+  width: 10%;
+}
+
+.w15{
+  width: 15%;
+}
+
+
+/* Smartphones (portrait & landscape)
+#Dispositivo = Mayoría de teléfonos móviles (vertical y horizontal)
+#Resolución = B/w 320px to 479px */
+@media only screen and (min-device-width : 320px) and (max-device-width : 480px) {
+  .w5{
+    width: 6%;
+  }
+
+  .w10{
+    width: 13%;
+  }
+
+  .w15{
+    width: 10%;
+  }
+}

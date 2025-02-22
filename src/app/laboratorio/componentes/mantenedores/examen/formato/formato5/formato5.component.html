@@ -1,0 +1,53 @@
+<h2 mat-dialog-title>FORMATO EXAMEN {{ data.nombre }}</h2>
+<div class="consulta-container">
+  <div class="row mt-3">
+    <div class="col-md-7" id="coprocultivo">
+      <div class="row border border-dark border-top-0"></div>
+      @for(item of data.formato?.formato5?.resultado; track item){
+      <div class="row altura">
+        <div
+          class="col-md-5 border border-dark alineaVertical border-end-0 border-top-0 destacado"
+        >
+          {{ item.nombre }}
+        </div>
+        <div class="col-md-7 border border-dark border-top-0">
+          {{ item.resultado }}
+        </div>
+      </div>
+      }
+    </div>
+    <div class="col-md-1"></div>
+    <div class="col-md-4" id="simbologia">
+      <div class="row col-md-12">
+        <div class="row anchoTitulo alineaV">
+          <div class="col-md-12 border border-dark alineaV destacado">
+            SIMBOLOGÍA
+          </div>
+        </div>
+        @for(item of data.formato?.formato5?.resultadoSimbologia; track item){
+        <div class="row alineaV">
+          <div
+            class="col-md-7 border border-dark border-end-0 border-top-0 destacado12 alineaVertical"
+          >
+            {{ item.nombre }}
+          </div>
+          <div class="col-md-5 border border-dark border-left-0 border-top-0">
+            {{ item.simbolo }}
+          </div>
+        </div>
+        }
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-12 mt-5">
+    <button
+      mat-raised-button
+      class="colorFondoBotonCancelar"
+      mat-dialog-close
+      [disabled]="false"
+    >
+      CERRAR
+    </button>
+  </div>
+</div>

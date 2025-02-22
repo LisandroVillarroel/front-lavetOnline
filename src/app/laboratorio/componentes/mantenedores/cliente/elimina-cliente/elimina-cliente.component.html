@@ -1,0 +1,92 @@
+<h2 mat-dialog-title>ELIMINA CLIENTE</h2>
+
+<mat-dialog-content name="emina" class="elimina-container">
+
+  <mat-form-field class="inputInput">
+    <mat-label class="labelI">Rut Cliente</mat-label>
+    <input matInput  value="{{data.datoClientePar.rutCliente}}" disabled='true' >
+  </mat-form-field>
+
+  <mat-form-field class="inputInput">
+    <mat-label class="labelI">Razón Social</mat-label>
+    <input matInput  value="{{data.datoClientePar.razonSocial}}" disabled='true' >
+  </mat-form-field>
+
+  <mat-form-field class="inputInput">
+    <mat-label class="labelI">Nombre de Fantasía</mat-label>
+      <input matInput value="{{data.datoClientePar.nombreFantasia}}" disabled='true'>
+  </mat-form-field>
+
+  <mat-form-field class="inputInput">
+    <mat-label class="labelI">Dirección</mat-label>
+    <input matInput value="{{data.datoClientePar.direccion}}" disabled='true'>
+  </mat-form-field>
+
+  <mat-form-field class="inputInput">
+    <mat-label class="labelI">Teléfono</mat-label>
+    <input matInput value="{{data.datoClientePar.telefono}}" disabled='true'>
+  </mat-form-field>
+
+  <mat-form-field class="inputInput">
+    <mat-label class="labelI">Email</mat-label>
+    <input matInput  value="{{data.datoClientePar.email}}" disabled='true'>
+  </mat-form-field>
+
+  <mat-form-field class="inputInput">
+    <mat-label class="labelI">Nombre Contacto</mat-label>
+    <input matInput value="{{data.datoClientePar.nombreContacto}}" disabled='true'>
+  </mat-form-field>
+
+  <mat-form-field class="inputInput">
+    <mat-label class="labelI">Email Recepción EXAMEN</mat-label>
+    <input matInput value="{{data.datoClientePar.emailRecepcionExamenCliente}}" disabled='true'>
+  </mat-form-field>
+<!--
+  <mat-list>
+    <mat-list-item>Datos de Envío de Email</mat-list-item>
+    <mat-divider></mat-divider>
+  </mat-list>
+
+  <mat-form-field color="accent">
+    <input matInput placeholder="Envío Email " value="{{this.data.empresa[0]?.envioEmail?.emailEnvio}}" disabled='true'>
+  </mat-form-field>
+
+  <mat-form-field color="accent">
+    <input matInput placeholder="Contraseña " value="{{this.data.empresa[0]?.envioEmail?.password}}" disabled='true'>
+  </mat-form-field>
+
+  <mat-form-field class="inputInput">
+    <mat-label class="labelI">Nombre Desde</mat-label>
+    <input matInput value="{{data.datoClientePar.envioEmail?.nombreDesde}}" disabled='true'>
+  </mat-form-field>
+
+  <mat-form-field class="inputInput">
+    <mat-label class="labelI">Asunto</mat-label>
+    <input matInput value="{{data.datoClientePar.envioEmail?.asunto}}" disabled='true'>
+  </mat-form-field>
+
+  <mat-form-field class="inputInput">
+    <mat-label class="labelI">Título Cuerpo</mat-label>
+    <input matInput value="{{data.datoClientePar.envioEmail?.tituloCuerpo}}" disabled='true'>
+  </mat-form-field>
+
+  <mat-form-field class="inputInput">
+    <mat-label class="labelI">Título Cuerpo Medio</mat-label>
+    <input matInput value="{{data.datoClientePar.envioEmail?.tituloCuerpoMedio}}" disabled='true'>
+  </mat-form-field>
+
+
+  <mat-form-field class="inputInput">
+    <mat-label class="labelI">Título Cuerpo Pie</mat-label>
+    <input matInput value="{{data.datoClientePar.envioEmail?.tituloCuerpoPie}}" disabled='true'>
+    </mat-form-field>
+  </mat-dialog-content>
+-->
+<mat-dialog-actions>
+    <div class="col-md-6">
+      <button mat-raised-button class="colorFondoBotonCancelar"  mat-dialog-close  [disabled]=false>Cancelar</button>
+    </div>
+    <div class="col-md-6">
+      <button class="colorFondoBotonEliminar" mat-raised-button  (click)="enviar()"  >ELIMINA</button>
+    </div>
+</mat-dialog-actions>

@@ -1,0 +1,36 @@
+table {
+  width: 100%;
+}
+
+.margenDerecha{
+  margin-right: 20px;
+}
+
+::ng-deep .mat-mdc-dialog-container {
+  text-align: end !important;
+}
+
+.mat-mdc-form-field {
+  width: 100%;
+}
+
+.w16{
+  width: 16%;
+}
+
+.w8{
+  width: 8%;
+}
+/* Smartphones (portrait & landscape)
+#Dispositivo = Mayoría de teléfonos móviles (vertical y horizontal)
+#Resolución = B/w 320px to 479px */
+@media only screen and (min-device-width : 320px) and (max-device-width : 480px) {
+
+  .w16{
+    width: 10%;
+  }
+
+  .w8{
+    width: 14%;
+  }
+}

@@ -1,0 +1,142 @@
+<h2 mat-dialog-title>
+  MODIFICA CLIENTE - {{ data.datoClientePar.rutCliente }}
+</h2>
+
+<mat-dialog-content
+  [formGroup]="modificaCliente()"
+  name="modificaCliente"
+  class="modifica-container"
+>
+  <mat-form-field class="inputInput">
+    <mat-label class="labelI">Razón Social</mat-label>
+    <input matInput [formControl]="razonSocial" required />
+    @if (razonSocial.invalid) {
+    <mat-error>{{ getErrorMessage() }}</mat-error>
+    }
+  </mat-form-field>
+
+  <mat-form-field class="inputInput">
+    <mat-label class="labelI">Nombre de Fantasía</mat-label>
+    <input matInput [formControl]="nombreFantasia" required />
+    @if (nombreFantasia.invalid) {
+    <mat-error>{{ getErrorMessage() }}</mat-error>
+    }
+  </mat-form-field>
+
+  <mat-form-field class="inputInput">
+    <mat-label class="labelI">Dirección</mat-label>
+    <input matInput [formControl]="direccion" required />
+    @if (direccion.invalid) {
+    <mat-error>{{ getErrorMessage() }}</mat-error>
+    }
+  </mat-form-field>
+
+  <mat-form-field class="inputInput">
+    <mat-label class="labelI">Teléfono</mat-label>
+    <input matInput [formControl]="telefono" required />
+    @if (telefono.invalid) {
+    <mat-error>{{ getErrorMessage() }}</mat-error>
+    }
+  </mat-form-field>
+
+  <mat-form-field class="inputInput">
+    <mat-label class="labelI">Email</mat-label>
+    <input matInput [formControl]="email" required />
+    @if (email.invalid) {
+    <mat-error>{{ getErrorMessage() }}</mat-error>
+    }
+  </mat-form-field>
+
+  <mat-form-field class="inputInput">
+    <mat-label class="labelI">Nombre Contacto</mat-label>
+    <input matInput [formControl]="nombreContacto" required />
+    @if (nombreContacto.invalid) {
+    <mat-error>{{ getErrorMessage() }}</mat-error>
+    }
+  </mat-form-field>
+
+  <mat-form-field class="inputInput">
+    <mat-label class="labelI">Email Recepción EXAMEN</mat-label>
+    <input matInput [formControl]="emailRecepcionExamenCliente" required />
+    @if (emailRecepcionExamenCliente.invalid) {
+    <mat-error>{{ getErrorMessage() }}</mat-error>
+    }
+  </mat-form-field>
+  <!--
+  <mat-list>
+    <mat-list-item>Datos de Envío de Email</mat-list-item>
+    <mat-divider></mat-divider>
+  </mat-list>
+
+  <mat-form-field class="mt-3">
+    <input matInput placeholder="Ingrese Envío Email " [formControl]="emailEnvio" required>
+    <mat-error *ngIf="emailEnvio.invalid">{{getErrorMessage()}}</mat-error>
+  </mat-form-field>
+
+  <mat-form-field>
+    <input matInput placeholder="Ingrese Contraseña " [formControl]="password" required>
+    <mat-error *ngIf="password.invalid">{{getErrorMessage()}}</mat-error>
+  </mat-form-field>
+
+  <mat-form-field class="inputInput">
+    <mat-label class="labelI">Nombre Desde</mat-label>
+    <input matInput [formControl]="nombreDesde" required>
+    <mat-error *ngIf="nombreDesde.invalid">{{getErrorMessage()}}</mat-error>
+  </mat-form-field>
+
+  <mat-form-field class="inputInput">
+    <mat-label class="labelI">Asunto</mat-label>
+    <input matInput [formControl]="asunto" required>
+    <mat-error *ngIf="asunto.invalid">{{getErrorMessage()}}</mat-error>
+  </mat-form-field>
+
+  <mat-form-field class="inputInput">
+    <mat-label class="labelI">Título Cuerpo</mat-label>
+    <input matInput  [formControl]="tituloCuerpo" required>
+    <mat-error *ngIf="tituloCuerpo.invalid">{{getErrorMessage()}}</mat-error>
+  </mat-form-field>
+
+  <div>
+    <span class="labelI">Título Cuerpo </span>
+  </div>
+  <div >
+    <ckeditor [formControl]="tituloCuerpo"></ckeditor>
+  </div>
+
+  <mat-form-field class="inputInput">
+    <mat-label class="labelI">Título Cuerpo Medio</mat-label>
+    <input matInput [formControl]="tituloCuerpoMedio" required>
+    <mat-error *ngIf="tituloCuerpoMedio.invalid">{{getErrorMessage()}}</mat-error>
+  </mat-form-field>
+
+
+  <mat-form-field class="inputInput">
+    <mat-label class="labelI">Título Cuerpo Pie</mat-label>
+    <input matInput [formControl]="tituloCuerpoPie" required>
+    <mat-error *ngIf="tituloCuerpoPie.invalid">{{getErrorMessage()}}</mat-error>
+  </mat-form-field>
+</mat-dialog-content>
+-->
+  <mat-dialog-actions>
+    <div class="col-md-6">
+      <button
+        mat-raised-button
+        class="colorFondoBotonCancelar"
+        mat-dialog-close
+        [disabled]="false"
+      >
+        Cancelar
+      </button>
+    </div>
+    <div class="col-md-6">
+      <button
+        class="colorFondoBotonGrabar"
+        mat-raised-button
+        (click)="enviar()"
+        [disabled]="modificaCliente().invalid"
+      >
+        GRABAR
+      </button>
+    </div>
+  </mat-dialog-actions>
+</mat-dialog-content>

@@ -1,0 +1,137 @@
+<h2 mat-dialog-title>FORMATO EXAMEN {{ data.nombre }}</h2>
+<div class="consulta-container">
+  <div id="examenFifico" class="mt-3">
+    <div class="row">
+      <div class="col-md-3 border border-dark alineaV destacado">
+        EXAMEN FÍSICO
+      </div>
+    </div>
+    <div class="row anchoTitulo">
+      <div class="col-md-3 border border-dark alineaV border-top-0 destacado">
+        PARÁMETRO
+      </div>
+      <div class="col-md-3 border border-dark border-start-0 alineaV destacado">
+        RESULTADO
+      </div>
+    </div>
+    @for(item of data.formato?.formato8?.examenFisico; track item){
+    <div class="row altura">
+      <div
+        class="col-md-3 border border-dark border-top-0 destacado alineaVertical"
+      >
+        {{ item.parametro }}
+      </div>
+      <div class="col-md-3 border border-dark border-start-0 border-top-0">
+        {{ item.resultado }}
+      </div>
+    </div>
+    }
+  </div>
+
+  <div id="examenQuimico" class="mt-3">
+    <div class="row mt-1">
+      <div class="col-md-3 border border-dark alineaV destacado">
+        EXAMEN QUÍMICO
+      </div>
+    </div>
+    <div class="row anchoTitulo">
+      <div class="col-md-3 border border-dark alineaV border-top-0 destacado">
+        PARÁMETRO
+      </div>
+      <div class="col-md-3 border border-dark border-start-0 alineaV destacado">
+        RESULTADO
+      </div>
+      <div class="col-md-3 border border-dark border-start-0 alineaV destacado">
+        UNIDAD
+      </div>
+    </div>
+
+    @for(item of data.formato?.formato8?.examenQuimico; track item){
+    <div class="row altura">
+      <div
+        class="col-md-3 border border-dark border-top-0 destacado alineaVertical"
+      >
+        {{ item.parametro }}
+      </div>
+      <div class="col-md-3 border border-dark border-start-0 border-top-0">
+        {{ item.resultado }}
+      </div>
+      <div class="col-md-3 border border-dark border-start-0 border-top-0">
+        {{ item.unidad }}
+      </div>
+    </div>
+    }
+  </div>
+
+  <div id="analisisMicroscopico" class="mt-3">
+    <div class="row mt-1">
+      <div class="col-md-3 border border-dark alineaV destacado">
+        ANÁLISIS MICROSCÓPICO
+      </div>
+    </div>
+    <div class="row anchoTitulo">
+      <div class="col-md-3 border border-dark alineaV border-top-0 destacado">
+        PARÁMETRO
+      </div>
+      <div class="col-md-3 border border-dark border-start-0 alineaV destacado">
+        RESULTADO
+      </div>
+      <div class="col-md-3 border border-dark border-start-0 alineaV destacado">
+        UNIDAD
+      </div>
+    </div>
+
+    @for(item of data.formato?.formato8?.examenMicroscopico; track item){
+    <div class="row altura">
+      <div
+        class="col-md-3 border border-dark border-top-0 destacado alineaVertical"
+      >
+        {{ item.parametro }}
+      </div>
+      <div class="col-md-3 border border-dark border-start-0 border-top-0">
+        {{ item.resultado }}
+      </div>
+      <div
+        class="col-md-3 border border-dark border-start-0 border-top-0 alineaV destacado"
+      >
+        {{ item.unidad }}
+      </div>
+    </div>
+    }
+  </div>
+
+  <div id="simbologia" class="mt-3">
+    <div class="row anchoTitulo">
+      <div class="col-md-3 border border-dark alineaV border-end-0 destacado">
+        SIMBOLOGÍA
+      </div>
+      <div
+        class="col-md-3 border border-dark alineaV border-left-0 border-end-0 border-top-0"
+      ></div>
+    </div>
+
+    @for(item of data.formato?.formato8?.examenSimbologia; track item){
+    <div class="row">
+      <div
+        class="col-md-3 border border-dark border-end-0 border-top-0 destacado alineaVertical"
+      >
+        {{ item.nombre }}
+      </div>
+      <div class="col-md-3 border border-dark border-left-0 border-top-0">
+        {{ item.simbolo }}
+      </div>
+    </div>
+    }
+  </div>
+
+  <div class="col-md-12 mt-5">
+    <button
+      mat-raised-button
+      class="colorFondoBotonCancelar"
+      mat-dialog-close
+      [disabled]="false"
+    >
+      CERRAR
+    </button>
+  </div>
+</div>

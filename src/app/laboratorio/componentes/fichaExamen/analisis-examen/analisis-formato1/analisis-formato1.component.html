@@ -1,0 +1,117 @@
+<h2 mat-dialog-title>INGRESO EXAMEN {{ data.fichaC.examen?.nombre }}</h2>
+
+<mat-dialog-content
+  [formGroup]="ingresaFormato1"
+  name="agregaFormato1"
+  class="agrega-container"
+>
+  <mat-accordion class="example-headers-align" multi>
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title> </mat-panel-title>
+        <mat-panel-description>
+          Ficha Paciente
+          <mat-icon>account_circle</mat-icon>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <app-ficha-cabecera [datoFichaRecibeFicha]="data"></app-ficha-cabecera>
+    </mat-expansion-panel>
+  </mat-accordion>
+
+  <div class="container">
+    <div id="serieRoja" class="mt-4 mr-5">
+      <div class="row anchoTitulo">
+        <div
+          class="col-md-2 border border-dark alineaVertical border-end-0 destacado"
+        >
+          PARÁMETRO
+        </div>
+        <div
+          class="col-md-2 border border-dark border-left-0 border-end-0 alineaVertical destacado"
+        >
+          RESULTADO
+        </div>
+        <div
+          class="col-md-2 border border-dark border-left-0 border-end-0 alineaVertical destacado"
+        >
+          UNIDAD
+        </div>
+        <div
+          class="col-md-6 border border-dark border-left-0 border-end-0 alineaVertical destacado"
+        >
+          VALORES DE REFERENCIA
+        </div>
+      </div>
+      @for(datoResultadoFormato1_ of datoResultadoFormato1(); track
+      datoResultadoFormato1_){
+      <div class="row altura">
+        <div
+          class="col-md-2 border border-dark border-top-0 alineaV border-end-0 destacado"
+        >
+          {{ datoResultadoFormato1_.descripcion }}
+        </div>
+        <div
+          class="col-md-2 border border-dark border-left-0 border-top-0 border-end-0"
+        >
+          <mat-form-field class="anchoTituloLinea1">
+            <input
+              type="number"
+              matInput
+              placeholder="Ingrese Valor"
+              [formControl]="srAlbumina"
+              (keydown)="KeyDown($event)"
+              [ngStyle]="{
+                'font-weight': srAlbuminaFlag == true ? 'bold' : 'normal'
+              }"
+              (blur)="srAlbuminaFormula()"
+            />
+          </mat-form-field>
+        </div>
+        <div
+          class="col-md-2 border border-dark border-left-0 border-top-0 border-end-0 alineaVertical"
+        >
+          {{ datoResultadoFormato1_.unidadMedida }}
+        </div>
+        <div
+          class="col-md-6 border border-dark border-left-0 border-top-0 border-end-0 alineaVertical"
+        >
+          {{ datoResultadoFormato1_.referencia }}
+        </div>
+      </div>
+      }
+      <div class="row">
+        <div
+          class="col-md-2 border border-dark border-top-0 alineaV border-end-0 destacado"
+        >
+          OBSERVACIONES
+        </div>
+        <div class="col-md-10 border border-dark border-left-0 border-top-0">
+          <ckeditor [formControl]="observaciones"></ckeditor>
+        </div>
+      </div>
+    </div>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <div class="col-md-6">
+    <button
+      mat-raised-button
+      class="colorFondoBotonCancelar"
+      mat-dialog-close
+      [disabled]="false"
+    >
+      CANCELAR
+    </button>
+  </div>
+  <div class="col-md-6">
+    <button
+      class="colorFondoBotonGrabar"
+      mat-raised-button
+      (click)="enviar()"
+      [disabled]="ingresaFormato1.invalid"
+    >
+      GRABAR
+    </button>
+  </div>
+</mat-dialog-actions>

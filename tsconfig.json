@@ -3,6 +3,31 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "baseUrl": "./",
+    "paths": {
+      "@shared/*": ["src/app/shared/*"],
+      "@features/*": ["src/features/*"],
+      "@envs/*": ["src/environments/*"],
+      "@util/*": [  "src/app/utiles/*"],
+      "@imagenPublica/*": ["src/assets/imagenes/*"],
+      "@componentes/*": ["src/app/componentes/*"],
+      "@servicios/*":["src/app/servicios/*"],
+      "@modelos/*":["src/app/modelos/*"],
+
+      "@autentica/componentes/*": ["src/app/autentica/componentes/*"],
+      "@autentica/servicios/*":["src/app/autentica/servicios/*"],
+      "@autentica/interface/*":["src/app/autentica/interface/*"],
+
+      "@laboratorio/componentes/*": ["src/app/laboratorio/componentes/*"],
+      "@laboratorio/servicios/*":["src/app/laboratorio/servicios/*"],
+      "@laboratorio/modelos/*":["src/app/laboratorio/modelos/*"],
+      "@laboratorio/interfaces/*":["src/app/laboratorio/interfaces/*"],
+
+      "@veterinaria/componentes/*": ["src/app/veterinaria/componentes/*"],
+      "@veterinaria/servicios/*":["src/app/veterinaria/servicios/*"],
+      "@veterinaria/modelos/*":["src/app/veterinaria/modelos/*"],
+      "@veterinaria/interfaces/*":["src/app/veterinaria/interfaces/*"],
+    },
     "outDir": "./dist/out-tsc",
     "strict": true,
     "noImplicitOverride": true,

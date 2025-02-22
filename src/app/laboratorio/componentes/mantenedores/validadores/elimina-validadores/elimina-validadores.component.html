@@ -1,0 +1,50 @@
+<h2 mat-dialog-title>Elimina Validador</h2>
+
+    <mat-dialog-content  name="eliminaValidador" class="elimina-container">
+
+      <mat-form-field class="inputInput">
+        <mat-label class="labelI">Run Validador </mat-label>
+        <input matInput class="input-rut rut"  value="{{this.data.rutValidador}}" disabled='true'>
+      </mat-form-field>
+
+      <mat-form-field class="inputInput">
+        <mat-label class="labelI">Nombres</mat-label>
+        <input matInput value="{{this.data.nombres}}" disabled='true'>
+      </mat-form-field>
+
+      <mat-form-field class="inputInput">
+        <mat-label class="labelI">Apellido Paterno</mat-label>
+        <input matInput value="{{this.data.apellidoPaterno}}"  disabled='true'>
+      </mat-form-field>
+
+      <mat-form-field class="inputInput">
+        <mat-label class="labelI">Apellido Materno</mat-label>
+        <input matInput value="{{this.data.apellidoMaterno}}" disabled='true'>
+      </mat-form-field>
+
+      <mat-form-field class="inputInput">
+        <mat-label class="labelI">Profesión</mat-label>
+          <input matInput value="{{this.data.profesion}}" disabled='true'>
+      </mat-form-field>
+
+      <mat-form-field class="inputInput">
+        <mat-label class="labelI">Teléfono</mat-label>
+        <input matInput value="{{this.data.telefono}}" disabled='true'>
+      </mat-form-field>
+
+
+      <mat-card mat-card style="cursor: pointer"  class="example-card mb-2 mt-4 ml-2  align-content-center align-items-center align-self-center text-center" >
+        <a class="colorAmarillo" >
+          <img class="avatar" alt="sin foto" [src]="imagen" />
+        </a>
+      </mat-card>
+    </mat-dialog-content>
+    <mat-dialog-actions>
+      <div class="col-md-6">
+        <button mat-raised-button class="colorFondoBotonCancelar"  mat-dialog-close  [disabled]=false>CANCELAR</button>
+      </div>
+      <div class="col-md-6">
+        <button class="colorFondoBotonEliminar" mat-raised-button  (click)="enviar()">ELIMINA</button>
+      </div>
+    </mat-dialog-actions>
+

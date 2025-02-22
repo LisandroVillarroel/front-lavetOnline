@@ -1,0 +1,35 @@
+<h2 mat-dialog-title>ELIMINA DOCTOR SOLICITANTE</h2>
+
+<mat-dialog-content name="elimina" class="elimina-container">
+  <mat-form-field class="inputInput">
+    <mat-label class="labelI">Nombre Doctor Solicitante"</mat-label>
+    <input matInput value="{{ data.nombre }}" disabled="true" />
+  </mat-form-field>
+
+  <mat-form-field class="inputInput">
+    <mat-label class="labelI">Nombre Cliente</mat-label>
+    <input matInput value="{{ data.cliente.nombreFantasia }}" disabled="true" />
+  </mat-form-field>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <div class="col-md-6">
+    <button
+      mat-raised-button
+      class="colorFondoBotonCancelar"
+      mat-dialog-close
+      [disabled]="false"
+    >
+      CANCELAR
+    </button>
+  </div>
+  <div class="col-md-6">
+    <button
+      class="colorFondoBotonEliminar"
+      mat-raised-button
+      (click)="enviar()"
+    >
+      ELIMINA
+    </button>
+  </div>
+</mat-dialog-actions>

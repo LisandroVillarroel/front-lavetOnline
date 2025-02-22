@@ -1,0 +1,142 @@
+<h2 mat-dialog-title>AGREGA EXAMEN</h2>
+
+<mat-dialog-content
+  [formGroup]="agregaFlujoCaja()"
+  name="agregaFlujoCaja"
+  class="agrega-container"
+>
+  <mat-form-field class="inputInput">
+    <mat-label class="labelI">Cuenta</mat-label>
+    <input matInput [formControl]="cuenta" />
+    @if(cuenta.invalid){
+    <mat-error>{{ getErrorMessage("cuenta") }}</mat-error>
+    }
+  </mat-form-field>
+
+  <mat-form-field class="inputInput">
+    <mat-label class="labelI">Monto Fijo</mat-label>
+    <input matInput type="number" [formControl]="montoFijo" />
+    @if(montoFijo.invalid){
+    <mat-error>{{ getErrorMessage("montoFijo") }}</mat-error>
+    }
+  </mat-form-field>
+
+  <mat-form-field class="inputSelect">
+    <mat-label class="labelI">Tipo Cuenta</mat-label>
+    <mat-select [formControl]="tipoCuenta" required>
+      <mat-option value="Cargo">Cargo</mat-option>
+      <mat-option value="Abono">Abono</mat-option>
+    </mat-select>
+    @if(tipoCuenta.invalid){
+    <mat-error>{{ getErrorMessage("tipoCuenta") }}</mat-error>
+    }
+  </mat-form-field>
+
+  <mat-form-field class="example-form-field mb-2 inputFechaForm">
+    <mat-label class="labelI">Fecha Transacción</mat-label>
+    <input matInput [formControl]="fechaTransaccion" [matDatepicker]="picker" />
+    <mat-hint>DD/MM/YYYY</mat-hint>
+    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+    @if(fechaTransaccion.invalid){
+    <mat-error>{{ getErrorMessage("fechaTransaccion") }}</mat-error>
+    }
+  </mat-form-field>
+
+  <mat-form-field class="inputSelect">
+    <mat-label class="labelI">Metodo Pago</mat-label>
+    <mat-select [formControl]="metodoPago" required>
+      <mat-option value="Efectivo">Efectivo</mat-option>
+      <mat-option value="Transferencia">Transferencia</mat-option>
+      <mat-option value="Tarjeta">Tarjeta</mat-option>
+    </mat-select>
+    @if(metodoPago.invalid){
+    <mat-error>{{ getErrorMessage("metodoPago") }}</mat-error>
+    }
+  </mat-form-field>
+
+  <mat-form-field class="inputInput">
+    <mat-label class="labelI">Monto</mat-label>
+    <input matInput [formControl]="monto" required />
+    @if(monto.invalid){
+    <mat-error>{{ getErrorMessage("monto") }}</mat-error>
+    }
+  </mat-form-field>
+
+  <mat-form-field class="inputInput">
+    <mat-label class="labelI">Comprobante</mat-label>
+    <input matInput [formControl]="comprobante" />
+    @if(comprobante.invalid){
+    <mat-error>{{ getErrorMessage("comprobante") }}</mat-error>
+    }
+  </mat-form-field>
+  <div
+    class="file-upload-wrapper"
+    [class.success]="uploadSuccess"
+    [class.error]="uploadError"
+    (drop)="onFileDrop($event)"
+    (dragover)="onDragOver($event)"
+  >
+    <input
+      type="file"
+      accept="image/*"
+      (change)="onImagenSelecionadaLogo($event)"
+      hidden
+      #fileInput
+    />
+    <div class="file-dropper" (click)="fileInput.click()">
+      <mat-icon>upload</mat-icon>
+      <p>{{ "ARRASTRAR Y SOLTAR / click" }}</p>
+      @if(imageName()){ @if(selectedFile || imagePreview!){
+      <img [src]="imagePreview()" alt="Image Preview" class="image-preview" />
+      <p>
+        <span class="image-name">{{ imageName() }}</span> ({{ fileSize() }} KB)
+      </p>
+      <mat-icon class="delete-icon" (click)="removeImage()">delete</mat-icon>
+      } }
+    </div>
+  </div>
+  <!--
+  <image-upload
+    class="customClass"
+    (removed)="onRemoved($any($event))"
+    (uploadFinished)="onUploadFinished($any($event))"
+    (uploadStateChanged)="onUploadStateChanged($any($event))"
+    buttonCaption="Presione para Seleccionar Comprobante"
+    dropBoxMessage="!Suelta tu imágen aquí!"
+    clearButtonCaption="Eliminar Imágen"
+    [extensions]="['jpeg', 'png', 'jpg', 'svg']"
+    [max]="1"
+    [maxFileSize]="50000"
+    [fileTooLargeMessage]="
+      'El Comprobante es demasiado grande y no se cargó. El tamaño máximo de archivo es 50 KB'
+    "
+  >
+  </image-upload>
+
+  <div class="formatoLetra">(Tamaño máximo 50 KB)</div>
+  -->
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <div class="col-md-6">
+    <button
+      mat-raised-button
+      class="colorFondoBotonCancelar"
+      mat-dialog-close
+      [disabled]="false"
+    >
+      CANCELAR
+    </button>
+  </div>
+  <div class="col-md-6">
+    <button
+      class="colorFondoBotonGrabar"
+      mat-raised-button
+      (click)="enviar()"
+      [disabled]="agregaFlujoCaja().invalid"
+    >
+      GRABAR
+    </button>
+  </div>
+</mat-dialog-actions>

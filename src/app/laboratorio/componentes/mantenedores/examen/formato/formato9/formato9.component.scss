@@ -1,0 +1,40 @@
+.consulta-container {
+  display: flex;
+  flex-direction: column;
+  padding: 0 5%;
+}
+
+.consulta-container > * {
+  width: 95%;
+}
+
+.mat-mdc-raised-button {
+  min-width: 100%;
+}
+
+.col-md-2, .col-md-3, .col-md-4, .col-md-6{
+padding-right: 0px !important;
+padding-left: 0px !important;
+}
+
+.alineaV{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.row {
+   margin-right:0%;
+   margin-left:0%;
+}
+
+.destacado{
+  font-weight: bold;
+  font-size:14px;
+  font-family: Arial, Helvetica, sans-serif;
+  color: black;
+}
+
+h2{
+  text-transform: uppercase;
+}

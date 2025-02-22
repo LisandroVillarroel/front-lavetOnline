@@ -1,0 +1,135 @@
+<h2 mat-dialog-title>AGREGA EXAMEN</h2>
+
+<mat-dialog-content
+  [formGroup]="agregaExamen()"
+  name="agregaExamen"
+  class="agrega-container"
+>
+  <mat-form-field class="inputInput">
+    <mat-label class="labelI">Nombre Código</mat-label>
+    <input matInput [formControl]="codigoExamen" />
+    @if(codigoExamen.invalid){
+    <mat-error>{{ getErrorMessage("codigoExamen") }}</mat-error>
+    }
+  </mat-form-field>
+
+  <mat-form-field class="inputInput">
+    <mat-label class="labelI">Código Interno</mat-label>
+    <input matInput [formControl]="codigoInterno" />
+    @if(codigoInterno.invalid){
+    <mat-error>{{ getErrorMessage("codigoInterno") }}</mat-error>
+    }
+  </mat-form-field>
+
+  <mat-form-field class="inputInput">
+    <mat-label class="labelI">Código Formato Interno</mat-label>
+    <input matInput [formControl]="numeroFormatoInterno" />
+    @if(numeroFormatoInterno.invalid){
+    <mat-error>{{ getErrorMessage("numeroFormatoInterno") }}</mat-error>
+    }
+  </mat-form-field>
+
+  <mat-form-field class="inputInput">
+    <mat-label class="labelI">Nombre EXAMEN</mat-label>
+    <input matInput [formControl]="nombre" required />
+    @if(nombre.invalid){
+    <mat-error>{{ getErrorMessage("nombre") }}</mat-error>
+    }
+  </mat-form-field>
+
+  <mat-form-field class="inputInput">
+    <mat-label class="labelI">Sigla EXAMEN</mat-label>
+    <input matInput [formControl]="sigla" required />
+    @if(sigla.invalid){
+    <mat-error>{{ getErrorMessage("Sigla") }}</mat-error>
+    }
+  </mat-form-field>
+
+  <mat-form-field class="inputInput">
+    <mat-label class="labelI">Precio</mat-label>
+    <input matInput type="number" [formControl]="precio" required />
+    @if(precio.invalid){
+    <mat-error>{{ getErrorMessage("precio") }}</mat-error>
+    }
+  </mat-form-field>
+
+  <mat-form-field class="inputInput">
+    <mat-label class="labelI">Tiempo Preparación</mat-label>
+    <input matInput [formControl]="tiempoPreparacion" required />
+    @if(tiempoPreparacion.invalid){
+    <mat-error>{{ getErrorMessage("tiempoPreparacion") }}</mat-error>
+    }
+  </mat-form-field>
+
+  <mat-form-field class="inputInput">
+    <mat-label class="labelI">Título EXAMEN</mat-label>
+    <input matInput [formControl]="tituloExamen" />
+    @if(tituloExamen.invalid){
+    <mat-error>{{ getErrorMessage("tituloExamen") }}</mat-error>
+    }
+  </mat-form-field>
+
+  <mat-form-field class="inputSelect">
+    <mat-label class="labelI">Interno/Externo</mat-label>
+    <mat-select [formControl]="internoExterno" required>
+      @for(_internoExterno of datoInternoExterno(); track _internoExterno){
+      <mat-option [value]="_internoExterno.id">
+        {{ _internoExterno.nombre }}
+      </mat-option>
+      }
+    </mat-select>
+    @if(internoExterno.invalid){
+    <mat-error>{{ getErrorMessage("internoExterno") }}</mat-error>
+    }
+  </mat-form-field>
+
+  <mat-form-field class="inputSelect">
+    <mat-label class="labelI">Categoría</mat-label>
+    <mat-select [formControl]="categoria" required>
+      @for(_categoria of datoCategoria(); track _categoria){
+      <mat-option [value]="_categoria.id">
+        {{ _categoria.nombre }}
+      </mat-option>
+      }
+    </mat-select>
+    @if(categoria.invalid){
+    <mat-error>{{ getErrorMessage("categoria") }}</mat-error>
+    }
+  </mat-form-field>
+
+  <mat-form-field class="inputInput">
+    <mat-label class="labelI">Tipo Examen</mat-label>
+    <input matInput [formControl]="tipoExamen" />
+    <mat-select [formControl]="tipoExamen" required>
+      <mat-option value="Padre">Padre</mat-option>
+      <mat-option value="Hijo">Hijo</mat-option>
+      <mat-option value="Independiente" selected>Independiente</mat-option>
+    </mat-select>
+    @if(tipoExamen.invalid){
+    <mat-error>{{ getErrorMessage("tipoExamen") }}</mat-error>
+    }
+  </mat-form-field>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <div class="col-md-6">
+    <button
+      mat-raised-button
+      class="colorFondoBotonCancelar"
+      mat-dialog-close
+      [disabled]="false"
+    >
+      CANCELAR
+    </button>
+  </div>
+  <div class="col-md-6">
+    <button
+      class="colorFondoBotonGrabar"
+      mat-raised-button
+      (click)="enviar()"
+      [disabled]="agregaExamen().invalid"
+    >
+      GRABAR
+    </button>
+  </div>
+</mat-dialog-actions>

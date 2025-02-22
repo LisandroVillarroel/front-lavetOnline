@@ -1,0 +1,31 @@
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  Inject,
+} from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
+import {
+  MAT_DIALOG_DATA,
+  MatDialogModule,
+  MatDialogRef,
+} from '@angular/material/dialog';
+import { IExamen } from '@laboratorio/modelos/examen-modelo';
+
+const MATERIAL_MODELO = [MatDialogModule, MatButtonModule];
+
+@Component({
+  selector: 'app-formato6',
+  templateUrl: './formato6.component.html',
+  styleUrls: ['./formato6.component.scss'],
+  imports: [MATERIAL_MODELO],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+})
+export class Formato6Component {
+  readonly dialogRef = inject(MatDialogRef<Formato6Component>);
+  readonly data = inject<IExamen>(MAT_DIALOG_DATA);
+
+  constructor() {
+    // console.log("examenFisico:",data.formato.formato2.examenFisico);
+  }
+}

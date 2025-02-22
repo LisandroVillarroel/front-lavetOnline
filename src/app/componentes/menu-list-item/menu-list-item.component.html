@@ -1,0 +1,60 @@
+<a
+  mat-list-item
+  [ngStyle]="{ 'padding-left': depth() * 12 + 'px' }"
+  (click)="onItemSelected($event, item())"
+  [ngClass]="{
+    active: item().route ? router.isActive(item().route!, true) : false,
+    expanded: expanded
+  }"
+  class="menu-list-item"
+>
+  <img
+    class="pt-2 imgIcono"
+    alt="Imagen"
+    [src]="'./assets/imagenes/menu/' + item().iconName + '.png'"
+  />
+  @if(item().route == undefined){
+  <span class="Menu"
+    ><strong>{{ item().displayName }}</strong></span
+  >
+  } @if(item().displayName == 'cerrar'){
+  <span
+    ><strong>{{ item().displayName }}</strong></span
+  >
+  } @if(item().route!=undefined && item().displayName != 'cerrar'){
+  <span class="subMenu">{{ item().displayName }}</span>
+  } @if(item().children && item().children?.length){
+  <span fxFlex>
+    <span fxFlex></span>
+    @if(!expanded){
+    <mat-icon
+      ngClass="icono"
+      class="pt-2"
+      [@indicatorRotate]="expanded ? 'expanded' : 'collapsed'"
+      >add</mat-icon
+    >
+    }@else{
+    <mat-icon
+      ngClass="icono"
+      class="pt-1"
+      [@indicatorRotate]="expanded ? 'collapsed' : 'expanded'"
+      >minimize</mat-icon
+    >
+    }
+  </span>
+  }
+</a>
+
+@if(expanded){
+<div>
+  @for (child of getMenuChildren(); track child._id){
+  <app-menu-list-item
+    [item]="child"
+    (tituloModuloF2)="traeTituloModulo($event)"
+    (tituloModuloF2)="traeTituloModulo($event)"
+    [depth]="depth() + 1"
+  >
+  </app-menu-list-item>
+  }
+</div>
+}

@@ -1,0 +1,58 @@
+.consulta-container {
+  padding: 0 10%;
+}
+
+.modifica-container > * {
+  width: 95%;
+}
+
+
+.alineaVertical{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.anchoTitulo {
+  width: 100%;
+  text-align: center;
+}
+
+.destacado{
+  font-weight: bold;
+  font-size:14px;
+  font-family: Arial, Helvetica, sans-serif;
+  color: black;
+}
+
+.destacadoTitulo1{
+  font-weight: bold;
+  font-size:15px;
+  font-family: Arial, Helvetica, sans-serif;
+  color: black;
+}
+
+.alineaV{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.altura{
+  height: 50px !important;
+}
+
+h2{
+  text-transform: uppercase;
+}
+
+.mat-mdc-raised-button {
+  min-width: 50%;
+}
+
+h4{
+  text-align: left;
+  margin:0%;
+  font-weight: bold;
+  color:rgba(0, 0, 0, 0.822)
+}

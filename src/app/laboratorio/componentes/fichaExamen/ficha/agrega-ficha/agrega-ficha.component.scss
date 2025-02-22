@@ -1,0 +1,95 @@
+.agrega-container {
+  display: flex;
+  flex-direction: column;
+  padding: 0 5%;
+}
+
+.agrega-container > * {
+  width: 98%;
+}
+
+.mat-mdc-form-field  {
+  display: block !important;
+}
+
+
+
+.mat-mdc-raised-button {
+  min-width: 100%;
+}
+
+.mat-dialog-container {
+  padding: 50px !important;
+
+}
+
+.mat-dialog-content{
+  margin: auto;
+}
+
+
+.lineaCuadrada {
+  border-style:solid;
+  border-width:1px;
+  border-color:black;
+
+}
+
+.lineaDerecha {
+  border-right:solid;
+  border-width:1px;
+  border-color:black;
+}
+
+.lineaIzquierda {
+  border-left:solid;
+  border-width:1px;
+  border-color:black;
+}
+
+.lineaInferior {
+  border-bottom:solid;
+  border-width:1px;
+  border-color:black;
+}
+
+.alineaVertical{
+  display: flex;
+  align-items: center;
+
+}
+
+.alineaIzquierda {
+
+  text-align: left;
+}
+
+.mdc-form-field {
+
+  color: #000000 !important;
+}
+
+/*
+.inputSelect{
+  font-size: var(--mdc-typography-body1-font-size, 12px) !important;
+  font-family: Roboto,"Helvetica Neue",sans-serif;
+  height: calc(.5em + .75rem + 55px) !important;
+}
+*/
+
+::ng-deep
+  .mat-form-field-type-mat-select:not(.mat-form-field-disabled)
+  .mat-form-field-flex {
+  background-color: red !important;
+}
+
+
+.mat-mdc-option /*.mdc-list-item__primary-text*/ {
+  font-size: 10px !important;
+}
+
+.informativo{
+  font-size: 10px;
+  text-align: center;
+  color: red;
+}

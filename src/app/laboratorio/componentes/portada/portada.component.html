@@ -1,0 +1,89 @@
+<br>
+  <div class="row margen">
+      <div class="col-md-6">
+        <mat-card class="tarjeta1" >
+          <mat-card-header>
+            <mat-card-title-group>
+              <mat-card-title class="titulo1">BIENVENIDO A</mat-card-title>
+              <mat-card-title class="titulo3">{{nombreSiglaEmp}}</mat-card-title>
+              <mat-card-subtitle class="subtitulo1">Este es tu inicio. donde podrás ver un resumen de tu Laboratorio.!Vamos!</mat-card-subtitle>
+              <img class="imgCabecera" [src]="imagenCabeceraLabVet"  alt="Imagen Cabecer 1">
+            </mat-card-title-group>
+          </mat-card-header>
+        </mat-card>
+      </div>
+
+      <div class="col-md-6 mt-1">
+        <mat-card class="tarjeta2" >
+          <mat-card-header>
+            <img class="card-container-left imgCabecera"  src="./assets/imagenes/iconos/icono3.png"  alt="Imagen Cabecera 2">
+            <mat-card-title-group class="card-container-right">
+
+              <mat-card-title class="titulo2">{{pendientes}} EXÁMENES</mat-card-title>
+              <mat-card-title class="titulo3">PENDIENTES</mat-card-title>
+            </mat-card-title-group>
+          </mat-card-header>
+        </mat-card>
+      </div>
+  </div>
+  <hr>
+  <h3 class="formato1">{{fechaActual | date:'fullDate'}}</h3>
+  <div class="row justify-content-center" >
+    <div class="col-md-2 mt-1">
+      <mat-card class="tarjeta3">
+        <div class="row col-md-12 m-1">
+          <div class="col-md-12">
+            <img class="imgCuerpo"  src="./assets/imagenes/iconos/solicitudes.png"  alt="Imagen Solucitud">
+
+            <div class="titulo4">Solicitudes</div>
+            <div class="titulo5">{{total().Solicitado}}</div>
+          </div>
+        </div>
+      </mat-card>
+    </div>
+    <div class="col-md-2 mt-1">
+      <mat-card class="tarjeta3">
+        <div class="row m-2">
+          <div class="col-md-12">
+            <img class="imgCuerpo"  src="./assets/imagenes/iconos/recepcionado.png"  alt="Imagen Recepcionado">
+            <div class="titulo4">Recepción</div>
+            <div class="titulo5">{{total().Recepcionado}}</div>
+          </div>
+        </div>
+      </mat-card>
+    </div>
+    <div class="col-md-2 mt-1">
+      <mat-card class="tarjeta3">
+        <div class="row m-2">
+          <div class="col-md-12">
+            <img class="imgCuerpo"  src="./assets/imagenes/iconos/ingresado.png"  alt="Imagen Ingresado">
+            <div class="titulo4">Ingresados</div>
+            <div class="titulo5">{{total().Ingresado}}</div>
+          </div>
+        </div>
+      </mat-card>
+    </div>
+    <div class="col-md-2 mt-1">
+      <mat-card class="tarjeta3">
+        <div class="row m-2">
+          <div class="col-md-12">
+            <img class="imgCuerpo"  src="./assets/imagenes/iconos/analizados.png"  alt="Imágen Analizados">
+            <div class="titulo4">Analizados</div>
+            <div class="titulo5">{{total().Analizado}}</div>
+          </div>
+        </div>
+      </mat-card>
+    </div>
+    <div class="col-md-2 mt-1">
+      <mat-card class="tarjeta3">
+        <div class="row m-2">
+          <div class="col-md-12">
+            <img class="imgCuerpo"  src="./assets/imagenes/iconos/enviado.png"  alt="Imagen Recepcionado">
+            <div class="titulo4">Enviados Hoy</div>
+            <div class="titulo5">{{total().Enviado}}</div>
+          </div>
+        </div>
+      </mat-card>
+    </div>
+  </div>
+

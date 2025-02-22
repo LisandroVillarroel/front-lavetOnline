@@ -1,0 +1,21 @@
+<h2 mat-dialog-title>FORMATO EXAMEN {{ data.nombre }}</h2>
+<div class="consulta-container">
+  <div id="cuerpo" class="mt-3">
+    <div class="row">
+      <div class="col-md-3 border border-dark alineaV border-end-0 destacado">
+        {{ data.formato?.formato9?.observaciones }}
+      </div>
+      <div class="col-md-9 border border-dark border-left-0"></div>
+    </div>
+  </div>
+  <div class="col-md-12 mt-5">
+    <button
+      mat-raised-button
+      class="colorFondoBotonCancelar"
+      mat-dialog-close
+      [disabled]="false"
+    >
+      CERRAR
+    </button>
+  </div>
+</div>

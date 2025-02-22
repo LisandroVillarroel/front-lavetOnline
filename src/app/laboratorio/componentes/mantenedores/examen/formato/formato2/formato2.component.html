@@ -1,0 +1,129 @@
+<h2 mat-dialog-title>FORMATO EXAMEN {{ data.nombre }}</h2>
+<div class="consulta-container">
+  <div class="row altura mb-1 mt-2">
+    <div class="col-md-3 border border-dark alineaV border-end-0 destacado">
+      {{ data.formato?.formato2?.liquido }}
+    </div>
+    <div class="col-md-7 border border-dark"></div>
+  </div>
+
+  <div id="examenFifico">
+    <div class="row">
+      <div
+        class="col-md-3 mt-2 border border-dark alineaVertical destacadoTitulo1"
+      >
+        EXAMEN FÍSICO
+      </div>
+    </div>
+    <div class="row">
+      <div
+        class="col-md-3 border border-dark alineaVertical border-end-0 border-top-0 destacado"
+      >
+        PARÁMETRO
+      </div>
+      <div class="col-md-7 border border-dark alineaVertical destacado">
+        RESULTADO
+      </div>
+    </div>
+    @for(item of data.formato?.formato2?.examenFisico; track item){
+    <div class="row altura">
+      <div
+        class="col-md-3 border border-dark border-top-0 alineaV border-end-0 destacado"
+      >
+        {{ item.parametro }}
+      </div>
+      <div class="col-md-7 border border-dark border-top-0">
+        {{ item.resultado }}
+      </div>
+    </div>
+    }
+  </div>
+
+  <div id="examenQuimico">
+    <div class="row mt-1">
+      <div
+        class="col-md-3 mt-2 border border-dark alineaVertical destacadoTitulo1"
+      >
+        EXAMEN QUÍMICO
+      </div>
+    </div>
+    <div class="row">
+      <div
+        class="col-md-3 border border-dark alineaVertical border-top-0 border-end-0 destacado"
+      >
+        PARÁMETRO
+      </div>
+      <div
+        class="col-md-7 border border-dark border-left-0 alineaVertical destacado"
+      >
+        RESULTADO
+      </div>
+    </div>
+    @for(item of data.formato?.formato2?.examenQuimico; track item){
+    <div class="row altura">
+      <div
+        class="col-md-3 border border-dark border-top-0 alineaV border-end-0 destacado"
+      >
+        {{ item.parametro }}
+      </div>
+      <div class="col-md-7 border border-dark border-left-0 border-top-0">
+        {{ item.resultado }}
+      </div>
+    </div>
+    }
+  </div>
+
+  <div id="citologico">
+    <div class="row mt-1">
+      <div
+        class="col-md-3 mt-2 border border-dark alineaVertical destacadoTitulo1"
+      >
+        CITOLOGICO
+      </div>
+    </div>
+    <div class="row">
+      <div
+        class="col-md-3 border border-dark alineaVertical border-end-0 border-top-0 destacado"
+      >
+        PARÁMETRO
+      </div>
+      <div
+        class="col-md-7 border border-dark border-left-0 alineaVertical destacado"
+      >
+        RESULTADO
+      </div>
+    </div>
+    @for(item of data.formato?.formato2?.examenCitologico; track item){
+    <div class="row altura">
+      <div
+        class="col-md-3 border border-dark border-top-0 alineaV border-end-0 destacado"
+      >
+        {{ item.parametro }}
+      </div>
+      <div class="col-md-7 border border-dark border-left-0 border-top-0">
+        {{ item.resultado }}
+      </div>
+    </div>
+    }
+  </div>
+
+  <div class="col-md-12 mt-5">
+    <button
+      mat-raised-button
+      class="colorFondoBotonCancelar"
+      mat-dialog-close
+      [disabled]="false"
+    >
+      CERRAR
+    </button>
+  </div>
+</div>
+
+<!--
+<div *ngIf="!ingresaAnalisisDeFluidos.invalid">
+
+<br><br><br><br><br><br><br><br><br>
+<app-imprime-analisis-de-fluidos *ngIf="imprime" [datoFichaRecibe]="datoFichaRespuesta" [estadoPdf]="'EnviaCorreo'" (traePdf)="recibePdf($event)"></app-imprime-analisis-de-fluidos>
+
+</div>
+-->

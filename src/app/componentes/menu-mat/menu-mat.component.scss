@@ -1,0 +1,215 @@
+.largo100{
+  height: 100%;
+  padding-left: 20px;
+}
+
+.tamanoLetra{
+  font-size: 12px;
+  text-align: right;
+}
+
+.mat-mdc-chip{
+width: 100% !important;
+}
+
+.mat-mdc-chip.mat-mdc-standard-chip {
+  --mdc-chip-container-height: 42px;
+}
+
+.mat-toolbar-row, .mat-toolbar-single-row {
+  height: 35px!important;
+}
+
+mat-divider {
+  margin-top: 3px !important;
+  margin-bottom: 3px !important;
+  background-color: #ffffff80;
+}
+
+.menu-container {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.example-is-mobile .example-toolbar {
+  position: fixed;
+  /* Make sure the toolbar will stay on top of the content as it scrolls past. */
+  z-index: 2;
+}
+
+h1.example-app-name {
+  margin-left: 8px;
+}
+
+.example-sidenav-container {
+  /* When the sidenav is not fixed, stretch the sidenav container to fill the available space. This
+     causes `<mat-sidenav-content>` to act as our scrolling element for desktop layouts. */
+  flex: 1;
+  height: 100%;
+}
+
+.example-is-mobile .example-sidenav-container {
+  /* When the sidenav is fixed, don't constrain the height of the sidenav container. This allows the
+     `<body>` to be our scrolling element for mobile layouts. */
+  flex: 1 0 auto;
+}
+
+.spacerDerecha {
+  flex: 1 1 auto;
+}
+
+.iconMuestra {
+  transform: scale(1.5);
+  color:#ffffff;
+}
+
+/*Menu*/
+
+mat-sidenav {
+  margin: 5px 10px;
+  width: 15%;
+  border-right: none;
+  background: #00adb1;  /*Colof de Fondo menu*/
+  color: white;
+  border-radius: 10px;
+  padding: 1px;
+  text-align: center;
+}
+
+@media only screen and (max-width: 450px) {
+  mat-sidenav {
+    margin: 16px;
+    width: 70%;    /*Tamaño ventana Menu*/
+    border-right: none;
+    background: #00adb1;  /*Colof de Fondo menu*/
+    color: white;
+    border-radius: 10px;
+    padding: 1px;
+    text-align: center;
+  }
+}
+
+
+mat-sidenav-container {
+  height: calc(100vh - 65px);
+}
+
+.name{
+  display: inline-block;
+  vertical-align: top;
+
+  font-weight: normal;
+  margin:0 !important;
+}
+
+.menu-button {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  font-size: 1rem;
+}
+
+.menu-button mat-icon {
+  margin-right: 8px;
+}
+.avatar {
+  margin-top: 16px;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+}
+
+.designation {
+  margin-top: 2px;
+  font-size: 0.7rem;
+  color: lightgrey;
+}
+mat-divider {
+  margin-top: 16px;
+  margin-bottom: 16px;
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+.alineaV{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.cerrar{
+  font-size: 14px;
+  font-family: Arial, Helvetica, sans-serif;
+  text-align: left;
+}
+
+.padingLateral{
+  padding:0 !important;
+  min-width:0 !important;
+}
+
+
+.mat-icon {
+  vertical-align: middle;
+}
+
+.v-align-middle {
+    vertical-align: middle;
+}
+
+
+.mat-mdc-standard-chip:not(.mdc-evolution-chip--disabled) {
+  background-color: #021a21;
+}
+
+.tamanoLetraShip{
+  font-family: Arial, Helvetica, sans-serif;
+  color: #ffffff;
+  font-size: 12px;
+}
+
+
+.icono1{
+padding-right: 5px;
+padding-top: 9px;
+width: 40px;
+//height: 35px;
+}
+
+.imgUsuario{
+  align-self: center;
+  width: 8%;
+  height: 8%;
+  margin-right: 7px;
+}
+
+.imgLogoLineal{
+  align-self: center;
+  width: 112px;
+  height: 22px;
+  margin-left: 7px;
+}
+
+.formatoShip {
+  width: 100%;
+  height: 80%;
+  border-radius: 40px;
+}
+
+.mat-drawer-content {
+ overflow:hidden;
+}
+
+.mat-drawer-content {
+  overflow:auto !important;
+}
+
+
+
+

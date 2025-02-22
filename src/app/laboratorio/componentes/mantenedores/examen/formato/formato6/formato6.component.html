@@ -1,0 +1,214 @@
+<h2 mat-dialog-title>FORMATO EXAMEN {{ data.nombre }}</h2>
+<div class="consulta-container">
+  <div id="serieRoja" class="mt-3">
+    <h4>SERIE ROJA</h4>
+
+    <div class="row anchoTitulo">
+      <div
+        class="col-md-2 border border-dark alineaVertical border-end-0 destacado"
+      >
+        PARÁMETRO
+      </div>
+      <div
+        class="col-md-2 border border-dark border-left-0 border-end-0 alineaVertical destacado"
+      >
+        UNIDAD
+      </div>
+      <div
+        class="col-md-2 border border-dark border-left-0 border-end-0 alineaVertical destacado"
+      >
+        RESULTADO
+      </div>
+      <div class="col-md-6 border border-dark border-left-0">
+        <div class="row">
+          <div
+            class="col-md-12 border-dark border-bottom alineaVertical destacado"
+          >
+            VALORES DE REFERENCIA
+          </div>
+        </div>
+        <div class="row">
+          <div
+            class="col-md-6 border-dark border-top-0 border-left-0 border-bottom-0 alineaVertical destacado"
+          >
+            Caninos
+          </div>
+          <div class="col-md-6 border-dark border-0 alineaVertical destacado">
+            Felinos
+          </div>
+        </div>
+      </div>
+    </div>
+
+    @for(item of data.formato?.formato6?.serieRoja; track item){
+    <div class="row altura">
+      <div
+        class="col-md-2 border border-dark border-top-0 alineaV border-end-0 destacado"
+      >
+        {{ item.parametro }}
+      </div>
+      <div
+        class="col-md-2 border border-dark border-left-0 border-top-0 border-end-0"
+      >
+        {{ item.resultado }}
+      </div>
+      <div
+        class="col-md-2 border border-dark border-left-0 border-top-0 border-end-0 alineaVertical"
+      >
+        {{ item.unidad }}
+      </div>
+      <div
+        class="col-md-3 border border-dark border-left-0 border-top-0 border-end-0 alineaVertical"
+      >
+        {{ item.caninos }}
+      </div>
+      <div
+        class="col-md-3 border border-dark border-left-0 border-top-0 alineaVertical"
+      >
+        {{ item.felinos }}
+      </div>
+    </div>
+    }
+  </div>
+
+  <br />
+  <div id="serieBlanca">
+    <h4>SERIE BLANCA</h4>
+
+    <div class="row anchoTitulo">
+      <div
+        class="col-md-2 border border-dark alineaVertical border-end-0 destacado"
+      >
+        PARÁMETRO
+      </div>
+      <div class="col-md-4 border border-dark border-left-0 border-end-0">
+        <div class="row">
+          <div
+            class="col-md-12 border-bottom border-dark alineaVertical destacado"
+          >
+            RESULTADOS
+          </div>
+        </div>
+        <div class="row">
+          <div
+            class="col-md-6 border-dark border-top-0 border-left-0 border-bottom-0 alineaVertical font-weight-bold"
+          >
+            %
+          </div>
+          <div
+            class="col-md-6 border-dark border-0 alineaVertical font-weight-bold"
+          >
+            nº/µl
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 border border-dark border-left-0 border-end-0">
+        <div class="row">
+          <div
+            class="col-md-12 border-bottom border-dark alineaVertical destacado"
+          >
+            REFERENCIA CANINOS
+          </div>
+        </div>
+        <div class="row">
+          <div
+            class="col-md-12 border-dark border-0 alineaVertical font-weight-bold"
+          >
+            nº/µl
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 border border-dark border-left-0">
+        <div class="row">
+          <div
+            class="col-md-12 border-bottom border-dark alineaVertical destacado"
+          >
+            REFERENCIA FELINOS
+          </div>
+        </div>
+        <div class="row">
+          <div
+            class="col-md-12 border-dark border-0 alineaVertical font-weight-bold"
+          >
+            nº/µl
+          </div>
+        </div>
+      </div>
+    </div>
+
+    @for(item of data.formato?.formato6?.serieBlanca; track item){
+    <div class="row altura">
+      <div
+        class="col-md-2 border border-dark border-top-0 border-end-0 alineaV destacado"
+      >
+        {{ item.parametro }}
+      </div>
+      <div
+        class="col-md-2 border border-dark border-left-0 border-top-0 border-end-0"
+      >
+        {{ item.resultadoPrc }}
+      </div>
+      <div
+        class="col-md-2 border border-dark border-left-0 border-top-0 border-end-0 fuente10"
+      >
+        {{ item.resultadoNum }}
+      </div>
+      <div
+        class="col-md-3 border border-dark border-left-0 border-top-0 border-end-0 alineaVertical"
+      >
+        {{ item.caninos }}
+      </div>
+      <div
+        class="col-md-3 border border-dark border-left-0 border-top-0 alineaVertical"
+      >
+        {{ item.felinos }}
+      </div>
+    </div>
+
+    <div class="row">
+      <div
+        class="col-md-2 border border-dark border-top-0 border-end-0 alineaVertical destacado"
+      >
+        TOTAL
+      </div>
+      <div
+        class="col-md-2 border border-dark border-left-0 border-top-0 alineaVertical destacado"
+      >
+        {{ data.formato?.formato6?.totalSerieBlanca }}
+      </div>
+    </div>
+    }
+  </div>
+
+  <br />
+
+  <h4>OBSERVACIONES:</h4>
+  <div id="observaciones">
+    <div class="row col-md-5 border border-dark border-top-0"></div>
+    @for(item of data.formato?.formato6?.observaciones; track item){
+    <div class="row altura2">
+      <div
+        class="col-md-2 border border-dark border-end-0 border-top-0 alineaV destacado"
+      >
+        {{ item.nombre }}:
+      </div>
+      <div
+        class="col-md-3 border border-dark border-left-0 border-top-0 alineaVertical font-weight-bold"
+      >
+        {{ item.resultado }}
+      </div>
+    </div>
+    }
+  </div>
+
+  <div class="col-md-12 mt-5">
+    <button
+      mat-raised-button
+      class="colorFondoBotonCancelar"
+      mat-dialog-close
+      [disabled]="false"
+    >
+      CERRAR
+    </button>
+  </div>
+</div>

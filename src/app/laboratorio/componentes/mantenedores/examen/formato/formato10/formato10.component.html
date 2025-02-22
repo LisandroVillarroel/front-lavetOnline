@@ -1,0 +1,127 @@
+<h2 mat-dialog-title>FORMATO EXAMEN {{ data.nombre }}</h2>
+<div class="consulta-container">
+  <div id="serieBlanca" class="mt-3">
+    <h4>{{ data.formato?.formato10?.subTitulo }}</h4>
+
+    <div class="row anchoTitulo">
+      <div
+        class="col-md-2 border border-dark alineaVertical border-end-0 destacado"
+      >
+        PARÁMETRO
+      </div>
+      <div class="col-md-4 border border-dark border-left-0 border-end-0">
+        <div class="row">
+          <div
+            class="col-md-12 border-bottom border-dark alineaVertical destacado"
+          >
+            RESULTADOS
+          </div>
+        </div>
+        <div class="row">
+          <div
+            class="col-md-6 border-dark border-top-0 border-left-0 border-bottom-0 alineaVertical font-weight-bold"
+          >
+            %
+          </div>
+          <div
+            class="col-md-6 border-dark border-0 alineaVertical font-weight-bold"
+          >
+            nº/µl
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 border border-dark border-left-0 border-end-0">
+        <div class="row">
+          <div
+            class="col-md-12 border-bottom border-dark alineaVertical destacado"
+          >
+            REFERENCIA CANINOS
+          </div>
+        </div>
+        <div class="row">
+          <div
+            class="col-md-12 border-dark border-0 alineaVertical font-weight-bold"
+          >
+            nº/µl
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 border border-dark border-left-0">
+        <div class="row">
+          <div
+            class="col-md-12 border-bottom border-dark alineaVertical destacado"
+          >
+            REFERENCIA FELINOS
+          </div>
+        </div>
+        <div class="row">
+          <div
+            class="col-md-12 border-dark border-0 alineaVertical font-weight-bold"
+          >
+            nº/µl
+          </div>
+        </div>
+      </div>
+    </div>
+    @for(item of data.formato?.formato10?.resultado; track item){
+    <div class="row altura">
+      <div
+        class="col-md-2 border border-dark border-top-0 border-end-0 alineaV destacado"
+      >
+        {{ item.parametro }}
+      </div>
+      <div
+        class="col-md-2 border border-dark border-left-0 border-top-0 border-end-0"
+      >
+        {{ item.resultadoPrc }}
+      </div>
+      <div
+        class="col-md-2 border border-dark border-left-0 border-top-0 border-end-0 fuente10"
+      >
+        {{ item.resultadoNum }}
+      </div>
+      <div
+        class="col-md-3 border border-dark border-left-0 border-top-0 border-end-0 alineaVertical"
+      >
+        {{ item.caninos }}
+      </div>
+      <div
+        class="col-md-3 border border-dark border-left-0 border-top-0 alineaVertical"
+      >
+        {{ item.felinos }}
+      </div>
+    </div>
+
+    <div class="row">
+      <div
+        class="col-md-2 border border-dark border-top-0 border-end-0 alineaVertical destacado"
+      >
+        TOTAL
+      </div>
+      <div
+        class="col-md-2 border border-dark border-left-0 border-top-0 alineaVertical destacado"
+      >
+        {{ data.formato?.formato10?.total }}
+      </div>
+    </div>
+    }
+  </div>
+  <br />
+  <div class="row">
+    <div class="col-md-2 border border-dark alineaV destacado">
+      OBSERVACIONES
+    </div>
+    <div class="col-md-10 border border-dark border-left-0"></div>
+  </div>
+
+  <div class="col-md-12 mt-5">
+    <button
+      mat-raised-button
+      class="colorFondoBotonCancelar"
+      mat-dialog-close
+      [disabled]="false"
+    >
+      CERRAR
+    </button>
+  </div>
+</div>

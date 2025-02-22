@@ -1,0 +1,89 @@
+<h2 mat-dialog-title>CONSULTA CLIENTE</h2>
+
+<mat-dialog-content  name="consulta" class="consulta-container">
+
+  <mat-form-field class="inputInput">
+    <mat-label class="labelI">Rut Cliente</mat-label>
+    <input matInput  value="{{data.rutCliente}}" disabled='true' >
+  </mat-form-field>
+
+  <mat-form-field class="inputInput">
+    <mat-label class="labelI">Razón Social</mat-label>
+    <input matInput  value="{{data.razonSocial}}" disabled='true' >
+  </mat-form-field>
+
+  <mat-form-field class="inputInput">
+    <mat-label class="labelI">Nombre de Fantasía</mat-label>
+      <input matInput value="{{data.nombreFantasia}}" disabled='true'>
+  </mat-form-field>
+
+  <mat-form-field class="inputInput">
+    <mat-label class="labelI">Dirección</mat-label>
+    <input matInput value="{{data.direccion}}" disabled='true'>
+  </mat-form-field>
+
+  <mat-form-field class="inputInput">
+    <mat-label class="labelI">Teléfono</mat-label>
+    <input matInput value="{{data.telefono}}" disabled='true'>
+  </mat-form-field>
+
+  <mat-form-field class="inputInput">
+    <mat-label class="labelI">Email</mat-label>
+    <input matInput  value="{{data.email}}" disabled='true'>
+  </mat-form-field>
+
+  <mat-form-field class="inputInput">
+    <mat-label class="labelI">Nombre Contacto</mat-label>
+    <input matInput value="{{data.nombreContacto}}" disabled='true'>
+  </mat-form-field>
+
+  <mat-form-field class="inputInput">
+    <mat-label class="labelI">Email Recepción EXAMEN</mat-label>
+    <input matInput value="{{data.emailRecepcionExamenCliente}}" disabled='true'>
+  </mat-form-field>
+<!--
+  <mat-list>
+    <mat-list-item>Datos de Envío de Email</mat-list-item>
+    <mat-divider></mat-divider>
+  </mat-list>
+
+  <mat-form-field color="accent">
+    <input matInput placeholder="Envío Email " value="{{this.data.empresa[0]?.envioEmail?.emailEnvio}}" disabled='true'>
+  </mat-form-field>
+
+  <mat-form-field color="accent">
+    <input matInput placeholder="Contraseña " value="{{this.data.empresa[0]?.envioEmail?.password}}" disabled='true'>
+  </mat-form-field>
+
+  <mat-form-field class="inputInput">
+    <mat-label class="labelI">Nombre Desde</mat-label>
+    <input matInput value="{{this.data.envioEmail?.nombreDesde}}" disabled='true'>
+  </mat-form-field>
+  <mat-form-field class="inputInput">
+    <mat-label class="labelI">Asunto</mat-label>
+    <input matInput value="{{this.data.envioEmail?.asunto}}" disabled='true'>
+  </mat-form-field>
+
+  <mat-form-field class="inputInput">
+    <mat-label class="labelI">Título Cuerp</mat-label>
+    <input matInput value="{{this.data.envioEmail?.tituloCuerpo}}" disabled='true'>
+  </mat-form-field>
+
+  <mat-form-field class="inputInput">
+    <mat-label class="labelI">Título Cuerpo Medio</mat-label>
+    <input matInput value="{{this.data.envioEmail?.tituloCuerpoMedio}}" disabled='true'>
+  </mat-form-field>
+
+
+  <mat-form-field class="inputInput">
+    <mat-label class="labelI">Título Cuerpo Pie</mat-label>
+    <input matInput value="{{this.data.envioEmail?.tituloCuerpoPie}}" disabled='true'>
+  </mat-form-field>
+-->
+</mat-dialog-content>
+
+<mat-dialog-actions class="justify-content-center">
+    <div class="col-md-6">
+      <button mat-raised-button class="colorFondoBotonCancelar"   mat-dialog-close  [disabled]=false>Cerrar</button>
+    </div>
+</mat-dialog-actions>

@@ -1,0 +1,52 @@
+<h2 mat-dialog-title>AGREGA DETALLE OFERTA</h2>
+
+<mat-dialog-content
+  [formGroup]="agregaDetalleOferta()"
+  name="agregaDetalleOferta"
+  class="agrega-container"
+>
+  <mat-form-field class="inputSelect">
+    <mat-label class="labelI">EXAMEN</mat-label>
+    <mat-select [formControl]="idExamen" required>
+      @for(_examen of datoExamen(); track _examen){
+      <mat-option [value]="_examen">
+        {{ _examen.nombre }}
+      </mat-option>
+      }
+    </mat-select>
+    @if(idExamen.invalid){
+    <mat-error>{{ getErrorMessage("idExamen") }}</mat-error>
+    }
+  </mat-form-field>
+
+  <mat-form-field class="inputInput">
+    <mat-label class="labelI">Monto EXAMEN</mat-label>
+    <input matInput type="number" [formControl]="monto" required />
+    @if(monto.invalid){
+    <mat-error>{{ getErrorMessage("monto") }}</mat-error>
+    }
+  </mat-form-field>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <div class="col-md-6">
+    <button
+      mat-raised-button
+      class="colorFondoBotonCancelar"
+      mat-dialog-close
+      [disabled]="false"
+    >
+      CANCELAR
+    </button>
+  </div>
+  <div class="col-md-6">
+    <button
+      class="colorFondoBotonGrabar"
+      mat-raised-button
+      (click)="enviar()"
+      [disabled]="agregaDetalleOferta().invalid"
+    >
+      GRABAR
+    </button>
+  </div>
+</mat-dialog-actions>

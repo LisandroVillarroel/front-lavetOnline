@@ -1,0 +1,109 @@
+
+<h2 mat-dialog-title>Modifica Validador</h2>
+
+    <mat-dialog-content [formGroup]="modificaValidador()" name="modificaEmpresa" class="modifica-container">
+
+      <mat-form-field class="inputInput">
+        <mat-label class="labelI">Nombres</mat-label>
+        <input matInput [formControl]="nombres" required>
+        @if(nombres.invalid){
+          <mat-error>{{getErrorMessage('nombres')}}</mat-error>
+        }
+      </mat-form-field>
+      <mat-form-field class="inputInput">
+        <mat-label class="labelI">Apellido Paterno</mat-label>
+        <input matInput [formControl]="apellidoPaterno"  required>
+        @if(apellidoPaterno.invalid){
+          <mat-error>{{getErrorMessage('apellidoPaterno')}}</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field class="inputInput">
+        <mat-label class="labelI">Apellido Materno</mat-label>
+        <input matInput [formControl]="apellidoMaterno" required>
+        @if(apellidoMaterno.invalid){
+          <mat-error>{{getErrorMessage('apellidoMaterno')}}</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field class="inputInput">
+        <mat-label class="labelI">Prefesión</mat-label>
+        <input matInput [formControl]="profesion" required>
+        @if(profesion.invalid){
+          <mat-error>{{getErrorMessage('profesion')}}</mat-error>
+        }
+      </mat-form-field>
+      <mat-form-field class="inputInput">
+        <mat-label class="labelI">Teléfono</mat-label>
+        <input matInput [formControl]="telefono" required>
+        @if(telefono.invalid){
+          <mat-error>{{getErrorMessage('telefono')}}</mat-error>
+        }
+      </mat-form-field>
+
+      <div
+        class="file-upload-wrapper"
+        [class.success]="uploadSuccess"
+        [class.error]="uploadError"
+        (drop)="onFileDrop($event)"
+        (dragover)="onDragOver($event)"
+      >
+        <input
+          type="file"
+          accept="image/*"
+          (change)="onImagenSelecionadaLogo($event)"
+          hidden
+          #fileInput
+        />
+        <div class="file-dropper" (click)="fileInput.click()">
+          <mat-icon>upload</mat-icon>
+          <p>{{ "ARRASTRAR Y SOLTAR / click"  }}</p>
+          @if(imageName()){
+            @if(selectedFile || imagePreview!){
+              <img
+                [src]="imagePreview()"
+                alt="Image Preview"
+                class="image-preview"
+              />
+              <p>
+                <span class="image-name">{{ imageName() }}</span> ({{
+                  fileSize()
+                }} KB)
+              </p>
+              <mat-icon class="delete-icon" (click)="removeImage()">delete</mat-icon>
+            }
+          }
+        </div>
+      </div>
+      <!--
+      <image-upload class="customClass"
+      (removed)="onRemoved($any($event))"
+      (uploadFinished)="onUploadFinished($any($event))"
+      (uploadStateChanged)="onUploadStateChanged($any($event))"
+      buttonCaption="Presione para Seleccionar Firma "
+      dropBoxMessage="!Suelta tu imágen aquí!"
+      clearButtonCaption="Eliminar Imágen "
+      [extensions]="['jpeg','png','jpg','svg']"
+      [max]="1"
+      [maxFileSize]="50000"
+      [fileTooLargeMessage]="'La Firma es demasiado grande y no se cargó. El tamaño máximo de archivo es 50 KB'"
+      >
+      </image-upload>
+
+      <div class="formatoLetra">(Tamaño máximo 50 KB)-(Dimensiones: 186x102)</div>
+      <mat-card mat-card style="cursor: pointer"  class="example-card mb-2 mt-4 ml-2  align-content-center align-items-center align-self-center text-center" >
+        <a class="colorAmarillo" >
+          <img class="avatar mat-elevation-z8"   [src]="imagen" >
+        </a>
+      </mat-card>
+        -->
+    </mat-dialog-content>
+
+      <mat-dialog-actions>
+        <div class="col-md-6">
+          <button mat-raised-button class="colorFondoBotonCancelar"  mat-dialog-close  [disabled]=false>CANCELAR</button>
+        </div>
+        <div class="col-md-6">
+          <button class="colorFondoBotonGrabar" mat-raised-button  (click)="enviar()"  [disabled]="modificaValidador().invalid">GRABAR</button>
+        </div>
+    </mat-dialog-actions>

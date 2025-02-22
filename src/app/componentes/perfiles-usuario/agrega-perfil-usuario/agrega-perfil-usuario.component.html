@@ -1,0 +1,194 @@
+
+<h2 mat-dialog-title>INGRESO USUARIO</h2>
+<div class="row justify-content-end">
+  <div class="col-md-2 ">
+    <button mat-raised-button  class="colorFondoBotonCancelar" mat-dialog-close>CANCELAR</button>
+  </div>
+</div>
+<mat-stepper linear #stepper>
+  <mat-step [stepControl]="agregaUsuario()" >
+    <mat-dialog-content [formGroup]="agregaUsuario()" name="agregaUsuario" class="agrega-container">
+      <ng-template matStepLabel>Ingreso de Datos Usuario</ng-template>
+      <mat-form-field class="inputInput">
+        <mat-label class="labelI">Usuario</mat-label>
+        <input matInput [formControl]="usuario"  required>
+        @if (usuario.invalid) {
+          <mat-error>{{getErrorMessage('usuario')}}</mat-error>
+        }
+      </mat-form-field>
+      <mat-form-field class="inputInput">
+        <mat-label class="labelI">Contraseña</mat-label>
+        <input type="password" matInput [formControl]="contrasena"  required>
+        @if (contrasena.invalid) {
+          <mat-error>{{getErrorMessage('contrasena')}}</mat-error>
+        }
+      </mat-form-field>
+      <mat-form-field class="inputInput">
+        <mat-label class="labelI">Repetir contraseña</mat-label>
+        <input matInput type="password" [formControl]="contrasena2"  required>
+        @if (contrasena2.invalid) {
+          <mat-error>{{getErrorMessage('contrasena2')}}</mat-error>
+        }
+        @if (checarSiSonIguales()) {
+          <mat-error></mat-error>
+        }
+        @if (checarSiSonIguales()) {
+          <pre>Las contraseñas no coinciden</pre>
+        }
+      </mat-form-field>
+      <mat-form-field class="inputInput">
+        <mat-label class="labelI">Rut</mat-label>
+        <input matInput class="input-rut rut" [formControl]="rutUsuario" oninput="this.value = this.value.toUpperCase()" (blur)="onBlurRutUsuario($event)" validaRut  required>
+        @if (rutUsuario.invalid) {
+          <mat-error>{{getErrorMessage('rutCliente')}}</mat-error>
+        }
+      </mat-form-field>
+      <mat-form-field class="inputInput">
+        <mat-label class="labelI">Nombres</mat-label>
+        <input matInput [formControl]="nombres" required>
+        @if (nombres.invalid) {
+          <mat-error>{{getErrorMessage('nombres')}}</mat-error>
+        }
+      </mat-form-field>
+      <mat-form-field class="inputInput">
+        <mat-label class="labelI">Apellido Paterno</mat-label>
+        <input matInput [formControl]="apellidoPaterno"  required>
+        @if (apellidoPaterno.invalid) {
+          <mat-error>{{getErrorMessage('apellidoPaterno')}}</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field class="inputInput">
+        <mat-label class="labelI">Apellido Materno</mat-label>
+        <input matInput [formControl]="apellidoMaterno" required>
+        @if (apellidoMaterno.invalid) {
+          <mat-error>{{getErrorMessage('apellidoMaterno')}}</mat-error>
+        }
+      </mat-form-field>
+      <mat-form-field class="inputInput">
+        <mat-label class="labelI">Teléfono</mat-label>
+        <input matInput [formControl]="telefono" required>
+        @if (direccion.invalid) {
+          <mat-error>{{getErrorMessage('telefono')}}</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field class="inputInput">
+        <mat-label class="labelI">Email</mat-label>
+        <input matInput [formControl]="email" required>
+        @if (email.hasError('email') && !email.hasError('required')) {
+          <mat-error>Email Mal Ingresado</mat-error>
+        }
+        @if (email.invalid) {
+          <mat-error>{{getErrorMessage('email')}}</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field class="inputInput">
+        <mat-label class="labelI">Dirección</mat-label>
+        <input matInput [formControl]="direccion" required>
+        @if (direccion.invalid) {
+          <mat-error>{{getErrorMessage('direccion')}}</mat-error>
+        }
+      </mat-form-field>
+      @if(tipoUsuarioLaboratorio){
+        <mat-form-field class="inputSelect">
+          <mat-label class="labelI">Tipo Empresa</mat-label>
+          <mat-select [formControl]="tipoEmpresa"  (selectionChange)="seleccionaTipoEmpresa($event.value)" required>
+            @for(_tipoEmpresa of selectTipoEmpresa(); track _tipoEmpresa){
+              <mat-option [value]="_tipoEmpresa.menu_Id">
+                {{_tipoEmpresa.nombre}}
+              </mat-option>
+            }
+          </mat-select>
+          @if (tipoEmpresa.invalid) {
+            <mat-error>{{getErrorMessage('tipoEmpresa')}}</mat-error>
+          }
+        </mat-form-field>
+      }
+      @if(flagCliente){
+        <mat-form-field class="inputSelect">
+          <mat-label class="labelI">Cliente</mat-label>
+          <mat-select [formControl]="idCliente" (selectionChange)="seleccionaCliente($event.value)" required>
+            @for(_cliente of datoCliente; track _cliente){
+              <mat-option [value]="_cliente">
+                {{_cliente.nombreFantasia}}
+              </mat-option>
+            }
+          </mat-select>
+          @if (idCliente.invalid) {
+            <mat-error>{{getErrorMessage('idCliente')}}</mat-error>
+          }
+        </mat-form-field>
+      }
+      <div>
+        <button mat-button matStepperNext>Siguiente<mat-icon pt-1>arrow_forward_ios</mat-icon></button>
+      </div>
+    </mat-dialog-content>
+  </mat-step>
+  <mat-step [stepControl]="secondFormGroup">
+    <form [formGroup]="secondFormGroup">
+      <ng-template matStepLabel>Accesos</ng-template>
+      <!--Tree-->
+    <mat-tree [dataSource]="dataSource" [treeControl]="treeControl" class="example-tree">
+      <!-- This is the tree node template for leaf nodes -->
+      <mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle>
+        <li class="mat-tree-node">
+          <!-- use a disabled button to provide padding for tree leaf -->
+          <button mat-icon-button disabled></button>
+              <mat-checkbox class="checklist-leaf-node" (change)="todoItemSelectionToggle($event.checked,node)" [checked]="node.selected"
+    >{{node.displayName}}</mat-checkbox>
+    @if (node.tipoPermiso!=undefined) {
+      <mat-form-field  class="inputSelect">
+        <mat-label class="labelI">Tipo Permiso</mat-label>
+        <mat-select  #itemValue  [value]="node.tipoPermiso" (selectionChange)="grabaTipoPermiso(itemValue.value,node)" required>
+          @for(_tipoPermiso of selectTipoPermiso; track _tipoPermiso){
+            <mat-option [value]="_tipoPermiso.value">
+              {{_tipoPermiso.nombre}}
+            </mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+    }
+
+        </li>
+      </mat-tree-node>
+      <!-- This is the tree node template for expandable nodes -->
+      <mat-nested-tree-node *matTreeNodeDef="let node; when: hasChild">
+        <li>
+          <div class="mat-tree-node">
+            <button mat-icon-button matTreeNodeToggle
+                    [attr.aria-label]="'toggle ' + node.displayName">
+              <mat-icon class="mat-icon-rtl-mirror">
+                {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+              </mat-icon>
+            </button>
+                <mat-checkbox [checked]="node.selected"
+                      [indeterminate]="node.indeterminate && !node.selected"
+                      (change)="todoItemSelectionToggle($event.checked,node)">{{node.displayName}}</mat-checkbox>
+
+
+          </div>
+          <ul [class.example-tree-invisible]="!treeControl.isExpanded(node)">
+            <ng-container matTreeNodeOutlet></ng-container>
+          </ul>
+        </li>
+      </mat-nested-tree-node>
+    </mat-tree>
+    <!--<button mat-button (click)="submit()">submit</button>-->
+ <!--Fin Tree-->
+      <div>
+        <button mat-button matStepperPrevious><mat-icon>arrow_back_ios</mat-icon>Anterior</button>
+      </div>
+      <mat-dialog-actions>
+        <div class="col-md-6">
+          <button mat-raised-button class="colorFondoBotonCancelar"  mat-dialog-close  [disabled]=false>CANCELAR</button>
+        </div>
+        <div class="col-md-6">
+          <button class="colorFondoBotonGrabar" mat-raised-button  (click)="enviar()"  [disabled]="agregaUsuario().invalid">GRABAR</button>
+        </div>
+    </mat-dialog-actions>
+    </form>
+  </mat-step>
+
+</mat-stepper>

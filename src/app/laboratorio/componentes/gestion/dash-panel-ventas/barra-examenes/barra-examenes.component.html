@@ -1,0 +1,26 @@
+<ngx-charts-bar-vertical-2d
+  style="
+    width: 100%;
+    height: 500px;
+    display: block;
+    font-family: Lato;
+    font-size: 15px;
+  "
+  [scheme]="colorScheme"
+  [results]="multi()"
+  [gradient]="gradient"
+  [xAxis]="showXAxis"
+  [yAxis]="showYAxis"
+  [legend]="showLegend"
+  [showDataLabel]="true"
+  [showXAxisLabel]="showXAxisLabel"
+  [showYAxisLabel]="showYAxisLabel"
+  [xAxisLabel]="xAxisLabel"
+  [yAxisLabel]="yAxisLabel"
+  [legendTitle]="legendTitle"
+  [exporting]="true"
+  (select)="onSelect($event)"
+  (activate)="onActivate($event)"
+  (deactivate)="onDeactivate($event)"
+>
+</ngx-charts-bar-vertical-2d>

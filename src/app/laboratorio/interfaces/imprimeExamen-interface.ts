@@ -1,0 +1,21 @@
+export interface IFichaCabecera{
+  rutaNombreLogo:string;
+  nombreExamen:string;
+  tituloExamen:string;
+  id_Ficha:string;
+  nombrePropietario:string;
+  fechaHora_recepcionado_crea:Date;
+  nombrePaciente:string;
+  especieNombre:string;
+  razaNombre:string;
+  edadPaciente:string;
+  sexo:string;
+  numeroFicha:string;
+  clienteNombreFantasia:string;
+  nombreDoctorSolicitante:string;
+  rutaFirmaValidador:string;
+  nombreValidador:string;
+  profesionValidador:string;
+  headerLeyenda:string;
+  footerExamen:string;
+}

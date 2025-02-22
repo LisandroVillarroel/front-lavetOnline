@@ -1,0 +1,25 @@
+table {
+  width: 100%;
+}
+
+.mat-icon-button {
+  width: 30px;
+  height: 30px;
+}
+
+.ancho{
+  min-width: 100%;
+}
+
+.formato{
+  font-size:11px
+}
+
+.mat-mdc-form-field {
+  width: 100%;
+}
+
+
+::ng-deep.mat-mdc-form-field-subscript-wrapper {
+  height: 4px !important;
+}

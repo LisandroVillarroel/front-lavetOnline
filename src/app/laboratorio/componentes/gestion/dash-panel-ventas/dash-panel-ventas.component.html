@@ -1,0 +1,178 @@
+<!--
+  <mat-grid-tile *ngFor="let card of cards | async" [colspan]="card.cols" [rowspan]="card.rows">
+      <mat-card class="dashboard-card">
+        <mat-card-header>
+          <mat-card-title>
+            {{card.title}}
+            <button mat-icon-button class="more-button" [matMenuTriggerFor]="menu" aria-label="Toggle menu">
+              <mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu" xPosition="before">
+              <button mat-menu-item>Expand</button>
+              <button mat-menu-item>Remove</button>
+            </mat-menu>
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="dashboard-card-content">
+          <div>Card Content Here</div>
+        </mat-card-content>
+      </mat-card>
+    </mat-grid-tile>
+-->
+
+<div class="grid-container">
+  <h1 class="mat-h1 centrar">Panel de Ventas</h1>
+  <mat-form-field appearance="fill">
+    <mat-label>Mes y Año</mat-label>
+    <input matInput [matDatepicker]="dp" [formControl]="anoMes" />
+    <mat-hint>MM/YYYY</mat-hint>
+    <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
+    <mat-datepicker
+      #dp
+      startView="multi-year"
+      (monthSelected)="setMonthAndYear($event, dp)"
+      panelClass="example-month-picker"
+    >
+    </mat-datepicker>
+  </mat-form-field>
+
+  <mat-form-field class="padding4" appearance="fill">
+    <mat-label>Veterinaria</mat-label>
+    <mat-select
+      [formControl]="cliente"
+      (selectionChange)="seleccionaVeterinaria($event.value)"
+    >
+      <mat-option value="Todos">Todos</mat-option>
+      @for(cliente_ of datoCliente(); track cliente_){
+      <mat-option [value]="cliente_._id">
+        {{ cliente_.nombreFantasia }}
+      </mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+  <br />
+  <br />
+  <br />
+  <mat-grid-list cols="5" rowHeight="11rem">
+    <mat-grid-tile colspan="2" rowspan="1" class="borderGridTile">
+      <div class="dashboard-card">
+        <app-barra-general
+          #selector1
+          [anoMes]="anoMes.value"
+          [clienteVet]="'Todos'"
+        />
+      </div>
+      <mat-grid-tile-header>
+        Valores Generales
+        <button
+          mat-icon-button
+          class="more-button"
+          [matMenuTriggerFor]="menu"
+          aria-label="Toggle menu"
+        >
+          <mat-icon>more_vert</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu" xPosition="before">
+          <button mat-menu-item>Expand</button>
+          <button mat-menu-item>Remove</button>
+        </mat-menu>
+      </mat-grid-tile-header>
+    </mat-grid-tile>
+    <mat-grid-tile colspan="3" rowspan="4">
+      <div class="dashboard-card">
+        <app-barra-compara
+          #selector2
+          [anoMes]="anoMes.value"
+          [clienteVet]="'Todos'"
+        />
+      </div>
+      <mat-grid-tile-header>
+        Comparativo Mes Actual Año Anterior
+        <button
+          mat-icon-button
+          class="more-button"
+          [matMenuTriggerFor]="menu"
+          aria-label="Toggle menu"
+        >
+          <mat-icon>more_vert</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu" xPosition="before">
+          <button mat-menu-item>Expand</button>
+          <button mat-menu-item>Remove</button>
+        </mat-menu>
+      </mat-grid-tile-header>
+    </mat-grid-tile>
+    <mat-grid-tile colspan="2" rowspan="3">
+      <div class="dashboard-card">
+        <app-barra-examenes
+          #selector3
+          [anoMes]="anoMes.value"
+          [clienteVet]="'Todos'"
+        />
+      </div>
+      <mat-grid-tile-header>
+        Ventas Exámenes Anuales
+        <button
+          mat-icon-button
+          class="more-button"
+          [matMenuTriggerFor]="menu"
+          aria-label="Toggle menu"
+        >
+          <mat-icon>more_vert</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu" xPosition="before">
+          <button mat-menu-item>Expand</button>
+          <button mat-menu-item>Remove</button>
+        </mat-menu>
+      </mat-grid-tile-header>
+    </mat-grid-tile>
+    <mat-grid-tile colspan="3" rowspan="6">
+      <div class="dashboard-card">
+        <app-barra-veterinaria
+          #selector5
+          [anoMes]="anoMes.value"
+          [clienteVet]="'Todos'"
+        />
+      </div>
+      <mat-grid-tile-header>
+        Ventas Veterinarias Anuales
+        <button
+          mat-icon-button
+          class="more-button"
+          [matMenuTriggerFor]="menu"
+          aria-label="Toggle menu"
+        >
+          <mat-icon>more_vert</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu" xPosition="before">
+          <button mat-menu-item>Expand</button>
+          <button mat-menu-item>Remove</button>
+        </mat-menu>
+      </mat-grid-tile-header>
+    </mat-grid-tile>
+    <mat-grid-tile colspan="2" rowspan="6">
+      <div class="dashboard-card">
+        <app-barra-dias
+          #selector4
+          [anoMes]="anoMes.value"
+          [clienteVet]="'Todos'"
+        />
+      </div>
+      <mat-grid-tile-header>
+        Ventas por Día
+        <button
+          mat-icon-button
+          class="more-button"
+          [matMenuTriggerFor]="menu"
+          aria-label="Toggle menu"
+        >
+          <mat-icon>more_vert</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu" xPosition="before">
+          <button mat-menu-item>Expand</button>
+          <button mat-menu-item>Remove</button>
+        </mat-menu>
+      </mat-grid-tile-header>
+    </mat-grid-tile>
+  </mat-grid-list>
+</div>

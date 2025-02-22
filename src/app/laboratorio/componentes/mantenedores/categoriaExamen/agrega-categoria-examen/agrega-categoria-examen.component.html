@@ -1,0 +1,45 @@
+<h2 mat-dialog-title>AGREGA CATEGORIA EXÁMEN</h2>
+
+<mat-dialog-content
+  [formGroup]="agregaCategoriaExamen()"
+  name="agregaCategoriaExamen"
+  class="agrega-container"
+>
+  <mat-form-field class="inputInput">
+    <mat-label class="labelI">Nombre Categoría</mat-label>
+    <input matInput placeholder="Nombre" [formControl]="nombre" required />
+    @if(nombre.invalid){
+    <mat-error>{{ getErrorMessage("nombre") }}</mat-error>
+    }
+  </mat-form-field>
+  <mat-form-field class="inputInput">
+    <mat-label class="labelI">Sigla Categoría</mat-label>
+    <input matInput placeholder="Sigla" [formControl]="sigla" required />
+    @if(sigla.invalid){
+    <mat-error>{{ getErrorMessage("sigla") }}</mat-error>
+    }
+  </mat-form-field>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <div class="col-md-6">
+    <button
+      mat-raised-button
+      class="colorFondoBotonCancelar"
+      mat-dialog-close
+      [disabled]="false"
+    >
+      CANCELAR
+    </button>
+  </div>
+  <div class="col-md-6">
+    <button
+      class="colorFondoBotonGrabar"
+      mat-raised-button
+      (click)="enviar()"
+      [disabled]="agregaCategoriaExamen().invalid"
+    >
+      GRABAR
+    </button>
+  </div>
+</mat-dialog-actions>

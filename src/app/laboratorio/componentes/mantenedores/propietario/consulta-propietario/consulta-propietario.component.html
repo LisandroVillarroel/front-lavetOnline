@@ -1,0 +1,46 @@
+<h2 mat-dialog-title>CONSULTA PROPIETARIO</h2>
+
+<mat-dialog-content name="consulta" class="consulta-container">
+
+  <mat-form-field class="inputInput">
+    <mat-label class="labelI">Rut</mat-label>
+    <input matInput value="{{data.rutPropietario}}" disabled='true'>
+  </mat-form-field>
+
+  <mat-form-field class="inputInput">
+    <mat-label class="labelI">Nombres</mat-label>
+    <input matInput value="{{data.nombres}}" disabled='true'>
+  </mat-form-field>
+
+  <mat-form-field class="inputInput">
+    <mat-label class="labelI">Apellido Paterno</mat-label>
+    <input matInput value="{{data.apellidoPaterno}}" disabled='true'>
+  </mat-form-field>
+
+  <mat-form-field class="inputInput">
+    <mat-label class="labelI">Apellido Materno</mat-label>
+    <input matInput value="{{data.apellidoMaterno}}" disabled='true'>
+  </mat-form-field>
+
+  <mat-form-field class="inputInput">
+    <mat-label class="labelI">Dirección</mat-label>
+    <input matInput value="{{data.direccion}}" disabled='true'>
+  </mat-form-field>
+
+  <mat-form-field class="inputInput">
+    <mat-label class="labelI">Teléfono</mat-label>
+    <input matInput value="{{data.telefono}}" disabled='true'>
+  </mat-form-field>
+
+  <mat-form-field class="inputInput">
+    <mat-label class="labelI">Email</mat-label>
+    <input matInput value="{{data.email}}" disabled='true'>
+  </mat-form-field>
+
+</mat-dialog-content>
+
+<mat-dialog-actions class="justify-content-center">
+  <div class="col-md-6">
+    <button mat-raised-button class="colorFondoBotonCancelar" mat-dialog-close [disabled]=false>Cerrar</button>
+  </div>
+</mat-dialog-actions>

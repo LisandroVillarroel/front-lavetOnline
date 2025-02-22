@@ -1,0 +1,112 @@
+<div class="margen-imprimir">
+  <div class="row align-items-center">
+    <div
+      class="col-md-12 border border-dark border-bottom-0 alineaVertical negrita text-center"
+    >
+      Id:{{ this.datoFichaRecibeFicha().fichaC.id_Ficha }}
+    </div>
+  </div>
+  <div class="row align-items-center">
+    <div class="col-md-2 border border-dark border-end-0 alineaV negrita">
+      Propietario
+    </div>
+    <div class="col-md-6 border border-dark border-end-0 alineaV">
+      {{ this.propietario }}
+    </div>
+    <div class="col-md-1 border border-dark border-end-0 alineaV negrita">
+      Fecha
+    </div>
+    <div class="col-md-3 border border-dark alineaVertical negrita">
+      {{
+        this.datoFichaRecibeFicha().seguimientoEstado
+          .fechaHora_recepcionado_crea | date : "dd-MM-yyyy"
+      }}
+    </div>
+  </div>
+
+  <div class="row align-items-center">
+    <div
+      class="col-md-2 border border-dark border-end-0 border-top-0 alineaV negrita"
+    >
+      Paciente
+    </div>
+    <div class="col-md-2 border border-dark border-end-0 border-top-0 alineaV">
+      {{ this.datoFichaRecibeFicha().fichaC.nombrePaciente }}
+    </div>
+    <div
+      class="col-md-2 border border-dark alineaV border-end-0 border-top-0 negrita"
+    >
+      Especie
+    </div>
+    <div class="col-md-2 border border-dark border-end-0 border-top-0 alineaV">
+      {{ this.datoFichaRecibeFicha().fichaC.especie?.nombre }}
+    </div>
+
+    <div
+      class="col-md-1 border border-dark alineaV border-end-0 border-top-0 negrita"
+    >
+      Raza
+    </div>
+    <div class="col-md-3 border border-dark border-top-0 alineaV">
+      {{ this.datoFichaRecibeFicha().fichaC.raza?.nombre }}
+    </div>
+  </div>
+
+  <div class="row align-items-center">
+    <div
+      class="col-md-2 border border-dark border-end-0 border-top-0 alineaV negrita"
+    >
+      Edad
+    </div>
+    <div class="col-md-2 border border-dark border-end-0 border-top-0 alineaV">
+      {{ this.datoFichaRecibeFicha().fichaC.edadPaciente }}
+    </div>
+    <div
+      class="col-md-2 border border-dark border-end-0 border-top-0 alineaV negrita"
+    >
+      Sexo
+    </div>
+    <div class="col-md-2 border border-dark border-end-0 border-top-0 alineaV">
+      {{ this.datoFichaRecibeFicha().fichaC.sexo }}
+    </div>
+
+    <div
+      class="col-md-1 border border-dark alineaV border-end-0 border-top-0 negrita"
+    >
+      Ficha
+    </div>
+    <div
+      class="col-md-3 border border-dark border-top-0 alineaVertical negrita"
+    >
+      {{ this.datoFichaRecibeFicha().fichaC.numeroFicha }}
+    </div>
+  </div>
+
+  <div class="row align-items-center">
+    <div
+      class="col-md-2 border border-dark border-end-0 border-top-0 alineaV negrita"
+    >
+      Veterinaria
+    </div>
+    <div
+      class="col-md-10 border border-dark border-top-0 alineaVertical negrita"
+    >
+      {{ this.datoFichaRecibeFicha().fichaC.cliente?.nombreFantasia }}
+    </div>
+  </div>
+  <div class="row align-items-center">
+    <div
+      class="col-md-2 border border-dark border-end-0 border-top-0 alineaV negrita"
+    >
+      Dr. Solicitante
+    </div>
+    <div
+      class="col-md-10 border border-dark border-top-0 alineaVertical negrita"
+    >
+      {{
+        this.datoFichaRecibeFicha().fichaC.doctorSolicitante
+          ?.nombreDoctorSolicitante
+      }}
+    </div>
+  </div>
+</div>

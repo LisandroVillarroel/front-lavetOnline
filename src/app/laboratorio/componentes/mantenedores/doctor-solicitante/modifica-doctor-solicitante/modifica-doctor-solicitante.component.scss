@@ -1,0 +1,27 @@
+.modifica-container {
+  display: flex;
+  flex-direction: column;
+  padding: 0 10%;
+}
+
+.modifica-container > * {
+  width: 95%;
+}
+
+.mat-mdc-raised-button {
+  min-width: 100%;
+}
+
+.mat-dialog-container {
+  padding: 50px !important;
+
+}
+
+.mat-dialog-content{
+  margin: auto;
+}
+
+.mat-mdc-form-field:not(.mat-form-field-no-animations) .mdc-text-field__input {
+  transition: opacity 150ms 0ms cubic-bezier(0.4, 0, 0.2, 1);
+  color: black;
+}

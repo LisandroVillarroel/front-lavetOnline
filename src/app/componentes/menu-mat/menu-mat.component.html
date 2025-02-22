@@ -1,0 +1,144 @@
+<!--Menu nuevo-->
+@if(shouldRun){
+<div class="menu-container" [class.example-is-mobile]="mobileQuery.matches">
+  <mat-toolbar color="primary" class="example-toolbar bodebotom">
+    <!--<button mat-icon-button   aria-label="Example icon-button with a menu"><mat-icon>menu</mat-icon></button>-->
+    <button class="mb-1" mat-icon-button (click)="snav.toggle()">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <img
+      class="imgLogoLineal"
+      src="./assets/imagenes/iconos/logoBlancoLineal.png"
+      alt="Imagen Logo"
+    />
+    <span class="spacerDerecha"></span>
+
+    <div class="text-uppercase align-self-center tamanoLetra">
+      <!--<mat-icon class="align-self-center">face</mat-icon>--><img
+        class="imgUsuario"
+        src="./assets/imagenes/iconos/usuario.png"
+        alt="Imagen Usuario"
+      />{{ localStorage()?.usuarioLogin?.nombres }}
+      {{ localStorage()?.usuarioLogin?.apellidoPaterno }}
+    </div>
+
+    <button
+      class="padingLateral v-align-middle"
+      mat-icon-button
+      [matMenuTriggerFor]="menu"
+    >
+      <mat-icon>more_vert</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu">
+      @if(accesoDatosEmpresa() && nombreTipoEmp()!='Veterinaria'){
+      <button
+        mat-menu-item
+        routerLink="laboratorio/actualizaDatosEmpresa"
+        routerLinkActive="active"
+      >
+        Datos Empresa
+      </button>
+      } @if(accesoDatosEmpresa() && nombreTipoEmp()=='Veterinaria'){
+      <button
+        mat-menu-item
+        routerLink="/veterinaria/actualizaDatosEmpresaCliente"
+      >
+        Datos Empresa
+      </button>
+      }
+      <button mat-menu-item routerLink="/actualizaDatos">
+        Datos Personales
+      </button>
+      <button mat-menu-item routerLink="/cambioContrasena">Contraseña</button>
+      <button mat-menu-item (click)="cerrar()">Cerrar</button>
+    </mat-menu>
+  </mat-toolbar>
+
+  <mat-divider></mat-divider>
+
+  <mat-sidenav-container
+    autosize
+    class="example-sidenav-container"
+    [style.marginTop.px]="mobileQuery.matches ? 0 : 5"
+  >
+    <mat-sidenav
+      #snav
+      [mode]="mobileQuery.matches ? 'over' : 'side'"
+      opened="false"
+      [fixedInViewport]="mobileQuery.matches"
+      fixedTopGap="56"
+    >
+      <mat-nav-list>
+        <!--"https://source.unsplash.com/c_GmwfHBDzk/200x200"-->
+        <img
+          alt="Imagen Empresa"
+          class="avatar mat-elevation-z8"
+          [src]="nombreLogoEmpresa"
+        />
+        <div class="row mt-2 alineaV">
+          <div class="col-md-10 alineaV">
+            <mat-chip-set class="alinea formatoShip">
+              <mat-chip>
+                <img
+                  class="icono1"
+                  src="./assets/imagenes/iconos/icono1.png"
+                  alt=""
+                />
+                <!--<img class="pt-2 icono1" src="./assets/imagenes/iconos/icono1.png" />-->
+                <div class="name">
+                  <p class="name pt-1 tamanoLetraShip">
+                    {{ nombreSiglaEmp() }}
+                  </p>
+                  <p class="tamanoLetraShip">{{ nombreTipoEmp() }}</p>
+                </div>
+              </mat-chip>
+            </mat-chip-set>
+          </div>
+        </div>
+        @if(flag){ @for(item of getMenu(); track item._id){
+        <app-menu-list-item
+          [item]="item"
+          (tituloModuloF)="traeTituloModulo($event)"
+        />
+        } }
+
+        <!--
+          <img class="avatar mat-elevation-z8" src="https://source.unsplash.com/c_GmwfHBDzk/200x200" />
+
+        <h4 class="name">John Smith</h4>
+        <p class="designation">Software Engineer</p>
+
+        <mat-divider></mat-divider>
+
+        <button mat-button class="menu-button">
+            <mat-icon>home</mat-icon>
+            <span>Home</span>
+        </button>
+        <button mat-button class="menu-button">
+            <mat-icon>person</mat-icon>
+            <span>Profile</span>
+        </button>
+        <button mat-button class="menu-button">
+            <mat-icon>info</mat-icon>
+            <span>About</span>
+        </button>
+
+        <mat-divider></mat-divider>
+
+        <button mat-button class="menu-button">
+            <mat-icon>help</mat-icon>
+            <span>Help</span>
+        </button>
+        -->
+      </mat-nav-list>
+    </mat-sidenav>
+
+    <mat-sidenav-content>
+      <div class="container-fluid largo100">
+        <router-outlet style="width: 100%" />
+        <appSpinner />
+      </div>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>
+}

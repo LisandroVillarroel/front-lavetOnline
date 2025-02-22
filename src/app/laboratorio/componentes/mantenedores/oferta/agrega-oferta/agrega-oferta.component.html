@@ -1,0 +1,51 @@
+<h2 mat-dialog-title>AGREGA OFERTA</h2>
+
+<mat-dialog-content [formGroup]="agregaOferta()" name="agregaOferta" class="agrega-container">
+  <mat-form-field class="inputInput">
+    <mat-label class="labelI">Nombre Doctor Solicitante</mat-label>
+    <input matInput [formControl]="nombre" required />
+    @if(nombre.invalid){
+    <mat-error>{{ getErrorMessage("nombre") }}</mat-error>
+    }
+  </mat-form-field>
+
+  <!-- <mat-dialog-content [formGroup]="range" name="buscaExamen">-->
+  <mat-form-field class="example-form-field mb-2 inputFecha">
+    <mat-label style="text-align: center" class="labelI">Ingrese el Rango de Fecha Oferta</mat-label>
+    <mat-date-range-input [formGroup]="agregaOferta()" [rangePicker]="picker">
+      <input matStartDate formControlName="start" placeholder="Fecha Inicial" />
+      <input matEndDate formControlName="end" placeholder="Fecha Final" />
+    </mat-date-range-input>
+    <mat-hint>DD/MM/YYYY – DD/MM/YYYY</mat-hint>
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-date-range-picker #picker></mat-date-range-picker>
+    @if(start.hasError('matStartDateInvalid')){
+    <mat-error>Fecha Inicial Inválida</mat-error>
+    } @if(end.hasError('matStartDateInvalid')){
+    <mat-error>Fecha Final Inválida</mat-error>
+    }
+  </mat-form-field>
+
+  <!--</mat-dialog-content>-->
+
+  <mat-form-field class="inputInput">
+    <mat-label class="labelI">Monto de Oferta</mat-label>
+    <input matInput type="number" [formControl]="montoTotal" required />
+    @if(montoTotal.invalid){
+    <mat-error>{{ getErrorMessage("montoTotal") }}</mat-error>
+    }
+  </mat-form-field>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <div class="col-md-6">
+    <button mat-raised-button class="colorFondoBotonCancelar" mat-dialog-close [disabled]="false">
+      CANCELAR
+    </button>
+  </div>
+  <div class="col-md-6">
+    <button class="colorFondoBotonGrabar" mat-raised-button (click)="enviar()" [disabled]="agregaOferta().invalid">
+      GRABAR
+    </button>
+  </div>
+</mat-dialog-actions>

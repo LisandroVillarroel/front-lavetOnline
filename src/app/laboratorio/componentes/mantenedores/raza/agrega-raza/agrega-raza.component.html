@@ -1,0 +1,52 @@
+<h2 mat-dialog-title>AGREGA RAZA</h2>
+
+<mat-dialog-content
+  [formGroup]="agregaRaza()"
+  name="agregaRaza"
+  class="agrega-container"
+>
+  <mat-form-field class="inputSelect">
+    <mat-label class="labelI">Especie</mat-label>
+    <mat-select [formControl]="idEspecie" required>
+      @for(_especie of datoEspecie(); track _especie){
+      <mat-option [value]="_especie">
+        {{ _especie.nombre }}
+      </mat-option>
+      }
+    </mat-select>
+    @if(idEspecie.invalid){
+    <mat-error>{{ getErrorMessage("idEspecie") }}</mat-error>
+    }
+  </mat-form-field>
+
+  <mat-form-field class="inputInput">
+    <mat-label class="labelI">Ingrese Nombre</mat-label>
+    <input matInput [formControl]="nombre" required />
+    @if(nombre.invalid){
+    <mat-error>{{ getErrorMessage("nombre") }}</mat-error>
+    }
+  </mat-form-field>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <div class="col-md-6">
+    <button
+      mat-raised-button
+      class="colorFondoBotonCancelar"
+      mat-dialog-close
+      [disabled]="false"
+    >
+      CANCELAR
+    </button>
+  </div>
+  <div class="col-md-6">
+    <button
+      class="colorFondoBotonGrabar"
+      mat-raised-button
+      (click)="enviar()"
+      [disabled]="agregaRaza().invalid"
+    >
+      GRABAR
+    </button>
+  </div>
+</mat-dialog-actions>

@@ -1,0 +1,76 @@
+<h2 mat-dialog-title>MODIFICA ESTRUCTURA</h2>
+
+<mat-dialog-content [formGroup]="modificaFormato1()" name="modificaFormato1" class="modifica-container">
+  <mat-form-field class="inputInput">
+    <mat-label class="labelI">Orden</mat-label>
+    <input matInput type="number" [formControl]="ordenEstructura" (change)="validaOrden($any($event.target).value)" required />
+    @if(ordenEstructura.invalid){
+    <mat-error>{{ getErrorMessage("ordenEstructura") }}</mat-error>
+    }
+  </mat-form-field>
+
+  <mat-form-field class="inputInput">
+    <mat-label class="labelI">Descripción</mat-label>
+    <input matInput [formControl]="descripcion" required />
+    @if(descripcion.invalid){
+    <mat-error>{{ getErrorMessage("codigoExamen") }}</mat-error>
+    }
+  </mat-form-field>
+
+  <mat-form-field class="inputInput">
+    <mat-label class="labelI">Unidad Medida</mat-label>
+    <mat-select [formControl]="unidadMedida">
+    @for(unidadMedida_ of datoUnidadMedida(); track unidadMedida_){
+    <mat-option [value]="unidadMedida_.nombre">
+      {{ unidadMedida_.nombre }}
+    </mat-option>
+    }
+  </mat-select>
+    @if(unidadMedida.invalid){
+    <mat-error>{{ getErrorMessage("unidadMedida") }}</mat-error>
+    }
+  </mat-form-field>
+
+  <mat-form-field class="inputInput">
+    <mat-label class="labelI">Lógica</mat-label>
+    <mat-select [formControl]="logica" (selectionChange)="seleccionaLogica($event.value)" required>
+      <mat-option  value="-"> {{ "Rango" }} </mat-option>
+      <mat-option value=">"> {{ "Mayor que" }} </mat-option>
+      <mat-option value="<"> {{ "Menor que" }} </mat-option>
+    </mat-select>
+    @if(logica.invalid){
+    <mat-error>{{ getErrorMessage("logica") }}</mat-error>
+    }
+  </mat-form-field>
+
+  <mat-form-field class="inputInput">
+    <mat-label class="labelI">Desde</mat-label>
+    <input matInput type="number" [formControl]="desde" required />
+    @if(desde.invalid){
+    <mat-error>{{ getErrorMessage("desde") }}</mat-error>
+    }
+  </mat-form-field>
+
+@if(logica.value=='-'){
+  <mat-form-field class="inputInput">
+    <mat-label class="labelI">Hasta</mat-label>
+    <input matInput type="number" [formControl]="hasta" required />
+    @if(hasta.invalid){
+    <mat-error>{{ getErrorMessage("hasta") }}</mat-error>
+    }
+  </mat-form-field>
+}
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <div class="col-md-6">
+    <button mat-raised-button class="colorFondoBotonCancelar" mat-dialog-close [disabled]="false">
+      CANCELAR
+    </button>
+  </div>
+  <div class="col-md-6">
+    <button class="colorFondoBotonGrabar" mat-raised-button (click)="enviar()" [disabled]="modificaFormato1().invalid">
+      GRABAR
+    </button>
+  </div>
+</mat-dialog-actions>

@@ -1,0 +1,23 @@
+.agrega-container {
+  display: flex;
+  flex-direction: column;
+  padding: 0 10%;
+}
+
+.agrega-container > * {
+  width: 95%;
+}
+
+
+.mat-dialog-container {
+  padding: 50px !important;
+
+}
+
+.mat-dialog-content{
+  margin: auto;
+}
+
+.mat-mdc-raised-button {
+  min-width: 100%;
+}

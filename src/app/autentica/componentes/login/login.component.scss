@@ -1,0 +1,145 @@
+* {
+  box-sizing: border-box;
+}
+
+.formContainer {
+  /*  background-color: rgb(235, 17, 17);*/
+  background-position: center;
+    background-repeat: no-repeat;
+   background: url("./../../../../../public/assets/imagenes/login/fondoLogin1.png");
+   background-size: cover;
+    width : 100%vw;
+    height : 100vh;
+    z-index: 10;
+    display : flex;
+    justify-content: center;
+}
+
+.form{
+    margin-top: 5% !important;
+    background-color: #052d3c8e;
+
+    border-radius: 8px;
+    min-width: 300px;
+    width: 60%;
+    max-width: 500px;
+    padding: 5% 5%;
+    height: 85%;
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+mat-form-field{
+  text-align: center;
+  font-size: 12px !important;
+  height: 20%;
+  width: 80% !important;
+}
+
+.centarImagen{
+    text-align: center;
+}
+
+
+
+.formatoImagen{
+    width: 80%;
+    height: 80%;
+}
+
+    /*Ver*/
+
+.button-ingreso{
+  height: 30px;
+}
+
+.button-ingreso:not(:disabled) {
+      font-size: 15px;
+      min-width: 100%;
+      color: #ffffff;
+      font-weight: bold;
+      background-color: #118383;
+}
+
+mat-dialog-actions{
+      min-width: 100%;
+}
+
+.example-full-width {
+  width: 100%;
+}
+
+/*Fin Ver*/
+
+
+.alert{
+  font-size: 10px;
+  border-radius: 0.5rem;
+}
+
+
+h4 {
+  margin-top: 10px;
+  font-weight: bolder;
+  color: #ffffff;
+  font-size: 20px;;
+}
+
+
+.formatoLetra{
+    color:#ffffff !important;
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 12px;
+    border: unset;
+    background-color: unset;
+}
+
+.formatoOlvidoContrasena{
+    display: flex;
+    justify-content:end;
+    flex-wrap: wrap;
+}
+
+input{
+  justify-content: center;
+}
+  /* Smartphones (portrait & landscape)
+#Dispositivo = Mayoría de teléfonos móviles (vertical y horizontal)
+#Resolución = B/w 320px to 479px */
+@media only screen and (min-device-width : 320px) and (max-device-width : 600px) {
+
+  .formContainer {
+    height:100vh
+  }
+
+  .form{
+      width: 90%;
+      height: 70%;
+  }
+
+  .formatoLetra{
+    font-size: 10px;
+  }
+}
+
+@media only screen and (min-device-width : 1400px)  {
+  .formContainer {
+    height:100vh
+  }
+
+  .form{
+    margin-top: 10%;
+      width: 70%;
+      height: 50%;
+
+  }
+}
+
+::ng-deep .mat-mdc-form-field-subscript-wrapper{
+  margin-bottom: -1.25em;
+}

@@ -1,0 +1,251 @@
+<h2 mat-dialog-title class="pt-3">DATOS EMPRESA</h2>
+
+@if(carga()){
+  <mat-dialog-content >
+    <div [formGroup]="modificaEmpresa()" name="perfilEmpresa" class="modifica-container">
+
+
+      <ng-template matStepLabel>Datos Empresa</ng-template>
+
+      <mat-form-field class="inputInput">
+        <mat-label class="labelI">Rut</mat-label>
+        <input matInput class="input-rut rut" value="{{this.datoEmpresa.rutEmpresa}}" disabled='true'>
+      </mat-form-field>
+
+      <mat-form-field class="inputInput">
+        <mat-label class="labelI">Razón Social</mat-label>
+        <input matInput [formControl]="razonSocial" required>
+        @if (razonSocial.invalid) {
+          <mat-error>{{getErrorMessage('razonSocial')}}</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field class="inputInput">
+        <mat-label class="labelI">Nombre Fantasía</mat-label>
+        <input matInput [formControl]="nombreFantasia"  required>
+        @if (nombreFantasia.invalid) {
+          <mat-error>{{getErrorMessage('nombreFantasia')}}</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field class="inputInput">
+        <mat-label class="labelI">Dirección</mat-label>
+        <input matInput [formControl]="direccion"  required>
+        @if (direccion.invalid) {
+          <mat-error>{{getErrorMessage('direccion')}}</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field class="inputInput">
+        <mat-label class="labelI">Nombre Contacto</mat-label>
+        <input matInput [formControl]="nombreContacto"  required>
+        @if (nombreContacto.invalid) {
+          <mat-error>{{getErrorMessage('nombreContacto')}}</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field class="inputInput">
+        <mat-label class="labelI">Teléfono</mat-label>
+
+        <input matInput [formControl]="telefono"  required>
+        @if (telefono.invalid) {
+          <mat-error>{{getErrorMessage('telefono')}}</mat-error>
+        }
+      </mat-form-field>
+
+      <!--
+      <mat-form-field class="inputInput">
+        <mat-label class="labelI">Tipo Empresa</mat-label>
+        <input matInput value="{{this.datoEmpresa.tipoEmpresa}}" >
+      </mat-form-field>
+  -->
+
+      <mat-form-field class="inputInput">
+        <mat-label class="labelI">Email</mat-label>
+        <input matInput [formControl]="email"  required>
+        @if (email.invalid) {
+          <mat-error>{{getErrorMessage('email')}}</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field class="inputInput">
+        <mat-label class="labelI">Recepción Email Solicitud</mat-label>
+        <input matInput [formControl]="correoRecepcionSolicitud"  required>
+        @if (correoRecepcionSolicitud.invalid) {
+          <mat-error>{{getErrorMessage('correoRecepcionSolicitud')}}</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-list>
+        <mat-list-item>Datos de Envío de Email</mat-list-item>
+        <mat-divider></mat-divider>
+      </mat-list>
+
+      <mat-form-field class="inputInput">
+        <mat-label class="labelI">Asunto</mat-label>
+        <input matInput #message maxlength="20" [formControl]="asunto"  required>
+        <mat-hint align="end">{{message.value.length}} / 20</mat-hint>
+      </mat-form-field>
+
+      <div>
+        <span class="labelI">Título Cuerpo </span> <span class="formatoInformativo">&#160;&#160;&#160; (Palabras reservadas: <b>saludo_</b>='Buenos días-Bienas Tardes-Buenas Noches', <b>nombre_cliente_</b>='Nombre del Cliente')</span>
+      </div>
+
+        <p-editor [formControl]="tituloCuerpo"></p-editor>
+
+      <mat-list>
+        <mat-list-item>Logo de Empresa</mat-list-item>
+        <mat-divider></mat-divider>
+      </mat-list>
+
+      <div
+        class="file-upload-wrapper"
+        [class.success]="uploadSuccess"
+        [class.error]="uploadError"
+        (drop)="onFileDrop($event)"
+        (dragover)="onDragOver($event)"
+      >
+        <input
+          type="file"
+          accept="image/*"
+          (change)="onImagenSelecionadaLogo($event)"
+          hidden
+          #fileInput
+        />
+        <div class="file-dropper" (click)="fileInput.click()">
+          <mat-icon>upload</mat-icon>
+          <p>{{ "ARRASTRAR Y SOLTAR / click"  }}</p>
+          @if(imageName()){
+            @if(selectedFile || imagePreview!){
+              <img
+                [src]="imagePreview()"
+                alt="Image Preview"
+                class="image-preview"
+              />
+              <p>
+                <span class="image-name">{{ imageName() }}</span> ({{
+                  fileSize()
+                }} KB)
+              </p>
+              <mat-icon class="delete-icon" (click)="removeImage()">delete</mat-icon>
+            }
+          }
+        </div>
+      </div>
+      <!--<button (click)="upload()">Upload Image</button>-->
+
+      <!--
+      <image-upload class="customClass"
+      (removed)="onRemoved($any($event))"
+      (uploadFinished)="onUploadFinished($any($event))"
+      (uploadStateChanged)="onUploadStateChanged($any($event))"
+      buttonCaption="Presione para Seleccionar"
+      dropBoxMessage="!Suelta tu imágen aquí!"
+      clearButtonCaption="Eliminar Imágen"
+      [extensions]="['jpeg','png','jpg','svg']"
+      [max]="1"
+      [maxFileSize]="50000"
+      [fileTooLargeMessage]="'El Logo es demasiado grande y no se cargó. El tamaño máximo de archivo es 50 KB'"
+      >
+      </image-upload>
+  -->
+      <div class="formatoLetra">(Tamaño máximo 50 KB)-(Dimensiones: 186x102)</div>
+
+      <mat-list>
+        <mat-list-item>Datos de Formáto Examen PDF</mat-list-item>
+        <mat-divider></mat-divider>
+      </mat-list>
+      <mat-list>
+        <mat-list-item>Visualiza Examen PDF
+          <button matTooltip="Consultar" mat-icon-button (click)="visualizaFormato()" color="primary"   style="padding-left: 5px;" aria-label="Example icon button with a delete icon">
+            <mat-icon>search</mat-icon>
+          </button>
+
+      </mat-list-item>
+        <mat-divider></mat-divider>
+      </mat-list>
+
+      <mat-form-field class="inputInput">
+        <mat-label class="labelI">Pie de página</mat-label>
+        <input matInput #message maxlength="150" [formControl]="footerExamen" >
+        <mat-hint align="end">{{message.value.length}} / 150</mat-hint>
+      </mat-form-field>
+
+      <mat-form-field class="inputInput">
+        <mat-label class="labelI">Leyenda cabecera página</mat-label>
+        <input matInput #messageHead maxlength="100" [formControl]="headerLeyenda" >
+        <mat-hint align="end">{{messageHead.value.length}} / 100</mat-hint>
+      </mat-form-field>
+
+
+
+  <!--    <image-upload class="customClass"
+      (removed)="onRemovedExamen($any($event))"
+      (uploadFinished)="onUploadFinishedExamen($any($event))"
+      (uploadStateChanged)="onUploadStateChangedExamen($any($event))"
+      buttonCaption="Presione para Seleccionar"
+      dropBoxMessage="!Suelta tu imágen aquí!"
+      clearButtonCaption="Eliminar Imágen"
+      [extensions]="['jpeg','png','jpg','svg']"
+      [max]="1"
+      [maxFileSize]="50000"
+      [fileTooLargeMessage]="'El Logo es demasiado grande y no se cargó. El tamaño máximo de archivo es 50 KB'"
+      >
+      </image-upload>
+    -->
+      <div
+        class="file-upload-wrapper"
+        [class.success]="uploadSuccess"
+        [class.error]="uploadError"
+        (drop)="onFileDropExamen($event)"
+        (dragover)="onDragOverExamen($event)"
+      >
+        <input
+          type="file"
+          accept="image/*"
+          (change)="onImagenSelecionadaExamen($event)"
+          hidden
+          #fileInputExamen
+        />
+        <div class="file-dropper" (click)="fileInputExamen.click()">
+          <mat-icon>upload</mat-icon>
+          <p>{{ "ARRASTRAR Y SOLTAR / click"  }}</p>
+          @if(imageNameExamen()){
+            @if(selectedFileExamen || imagePreviewExamen!){
+              <img
+                [src]="imagePreviewExamen()"
+                alt="Image Preview"
+                class="image-preview"
+              />
+              <p>
+                <span class="image-name">{{ imageNameExamen() }}</span> ({{
+                  fileSize()
+                }} KB)
+              </p>
+              <mat-icon class="delete-icon" (click)="removeImageExamen()">delete</mat-icon>
+            }
+          }
+        </div>
+      </div>
+
+      <div class="formatoLetra">(Tamaño máximo 50 KB)-(Dimensiones: 186x102)</div>
+     <!--
+      <mat-card mat-card style="cursor: pointer"  class="example-card mb-2 mt-4 ml-2  align-content-center align-items-center align-self-center text-center" >
+        <a class="colorAmarillo" >
+          <img class="avatar mat-elevation-z8"   [src]="imagenExamen" >
+        </a>
+      </mat-card>
+    -->
+  </div>
+  </mat-dialog-content>
+
+}
+
+<mat-dialog-actions>
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <button class="colorFondoBotonGrabar" mat-raised-button  (click)="enviar()" [disabled]="modificaEmpresa().invalid">GRABAR</button>
+    </div>
+  </div>
+</mat-dialog-actions>
+

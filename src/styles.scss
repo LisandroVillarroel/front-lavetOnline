@@ -1,1 +1,361 @@
 /* You can add global styles to this file, and also import other style files */
+/*Inicio PRIMENG*/
+//@import "primeng/resources/themes/lara-light-blue/theme.css";
+//@import "primeng/resources/primeng.css";
+/*Inicio Editor PRIMENG*/
+@import "../node_modules/quill/dist/quill.core.css";
+@import "../node_modules/quill/dist/quill.snow.css";
+/*Fin PRIMENG*/
+
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+/*Principal Index*/
+/*Titulo Mantenedores Tablas principales*/
+.content {
+  min-height: calc(100vh - 98px);
+  /* largo de pantalla*/
+  border-radius: 10px;
+  margin: 16px;
+  margin-left: 32px;
+  /*display: flex;*/
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+  color: #323131;
+  padding: 0 1px !important;
+}
+
+/*Fin Principal Index*/
+/*Fin Titulo Mantenedores Tablas principales*/
+/*Cambia color y fondo barra superior del sistema*/
+mat-toolbar {
+  color: #ffffff !important;
+  /*Color letra*/
+  background-color: #17627e !important;
+}
+
+.mat-button .mat-button-wrapper>*,
+.mat-fab .mat-button-wrapper>*,
+.mat-flat-button .mat-button-wrapper>*,
+.mat-icon-button .mat-button-wrapper>*,
+.mat-mini-fab .mat-button-wrapper>*,
+.mat-raised-button .mat-button-wrapper>*,
+.mat-stroked-button .mat-button-wrapper>* {
+  vertical-align: baseline !important;
+}
+
+/*Lines barra cabecera*/
+.bodebotom {
+  border-bottom-color: #5c5c5c !important;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+}
+
+/*Cambia color y fondo barra superior del sistema*/
+
+/*Botones*/
+
+.mat-mdc-raised-button:not(:disabled).colorFondoBotonGrabar {
+  color: white;
+  background-color: black;
+}
+
+.colorFondoBotonCancelar {
+  color: white !important;
+  background-color: #ff0000 !important;
+}
+
+/*
+.mat-raised-button.mat-primary {
+  background-color: black;
+  color:rgb(255, 102, 0);
+}
+*/
+.mat-mdc-raised-button:not(:disabled).colorFondoBotonEliminar {
+  color: white !important;
+  background-color: #be0000 !important;
+}
+
+.mat-mdc-raised-button:not(:disabled).colorFondoBotonBusca {
+  color: white !important;
+  background-color: black !important;
+  font-size: 0.7rem;
+}
+
+.colorFondoBotonExTabla {
+  color: white !important;
+  background-color: #17627e !important;
+  font-size: 0.7rem;
+  width: 20%;
+  margin-right: 2px;
+}
+
+/*Fin Botones*/
+
+/*INICIO INPUT*/
+.inputInput {
+  font-size: 11px !important;
+  font-size: var(--mdc-typography-body1-font-size, 11px) !important;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  padding-top: 10px !important;
+  padding-bottom: 5px !important;
+  /*height: 55px !important; /*tamaño height de inpul*/
+}
+
+.inputSelectBuscar {
+  font-size: 12px !important;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  padding-top: 10px !important;
+  padding-bottom: 5px !important;
+  height: 84%;
+}
+
+.inputSelect {
+  font-size: var(--mdc-typography-body1-font-size, 11px) !important;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  padding-top: 10px !important;
+  padding-bottom: 5px !important;
+  /*  height: 65px !important; /*tamaño height de inpul*/
+}
+
+.inputBuscar {
+  font-size: 12px !important;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  padding-top: 10px !important;
+  padding-bottom: 5px !important;
+  height: 80%;
+  /* height: 55px !important; /*tamaño height de inpul*/
+}
+
+.inputFecha {
+  font-size: 12px !important;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  padding-top: 10px !important;
+  padding-bottom: 5px !important;
+  height: 65px !important;
+  /*tamaño height de inpul*/
+  margin-bottom: 15px !important;
+  ;
+}
+
+.inputFechaForm {
+  font-size: 1px !important;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  padding-top: 10px !important;
+  padding-bottom: 5px !important;
+  height: 65px !important;
+  /*tamaño height de inpul*/
+  margin-bottom: 15px !important;
+  ;
+}
+
+.mat-mdc-select-value-text {
+  font-size: 12px !important;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.labelI {
+  font-size: 11px !important;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-weight: 400;
+  font-style: italic;
+  text-align: left;
+  color: black;
+}
+
+.mdc-text-field--no-label:not(.mdc-text-field--outlined):not(.mdc-text-field--textarea) .mat-mdc-form-field-infix {
+  padding-top: 10px;
+  padding-bottom: 16px;
+}
+
+
+/*FIN INPUT*/
+
+/*MAT-TABLE*/
+/* Mantenedores Material*/
+/*Titulo Mantenedores Tablas principales*/
+.content {
+  min-height: calc(100vh - 98px);
+  /* largo de pantalla*/
+  border-radius: 10px;
+  margin: 16px;
+  margin-left: 32px;
+  /*display: flex;*/
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+  color: #323131;
+  padding: 0 1px !important;
+}
+
+/*Fin Titulo Mantenedores Tablas principales*/
+/* Titulos Mantenedores secundarios */
+.mat-mdc-dialog-container,
+.mdc-dialog__title {
+  color: black !important;
+  background-color: #118383 !important;
+  font-size: 16px !important;
+  text-align: center;
+  height: 65px;
+}
+
+/* Fin Titulos Mantenedores Secundarios*/
+
+td.mat-cell:last-of-type {
+  padding-right: 0px;
+}
+
+th.mat-cell:last-of-type {
+  padding-right: 0px;
+}
+
+tr.mat-header-row {
+  height: 45px !important;
+}
+
+/*Cambia color cabecera table*/
+
+.mat-mdc-table {
+  table-layout: fixed !important;
+  /*este permite que la tabla se ajuste*/
+}
+
+.mat-mdc-table .mdc-data-table__header-row {
+  color: black !important;
+  background-color: #118383 !important;
+  table-layout: none !important;
+  /*este permite que la tabla se ajuste*/
+}
+
+.mat-mdc-table tbody,
+.mat-mdc-table tfoot,
+.mat-mdc-table thead,
+.mat-mdc-cell,
+.mat-mdc-footer-cell,
+.mat-mdc-header-row,
+.mat-mdc-row,
+.mat-mdc-footer-row,
+.mat-mdc-table .mat-mdc-header-cell {
+  background: inherit;
+  font-size: 11px;
+  /*Tamaño letra tabla*/
+}
+
+/*Color Barra hover de la tabla*/
+tr.example-element-row:not(.example-expanded-row):hover {
+  background: rgba(208, 206, 205, 0.686);
+
+  button.tabla {
+    background-color: rgba(208, 206, 205, 0.686);
+  }
+
+}
+
+/* Color Barra Cuando se da Click*/
+tr.example-element-row:not(.example-expanded-row):active {
+  background: #959597;
+}
+
+tr.mat-footer-row,
+tr.mat-row {
+  height: 30px !important;
+}
+
+
+
+/*iconos de tabla*/
+button.nuevo:hover {
+  color: white !important;
+}
+
+button.nuevo {
+  color: black !important;
+  border: 0;
+  background-color: #118383;
+  width: 30px !important;
+  height: 30px !important;
+}
+
+button.tabla:hover {
+  color: black !important;
+  background-color: rgba(208, 206, 205, 0.686);
+}
+
+button.tabla {
+  color: #118383 !important;
+  border: 0;
+  background-color: white;
+  width: 30px !important;
+  height: 30px !important;
+}
+
+/*Fin iconos de tabla*/
+
+/*Icono ordena tabla*/
+.mat-sort-header-arrow {
+  color: #cd1515 !important;
+}
+
+.mat-sort-header-arrow:hover {
+  color: #ffffff !important;
+}
+
+/*Foot Tabla*/
+.mat-mdc-paginator-page-size-select {
+  width: 84px !important;
+}
+
+/* Fin Foot Tabla*/
+/*Fin MAT-TABLE*/
+
+
+/*GENERAL*/
+.spinerGeneral {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(129, 129, 129, 0.356);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/*FIN GENERAL*/
+
+/* Smartphones (portrait & landscape)
+#Dispositivo = Mayoría de teléfonos móviles (vertical y horizontal)
+#Resolución = B/w 320px to 479px */
+@media only screen and (min-device-width : 320px) and (max-device-width : 480px) {
+  .ocultar-div {
+    display: none
+  }
+
+  /*Titulo Mantenedores Tablas principales*/
+  .content {
+    min-height: calc(100vh - 98px);
+    /* largo de pantalla*/
+    border-radius: 10px;
+    margin: 0px;
+    margin-left: 0px;
+    /*display: flex;*/
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+    color: #323131;
+    padding: 0 1px !important;
+  }
+
+  /*Fin Titulo Mantenedores Tablas principales*/
+
+}

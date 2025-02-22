@@ -1,0 +1,73 @@
+<h2 mat-dialog-title>FORMATO EXAMEN {{ data.nombre }}</h2>
+<div class="consulta-container">
+  <div id="serieRoja">
+    <h4>{{ data.formato?.formato1?.subTitulo }}</h4>
+    <div class="row anchoTitulo">
+      <div
+        class="col-md-3 border border-dark alineaVertical border-end-0 destacado"
+      >
+        PARÁMETRO
+      </div>
+      <div
+        class="col-md-1 border border-dark border-left-0 border-end-0 alineaVertical destacado"
+      >
+        UNIDAD
+      </div>
+      <div
+        class="col-md-2 border border-dark border-left-0 border-end-0 alineaVertical destacado"
+      >
+        FORMULA
+      </div>
+
+      <div class="col-md-6 border border-dark border-left-0">REFERENCIA</div>
+    </div>
+
+    @for(item of data.formato?.formato1!.resultadoEspecie[0].resultado; track
+    item){
+    <div class="row altura anchoTitulo">
+      <div
+        class="col-md-3 border border-dark border-top-0 alineaV border-end-0 destacado"
+      >
+        {{ item.descripcion }}
+      </div>
+      <div
+        class="col-md-1 border border-dark border-left-0 border-top-0 border-end-0 alineaVertical"
+      >
+        {{ item.unidadMedida }}
+      </div>
+      <div
+        class="col-md-2 border border-dark border-left-0 border-top-0 border-end-0"
+      >
+        {{ item.resultado }}
+      </div>
+
+      <div
+        class="col-md-6 border border-dark border-left-0 border-top-0 alineaVertical"
+      >
+        {{ item.referencia }}
+      </div>
+    </div>
+    }
+    <div class="row anchoTitulo altura">
+      <div
+        class="col-md-3 border border-dark border-top-0 alineaV border-end-0 destacado"
+      >
+        {{ data.formato?.formato1?.observaciones }}
+      </div>
+      <div class="col-md-9 border border-dark border-left-0 border-top-0"></div>
+    </div>
+  </div>
+
+  <mat-dialog-actions class="justify-content-center">
+    <div class="col-md-12 mt-5">
+      <button
+        mat-raised-button
+        class="colorFondoBotonCancelar"
+        mat-dialog-close
+        [disabled]="false"
+      >
+        CERRAR
+      </button>
+    </div>
+  </mat-dialog-actions>
+</div>

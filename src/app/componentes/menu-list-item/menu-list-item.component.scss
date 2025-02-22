@@ -1,0 +1,64 @@
+
+:host {
+  display: flex;
+  flex-direction: column;
+  outline: none;
+  width: 100%;
+  text-align: left;
+
+}
+.mdc-list-item {
+  padding: 28px 0;  /*Separa las lineas del menu*/
+  display: flex;
+  width: auto;
+}
+.mdc-list-item .routeIcon {
+  margin-right: 40px;
+}
+
+.subMenu{
+  font-size: 12px;
+  font-family: Arial, Helvetica, sans-serif;
+  text-align: left;
+  color: #ffffffe5;
+}
+
+.Menu{
+  font-size: 13px;
+  font-family: Arial, Helvetica, sans-serif;
+  text-align: left;
+  color: #ffffffe5;
+}
+
+.mdc-list-item[_ngcontent-qks-c64] .routeIcon[_ngcontent-qks-c64] {
+  margin-right: 5px !important;
+}
+
+
+.mdc-list-base .mdc-list-item .mdc-list-item-content {
+
+  padding: 0 1px !important;
+
+}
+
+.menu-list-item{
+vertical-align: super;
+}
+
+
+.imgIcono {
+  width: 22%;
+ /* height: 17%;*/
+  padding: 10px;
+}
+
+.icono{
+  color: #ffffff;
+  font-size: 20px !important;
+}
+
+a{
+  text-decoration:none;
+  cursor:pointer;
+}
+
