@@ -1,0 +1,172 @@
+<h2 mat-dialog-title>FUNCION ESTRUCTURA</h2>
+<div class="row">
+  <div class="col-6">
+    <mat-table [dataSource]="dataSource" multiTemplateDataRows matSort>
+      <!-- ID Index -->
+      <ng-container matColumnDef="index">
+        <th
+          id="indexI"
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header
+          style="width: 5%"
+        >
+          N°
+        </th>
+        <td mat-cell *matCellDef="let row; let i = dataIndex" style="width: 5%">
+          {{ i + 1 }}
+        </td>
+      </ng-container>
+
+      <!-- DESCRIPCIÓN Column -->
+      <ng-container matColumnDef="ordenEstructura">
+        <th
+          id="ordenEstructuraI"
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header
+          style="width: 6%"
+        >
+          ORDEN
+        </th>
+        <td mat-cell *matCellDef="let row" style="width: 6%">
+          {{ row.ordenEstructura }}
+        </td>
+      </ng-container>
+
+      <!-- DESCRIPCIÓN Column -->
+      <ng-container matColumnDef="descripcion">
+        <th
+          id="descripcionI"
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header
+          style="width: 20%"
+        >
+          DESCRIPCIÓN
+        </th>
+        <td mat-cell *matCellDef="let row" style="width: 20%">
+          {{ row.descripcion }}
+        </td>
+      </ng-container>
+
+      <!-- UNIDADMEDIDA  Column -->
+      <ng-container matColumnDef="unidadMedida">
+        <th
+          id="unidadMedidaI"
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header
+          style="width: 10%"
+        >
+          UNIDAD MEDIDA
+        </th>
+        <td mat-cell *matCellDef="let row" style="width: 10%">
+          {{ row.unidadMedida }}
+        </td>
+      </ng-container>
+
+      <!-- RESULTADO Column -->
+      <ng-container matColumnDef="resultado">
+        <th
+          id="resultadoI"
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header
+          style="width: 10%"
+        >
+          RESULTADO
+        </th>
+        <td mat-cell *matCellDef="let row" style="width: 10%">
+          {{ row.resultado }}
+        </td>
+      </ng-container>
+
+      <!-- REFERENCIA Column -->
+      <ng-container matColumnDef="referencia">
+        <th
+          id="referenciaI"
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header
+          style="width: 10%"
+        >
+          REFERENCIA
+        </th>
+        <td mat-cell *matCellDef="let row" style="width: 10%">
+          {{ row.referencia }}
+        </td>
+      </ng-container>
+
+      <!-- Horas LÓGICA Column -->
+      <ng-container matColumnDef="logica">
+        <th
+          id="logicaI"
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header
+          style="width: 7%"
+        >
+          LÓGICA
+        </th>
+        <td mat-cell *matCellDef="let row" style="width: 7%">
+          {{ row.logica }}
+        </td>
+      </ng-container>
+
+      <!-- codigo DESDE Column -->
+      <ng-container matColumnDef="desde">
+        <th
+          id="desdeI"
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header
+          style="width: 7%"
+        >
+          DESDE
+        </th>
+        <td mat-cell *matCellDef="let row" style="width: 7%">
+          {{ row.desde }}
+        </td>
+      </ng-container>
+
+      <!-- Formato del HASTA Column -->
+      <ng-container matColumnDef="hasta">
+        <th
+          id="hastaI"
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-headerstyle="width: 9%"
+        >
+          HASTA
+        </th>
+        <td mat-cell *matCellDef="let row" style="width: 9%">
+          {{ row.hasta }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="opciones">
+        <th
+          id="opcionesI"
+          mat-header-cell
+          *matHeaderCellDef
+          style="width: 16%; text-align: center"
+        ></th>
+
+        <td
+          mat-cell
+          *matCellDef="let row; let i = index"
+          style="width: 16%; text-align: center"
+        ></td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+      <tr
+        mat-row
+        (click)="seleccionaParametro(row)"
+        *matRowDef="let row; columns: displayedColumns"
+        class="example-element-row"
+      ></tr>
+    </mat-table>
+  </div>
+</div>

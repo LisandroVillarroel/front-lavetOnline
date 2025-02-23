@@ -292,7 +292,7 @@ export class AnalisisFormato1Component implements OnInit {
         if (valor > desde) variableflag = true;
         else variableflag = false;
     }
-
+    // Permite cambiar un valor de la matriz flagNegrilla y resultado buscando por el _Id
     this.datoResultadoFormato1.update((preResultado) =>
       preResultado.map((resultado) =>
         resultado._id === id

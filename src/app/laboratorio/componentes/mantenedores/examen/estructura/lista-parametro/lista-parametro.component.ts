@@ -1,4 +1,3 @@
-
 import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
@@ -32,7 +31,10 @@ import { ExamenService } from '@laboratorio/servicios/examen.service';
 import { SpinnerService } from '@shared/spinner/spinner.service';
 import { StorageService } from '@shared/storage.service';
 import { MatTableExporterModule } from 'mat-table-exporter';
-import { IFormato1, IResultadoEspecieFormato1, IResultadoFormato1 } from '@laboratorio/modelos/examenes/examenFormato1';
+import {
+  IResultadoEspecieFormato1,
+  IResultadoFormato1,
+} from '@laboratorio/modelos/examenes/examenFormato1';
 import { IExamenEstructura } from '@laboratorio/interfaces/examenEstructura-interface';
 import { EspecieService } from '@laboratorio/servicios/especie.service';
 import { IEspecie } from '@laboratorio/modelos/especie-modelo';
@@ -40,7 +42,7 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { AgregaEstructuraFormato1Component } from './estructura-formato1/agrega-estructura-formato1/agregaEstructuraFormato1.component';
 import { ModificaEstructuraFormato1Component } from './estructura-formato1/modifica-estructura-formato1/modificaEstructuraFormato1.component';
-
+import { FuncionEstructuraFormato1Component } from './estructura-formato1/funcion-estructura-formato1/funcionEstructuraFormato1.component';
 
 const MATERIAL_MODELO = [
   MatIconModule,
@@ -52,14 +54,19 @@ const MATERIAL_MODELO = [
   MatProgressSpinnerModule,
   MatCardModule,
   MatDialogModule,
-  MatSelectModule
+  MatSelectModule,
 ];
 
 @Component({
   selector: 'app-lista-parametro',
   templateUrl: './lista-parametro.component.html',
   styleUrl: './lista-parametro.component.scss',
-  imports: [MATERIAL_MODELO, CommonModule, MatTableExporterModule, ReactiveFormsModule],
+  imports: [
+    MATERIAL_MODELO,
+    CommonModule,
+    MatTableExporterModule,
+    ReactiveFormsModule,
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ListaParametroComponent {
@@ -118,10 +125,10 @@ export class ListaParametroComponent {
   }
 
   public nombreArchivo = 'examenes';
-  constructor() { }
+  constructor() {}
 
   async ngOnInit() {
-    console.log('datos llegados', this.dataIdExamen)
+    console.log('datos llegados', this.dataIdExamen);
     this.spinnerService.mostrar();
     this.matPaginatorIntl.itemsPerPageLabel = 'Registros por Página';
     console.log('pasa emp 1');
@@ -165,56 +172,79 @@ export class ListaParametroComponent {
   }
 
   getList(especieId: string) {
-    this.examenService
-      .getDataExamen(
-        this.dataIdExamen
-      )
-      .subscribe({
-        next: (res) => {
-          if (res.codigo == 200) {
-            this.datoExamen = res.data[0];
-            console.log('examen origen:', this.datoExamen);
-            console.log('especieId:', especieId)
-            if (this.datoExamen.formato?.formato1?.resultadoEspecie == undefined || this.datoExamen.formato?.formato1?.resultadoEspecie.length == 0) {
-              this.datoExamenResultadoEspecie.push({ especie_Id: especieId, resultado: [] }) //Agrega registro vacio para esda especie
-              console.log('paso1')
-            } else {
-              this.datoExamenResultadoEspecie = this.datoExamen.formato?.formato1?.resultadoEspecie; //Rescata todos los parametros por especie
-              console.log('paso2');
-              console.log('this.datoExamenResultadoEspecie 1:', this.datoExamenResultadoEspecie);
-              this.resultadoEspecieIndex = this.datoExamenResultadoEspecie.findIndex((valor: any) => valor.especie_Id === especieId);
-            }
-
-
-            //this.datoExamenResultadoEspecie = res.data.formato?.formato1?.resultadoEspecie.find((resultadoEspecie: any) => resultadoEspecie.especie_Id === especieId);
-            //  this.datoExamenResultadoEspecie = res.data.formato?.formato1?.resultadoEspecie
-
-            console.log('this.resultadoEspecieIndex:', this.resultadoEspecieIndex);
-            console.log('this.datoExamenResultadoEspecie:', this.datoExamenResultadoEspecie);
-
-
-            this.datoExamenResultado = this.datoExamenResultadoEspecie[this.resultadoEspecieIndex].resultado;
-            console.log('this.datoExamenResultado:', this.datoExamenResultado);
-            console.log('this.datoExamenResultado largo:', this.datoExamenResultado.length);
-            this.datoExamenResultado.sort((a, b) => a.ordenEstructura - b.ordenEstructura);
-            console.log('pasa Examen 2', this.datoExamenResultado);
-
-            if (this.datoExamenResultado.length > 0) {
-              this.maxOrden = this.datoExamenResultado[this.datoExamenResultado.length - 1].ordenEstructura + 1;
-            }
-            console.log('maxOrden', this.maxOrden);
-            this.dataSource.data = this.datoExamenResultado;
+    this.examenService.getDataExamen(this.dataIdExamen).subscribe({
+      next: (res) => {
+        if (res.codigo == 200) {
+          this.datoExamen = res.data[0];
+          console.log('examen origen:', this.datoExamen);
+          console.log('especieId:', especieId);
+          if (
+            this.datoExamen.formato?.formato1?.resultadoEspecie == undefined ||
+            this.datoExamen.formato?.formato1?.resultadoEspecie.length == 0
+          ) {
+            this.datoExamenResultadoEspecie.push({
+              especie_Id: especieId,
+              resultado: [],
+            }); //Agrega registro vacio para esda especie
+            console.log('paso1');
           } else {
-            console.log('error carga:', res.mensaje);
-            Swal.fire('ERROR INESPERADO', res.mensaje, 'error');
+            this.datoExamenResultadoEspecie =
+              this.datoExamen.formato?.formato1?.resultadoEspecie; //Rescata todos los parametros por especie
+            console.log('paso2');
+            console.log(
+              'this.datoExamenResultadoEspecie 1:',
+              this.datoExamenResultadoEspecie
+            );
+            this.resultadoEspecieIndex =
+              this.datoExamenResultadoEspecie.findIndex(
+                (valor: any) => valor.especie_Id === especieId
+              );
           }
-        },
-        // console.log('yo:', res as PerfilI[]),
-        error: (error) => {
-          console.log('error carga:', error);
-          Swal.fire('ERROR INESPERADO', error, 'error');
-        },
-      }); // (this.dataSource.data = res as PerfilI[])
+
+          //this.datoExamenResultadoEspecie = res.data.formato?.formato1?.resultadoEspecie.find((resultadoEspecie: any) => resultadoEspecie.especie_Id === especieId);
+          //  this.datoExamenResultadoEspecie = res.data.formato?.formato1?.resultadoEspecie
+
+          console.log(
+            'this.resultadoEspecieIndex:',
+            this.resultadoEspecieIndex
+          );
+          console.log(
+            'this.datoExamenResultadoEspecie:',
+            this.datoExamenResultadoEspecie
+          );
+
+          this.datoExamenResultado =
+            this.datoExamenResultadoEspecie[
+              this.resultadoEspecieIndex
+            ].resultado;
+          console.log('this.datoExamenResultado:', this.datoExamenResultado);
+          console.log(
+            'this.datoExamenResultado largo:',
+            this.datoExamenResultado.length
+          );
+          this.datoExamenResultado.sort(
+            (a, b) => a.ordenEstructura - b.ordenEstructura
+          );
+          console.log('pasa Examen 2', this.datoExamenResultado);
+
+          if (this.datoExamenResultado.length > 0) {
+            this.maxOrden =
+              this.datoExamenResultado[this.datoExamenResultado.length - 1]
+                .ordenEstructura + 1;
+          }
+          console.log('maxOrden', this.maxOrden);
+          this.dataSource.data = this.datoExamenResultado;
+        } else {
+          console.log('error carga:', res.mensaje);
+          Swal.fire('ERROR INESPERADO', res.mensaje, 'error');
+        }
+      },
+      // console.log('yo:', res as PerfilI[]),
+      error: (error) => {
+        console.log('error carga:', error);
+        Swal.fire('ERROR INESPERADO', error, 'error');
+      },
+    }); // (this.dataSource.data = res as PerfilI[])
   }
 
   // tslint:disable-next-line: use-lifecycle-interface
@@ -346,7 +376,7 @@ export class ListaParametroComponent {
     this.examenEstructura = {
       maximoEstructura: this.maxOrden,
       resultado: this.datoExamenResultado,
-    }
+    };
     console.log('his.examenEstructura:', this.examenEstructura);
     console.log('this.resultadoEspecieIndex:', this.resultadoEspecieIndex);
     const dialogConfig = new MatDialogConfig();
@@ -364,27 +394,32 @@ export class ListaParametroComponent {
       .subscribe((data: IExamenEstructura) => {
         console.log('examen111:', this.datoExamen);
         console.log('Dialog output estructura:', data.resultado);
-        this.datoExamenResultadoEspecie[this.resultadoEspecieIndex].resultado != data.resultado;
-        console.log('datoExamenResultadoEspecie:', this.datoExamenResultadoEspecie);
+        this.datoExamenResultadoEspecie[this.resultadoEspecieIndex].resultado !=
+          data.resultado;
+        console.log(
+          'datoExamenResultadoEspecie:',
+          this.datoExamenResultadoEspecie
+        );
 
-
-        this.datoExamen.formato!.formato1!.resultadoEspecie = this.datoExamenResultadoEspecie;
+        this.datoExamen.formato!.formato1!.resultadoEspecie =
+          this.datoExamenResultadoEspecie;
         console.log('examen:', this.datoExamen);
         if (data.resultado != undefined) {
-          this.enviar(this.datoExamen, 'Se agregó con Éxito')
+          this.enviar(this.datoExamen, 'Se agregó con Éxito');
         }
       });
-
   }
 
   actualizaEstructura(id: string) {
     // Actualiza
-    console.log('id:', id)
+    console.log('id:', id);
 
     this.examenEstructura = {
-      indice: this.datoExamenResultado.findIndex((valor: any) => valor._id === id),
+      indice: this.datoExamenResultado.findIndex(
+        (valor: any) => valor._id === id
+      ),
       resultado: this.datoExamenResultado,
-    }
+    };
     console.log('his.examenEstructura:', this.examenEstructura);
 
     const dialogConfig = new MatDialogConfig();
@@ -402,17 +437,20 @@ export class ListaParametroComponent {
       .subscribe((data: IExamenEstructura) => {
         console.log('examen111:', this.datoExamen);
         console.log('Dialog output estructura:', data.resultado);
-        this.datoExamenResultadoEspecie[this.resultadoEspecieIndex].resultado != data.resultado;
-        console.log('datoExamenResultadoEspecie:', this.datoExamenResultadoEspecie);
+        this.datoExamenResultadoEspecie[this.resultadoEspecieIndex].resultado !=
+          data.resultado;
+        console.log(
+          'datoExamenResultadoEspecie:',
+          this.datoExamenResultadoEspecie
+        );
 
-        this.datoExamen.formato!.formato1!.resultadoEspecie = this.datoExamenResultadoEspecie;
+        this.datoExamen.formato!.formato1!.resultadoEspecie =
+          this.datoExamenResultadoEspecie;
         console.log('examen:', this.datoExamen);
         if (data.resultado != undefined) {
-
-          this.enviar(this.datoExamen, 'Se actualizó con Éxito')
+          this.enviar(this.datoExamen, 'Se actualizó con Éxito');
         }
       });
-
   }
   /*
     actualiza(datoPar: IExamen) {
@@ -482,28 +520,32 @@ export class ListaParametroComponent {
 
   async elimina(datoParametro: IResultadoFormato1) {
     Swal.fire({
-      title: "Elimina  - " + datoParametro.descripcion + " !",
+      title: 'Elimina  - ' + datoParametro.descripcion + ' !',
       showCancelButton: true,
       confirmButtonText: 'Eliminar',
       confirmButtonColor: 'green',
       cancelButtonText: 'Cancelar',
-      validationMessage: 'Elimina Erróneo '
+      validationMessage: 'Elimina Erróneo ',
     }).then((result) => {
-
       if (result.isConfirmed) {
-        this.datoExamenResultado = this.datoExamenResultado!.filter(function (parametro) {
+        this.datoExamenResultado = this.datoExamenResultado!.filter(function (
+          parametro
+        ) {
           return parametro._id !== datoParametro._id;
-        })
+        });
         console.log('this.datoExamenResultado 2:', this.datoExamenResultado);
 
-        this.datoExamenResultadoEspecie[this.resultadoEspecieIndex].resultado = this.datoExamenResultado;
-        console.log('datoExamenResultadoEspecie:', this.datoExamenResultadoEspecie);
+        this.datoExamenResultadoEspecie[this.resultadoEspecieIndex].resultado =
+          this.datoExamenResultado;
+        console.log(
+          'datoExamenResultadoEspecie:',
+          this.datoExamenResultadoEspecie
+        );
 
-
-        this.datoExamen.formato!.formato1!.resultadoEspecie = this.datoExamenResultadoEspecie;
-        console.log('dato examen final:', this.datoExamen)
+        this.datoExamen.formato!.formato1!.resultadoEspecie =
+          this.datoExamenResultadoEspecie;
+        console.log('dato examen final:', this.datoExamen);
         this.enviar(this.datoExamen, 'Se eliminó con Éxito');
-
       }
     });
   }
@@ -516,7 +558,7 @@ export class ListaParametroComponent {
         this.spinnerService.esconder();
         if (dato.codigo === 200) {
           Swal.fire(mensajeConfirma, '', 'success'); // ,
-          console.log('paso refre')
+          console.log('paso refre');
           this.refreshTable();
         } else {
           if (dato.codigo != 500) {
@@ -535,6 +577,26 @@ export class ListaParametroComponent {
     });
   }
 
+  funcion(datoParametro: IResultadoFormato1) {
+    console.log('datoParametro:', datoParametro);
+
+    const dialogConfig = new MatDialogConfig();
+
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = '80%';
+    dialogConfig.height = '90%';
+    dialogConfig.position = { top: '3%' };
+    dialogConfig.data = {
+      datoParametro: datoParametro,
+      datoExamenResultado: this.datoExamenResultado,
+    };
+
+    this.dialog
+      .open(FuncionEstructuraFormato1Component, dialogConfig)
+      .afterClosed()
+      .subscribe((data: IExamenEstructura) => {});
+  }
 
   private refreshTable() {
     // Refreshing table using paginator
