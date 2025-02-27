@@ -3,39 +3,32 @@ import {
   Component,
   ElementRef,
   inject,
-  Inject,
   OnInit,
   signal,
   ViewChild,
 } from '@angular/core';
-import {
-  FormControl,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
 import {
   MatDialogRef,
   MAT_DIALOG_DATA,
   MatDialogModule,
 } from '@angular/material/dialog';
-import { MatAccordion } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { loginInterface } from '@autentica/interface/loginInterface';
 import { IExamenEstructura } from '@laboratorio/interfaces/examenEstructura-interface';
-import { IResultadoFormato1 } from '@laboratorio/modelos/examenes/examenFormato1';
-import { IFicha } from '@laboratorio/modelos/ficha-modelo';
-import { IUnidadMedida } from '@laboratorio/modelos/unidadMedida-modelo';
-import { UnidadMedidaService } from '@laboratorio/servicios/unidad-medida.service';
+import {
+  IResultadoEspecieFormato1,
+  IResultadoFormato1,
+} from '@laboratorio/modelos/examenes/examenFormato1';
 import { SpinnerService } from '@shared/spinner/spinner.service';
 import { StorageService } from '@shared/storage.service';
-
-import Swal from 'sweetalert2';
 
 const MATERIAL_MODELO = [
   MatIconModule,
@@ -46,6 +39,8 @@ const MATERIAL_MODELO = [
   MatDialogModule,
   MatButtonModule,
   MatSelectModule,
+  MatCardModule,
+  MatTooltipModule,
 ];
 
 @Component({
@@ -61,17 +56,26 @@ export class FuncionEstructuraFormato1Component implements OnInit {
   private readonly spinnerService = inject(SpinnerService);
 
   readonly dialogRef = inject(MatDialogRef<FuncionEstructuraFormato1Component>);
-  readonly data = inject<any>(MAT_DIALOG_DATA);
+  readonly data = inject<IExamenEstructura>(MAT_DIALOG_DATA);
+
+  /*
+  indice // Indice del parametro seleccionado
+  resultado // Son todos los parámetros de una especie
+   */
 
   @ViewChild('htmlData') htmlData!: ElementRef;
 
-  dataSource = new MatTableDataSource<IResultadoFormato1>(
-    this.data.datoExamenResultado
+  dataSource = new MatTableDataSource<IResultadoFormato1>(this.data.resultado);
+
+  public formula = signal<string>(
+    this.data.resultado[this.data.indice!].formula
+  );
+  public formulaInterna = signal<string>(
+    this.data.resultado[this.data.indice!].formulaInterna
   );
 
-  /*datoExamen!: IExamen[];*/
+  private examenEstructura: IExamenEstructura = this.data;
 
-  examenEstructura: IExamenEstructura = this.data;
   displayedColumns: string[] = [
     'index',
     'ordenEstructura',
@@ -90,11 +94,40 @@ export class FuncionEstructuraFormato1Component implements OnInit {
     console.log('data:', this.data);
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    if (this.formula() == undefined) this.formula.set('');
+    if (this.formulaInterna() == undefined) this.formulaInterna.set('');
+  }
 
-  async enviar() {}
+  async enviar() {
+    this.examenEstructura.resultado[this.data.indice!].formula = this.formula();
+    this.examenEstructura.resultado[this.data.indice!].formulaInterna =
+      this.formulaInterna();
+    console.log('envia formula:', this.examenEstructura);
+    this.dialogRef.close(this.examenEstructura);
+  }
+
+  creaFormula(simbolo: string, id: string) {
+    console.log('simbolo:', simbolo);
+    if (simbolo === 'borrar') {
+      //this.formula.set(this.formula().slice(0, this.formula().length - 1));
+      //this.formulaInterno.set(this.formulaInterno().slice(0, this.formulaInterno().length - 1));
+      this.formula.set('');
+      this.formulaInterna.set('');
+      return;
+    }
+    this.formula.set(this.formula() + simbolo);
+    //El identifica si viene el valor _id para la formula interna
+    if (id == '') this.formulaInterna.set(this.formulaInterna() + simbolo);
+    else this.formulaInterna.set(this.formulaInterna() + '&' + id + '@');
+  }
 
   seleccionaParametro(parametro: any) {
-    console.log('click');
+    console.log('valor:', parametro);
+
+    this.creaFormula(parametro.descripcion, parametro._id);
+    ///const valor = '(7+3)*2';
+    ///const evaluatedResult = Function(`"use strict";return ${valor}`)();  permite realizar el calculo
+    //7console.log(evaluatedResult);
   }
 }

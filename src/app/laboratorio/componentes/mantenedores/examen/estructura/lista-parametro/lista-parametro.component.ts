@@ -94,9 +94,10 @@ export class ListaParametroComponent {
   private especieService = inject(EspecieService);
 
   public datoEspecie = signal<IEspecie[]>([]);
-
+  public noExisteParametro = signal<string>('');
   private maxOrden: number = 0;
   private resultadoEspecieIndex: number = 0;
+  private especieIdElegido = '';
 
   visible = signal<boolean>(true);
   show = signal<boolean>(true);
@@ -172,6 +173,9 @@ export class ListaParametroComponent {
   }
 
   getList(especieId: string) {
+    this.dataSource.data = [];
+    this.noExisteParametro.set('');
+    this.especieIdElegido = especieId;
     this.examenService.getDataExamen(this.dataIdExamen).subscribe({
       next: (res) => {
         if (res.codigo == 200) {
@@ -200,10 +204,12 @@ export class ListaParametroComponent {
                 (valor: any) => valor.especie_Id === especieId
               );
           }
-
-          //this.datoExamenResultadoEspecie = res.data.formato?.formato1?.resultadoEspecie.find((resultadoEspecie: any) => resultadoEspecie.especie_Id === especieId);
-          //  this.datoExamenResultadoEspecie = res.data.formato?.formato1?.resultadoEspecie
-
+          //Pregunta si la especie existe
+          if (this.resultadoEspecieIndex == -1) {
+            this.noExisteParametro.set('NO EXISTEN PARÁMETROS PARA ESPECIE');
+            return;
+          }
+          this.noExisteParametro.set('');
           console.log(
             'this.resultadoEspecieIndex:',
             this.resultadoEspecieIndex
@@ -577,8 +583,13 @@ export class ListaParametroComponent {
     });
   }
 
-  funcion(datoParametro: IResultadoFormato1) {
-    console.log('datoParametro:', datoParametro);
+  funcion(id: string) {
+    this.examenEstructura = {
+      indice: this.datoExamenResultado.findIndex(
+        (valor: any) => valor._id === id
+      ),
+      resultado: this.datoExamenResultado,
+    };
 
     const dialogConfig = new MatDialogConfig();
 
@@ -587,15 +598,28 @@ export class ListaParametroComponent {
     dialogConfig.width = '80%';
     dialogConfig.height = '90%';
     dialogConfig.position = { top: '3%' };
-    dialogConfig.data = {
-      datoParametro: datoParametro,
-      datoExamenResultado: this.datoExamenResultado,
-    };
+    dialogConfig.data = this.examenEstructura;
 
     this.dialog
       .open(FuncionEstructuraFormato1Component, dialogConfig)
       .afterClosed()
-      .subscribe((data: IExamenEstructura) => {});
+      .subscribe((data: IExamenEstructura) => {
+        console.log('examen formula:', this.datoExamen);
+        console.log('Dialog output formula:', data.resultado);
+        this.datoExamenResultadoEspecie[this.resultadoEspecieIndex].resultado !=
+          data.resultado;
+        console.log(
+          'datoExamenResultadoEspecie formula:',
+          this.datoExamenResultadoEspecie
+        );
+
+        this.datoExamen.formato!.formato1!.resultadoEspecie =
+          this.datoExamenResultadoEspecie;
+        console.log('examen formula:', this.datoExamen);
+        if (data.resultado != undefined) {
+          this.enviar(this.datoExamen, 'Se actualizó con Éxito');
+        }
+      });
   }
 
   private refreshTable() {

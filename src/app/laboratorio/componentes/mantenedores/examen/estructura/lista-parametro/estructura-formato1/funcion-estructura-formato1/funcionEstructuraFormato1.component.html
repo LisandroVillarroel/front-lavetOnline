@@ -169,4 +169,69 @@
       ></tr>
     </mat-table>
   </div>
+  <div class="col-6">
+    <section>
+      <div class="example-button-row">
+        <button mat-stroked-button (click)="creaFormula('(', '')">(</button>
+        <button mat-stroked-button (click)="creaFormula('+', '')">+</button>
+        <button mat-stroked-button (click)="creaFormula('-', '')">-</button>
+        <button mat-stroked-button (click)="creaFormula('*', '')">*</button>
+        <button mat-stroked-button (click)="creaFormula('/', '')">/</button>
+        <button mat-stroked-button (click)="creaFormula(')', '')">)</button>
+        &nbsp;&nbsp;
+        <button
+          mat-stroked-button
+          matTooltip="Borra toda la formula"
+          (click)="creaFormula('borrar', '')"
+        >
+          <mat-icon>backspace</mat-icon>
+        </button>
+
+        <br />
+
+        <button mat-stroked-button (click)="creaFormula('0', '')">0</button>
+        <button mat-stroked-button (click)="creaFormula('1', '')">1</button>
+        <button mat-stroked-button (click)="creaFormula('2', '')">2</button>
+        <button mat-stroked-button (click)="creaFormula('3', '')">3</button>
+        <button mat-stroked-button (click)="creaFormula('4', '')">4</button>
+        <button mat-stroked-button (click)="creaFormula('5', '')">5</button>
+        <button mat-stroked-button (click)="creaFormula('6', '')">6</button>
+        <button mat-stroked-button (click)="creaFormula('7', '')">7</button>
+        <button mat-stroked-button (click)="creaFormula('8', '')">8</button>
+        <button mat-stroked-button (click)="creaFormula('9', '')">9</button>
+      </div>
+    </section>
+
+    <mat-card class="example-card" appearance="outlined">
+      <mat-card-header>
+        <mat-card-title>Formula</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <p class="fuente">{{ formula() }}</p>
+      </mat-card-content>
+    </mat-card>
+  </div>
 </div>
+
+<mat-dialog-actions>
+  <div class="col-md-6">
+    <button
+      mat-raised-button
+      class="colorFondoBotonCancelar"
+      mat-dialog-close
+      [disabled]="false"
+    >
+      CANCELAR
+    </button>
+  </div>
+  <div class="col-md-6">
+    <button
+      class="colorFondoBotonGrabar"
+      mat-raised-button
+      (click)="enviar()"
+      [disabled]=""
+    >
+      GRABAR
+    </button>
+  </div>
+</mat-dialog-actions>

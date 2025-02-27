@@ -44,6 +44,7 @@
       </div>
       @for(datoResultadoFormato1_ of datoResultadoFormato1(); track
       datoResultadoFormato1_){
+
       <div class="row altura">
         <div
           class="col-md-2 border border-dark border-top-0 alineaV border-end-0 destacado"
@@ -57,7 +58,9 @@
             <input
               type="number"
               matInput
-              placeholder="Ingrese Valor"
+              placeholder=" {{
+                valorplaceholder(datoResultadoFormato1_.formulaInterna)
+              }} "
               formControlName="{{ 'input_' + datoResultadoFormato1_._id }}"
               (keydown)="KeyDown($event)"
               [ngStyle]="{
@@ -67,7 +70,7 @@
                     : 'normal'
               }"
               (blur)="
-                campoFormula(
+                campoLogica(
                   $event,
                   datoResultadoFormato1_._id!,
                   datoResultadoFormato1_.desde!,

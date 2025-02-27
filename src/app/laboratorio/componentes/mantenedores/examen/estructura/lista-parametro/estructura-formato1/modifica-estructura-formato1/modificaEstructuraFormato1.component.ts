@@ -1,9 +1,27 @@
-import { ChangeDetectionStrategy, Component, ElementRef, inject, Inject, OnInit, signal, ViewChild } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  inject,
+  Inject,
+  OnInit,
+  signal,
+  ViewChild,
+} from '@angular/core';
+import {
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { MatDialogRef, MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
+import {
+  MatDialogRef,
+  MAT_DIALOG_DATA,
+  MatDialogModule,
+} from '@angular/material/dialog';
 import { MatAccordion } from '@angular/material/expansion';
-import { MatFormFieldModule } from '@angular/material/form-field';;
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { loginInterface } from '@autentica/interface/loginInterface';
@@ -22,7 +40,7 @@ const MATERIAL_MODELO = [
   MatInputModule,
   MatDialogModule,
   MatButtonModule,
-  MatSelectModule
+  MatSelectModule,
 ];
 
 @Component({
@@ -30,14 +48,16 @@ const MATERIAL_MODELO = [
   templateUrl: './modificaEstructuraFormato1.component.html',
   styleUrls: ['./modificaEstructuraFormato1.component.scss'],
   imports: [MATERIAL_MODELO, ReactiveFormsModule],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ModificaEstructuraFormato1Component implements OnInit {
   private _storage = inject(StorageService);
   private localStorage = this._storage.get<loginInterface>('sesion');
   private readonly spinnerService = inject(SpinnerService);
 
-  readonly dialogRef = inject(MatDialogRef<ModificaEstructuraFormato1Component>);
+  readonly dialogRef = inject(
+    MatDialogRef<ModificaEstructuraFormato1Component>
+  );
   readonly data = inject<IExamenEstructura>(MAT_DIALOG_DATA);
 
   @ViewChild('htmlData') htmlData!: ElementRef;
@@ -53,23 +73,36 @@ export class ModificaEstructuraFormato1Component implements OnInit {
 
   //IResultadoFormato1: IResultadoFormato1[]=this.data.resultado;
 
-  examenEstructura: IExamenEstructura = this.data;
+  private examenEstructura: IExamenEstructura = this.data;
 
-  constructor(
-
-  ) {
+  constructor() {
     //   this.datoFicha=data;
-    console.log('data:', this.data)
+    console.log('data:', this.data);
   }
 
-  ordenEstructura = new FormControl(this.data.resultado[this.data.indice!].ordenEstructura, [Validators.required]);
-  descripcion = new FormControl(this.data.resultado[this.data.indice!].descripcion, [Validators.required]);
-  unidadMedida = new FormControl(this.data.resultado[this.data.indice!].unidadMedida, [Validators.required]);
+  ordenEstructura = new FormControl(
+    this.data.resultado[this.data.indice!].ordenEstructura,
+    [Validators.required]
+  );
+  descripcion = new FormControl(
+    this.data.resultado[this.data.indice!].descripcion,
+    [Validators.required]
+  );
+  unidadMedida = new FormControl(
+    this.data.resultado[this.data.indice!].unidadMedida,
+    [Validators.required]
+  );
   //resultado = new FormControl('', [Validators.required]);
   //referencia = new FormControl('', [Validators.required]);
-  logica = new FormControl(this.data.resultado[this.data.indice!].logica, [Validators.required]);
-  desde = new FormControl(this.data.resultado[this.data.indice!].desde, [Validators.required]);
-  hasta = new FormControl(this.data.resultado[this.data.indice!].hasta, [Validators.required]);
+  logica = new FormControl(this.data.resultado[this.data.indice!].logica, [
+    Validators.required,
+  ]);
+  desde = new FormControl(this.data.resultado[this.data.indice!].desde, [
+    Validators.required,
+  ]);
+  hasta = new FormControl(this.data.resultado[this.data.indice!].hasta, [
+    Validators.required,
+  ]);
 
   modificaFormato1 = signal<FormGroup>(
     new FormGroup({
@@ -81,20 +114,26 @@ export class ModificaEstructuraFormato1Component implements OnInit {
       logica: this.logica,
       desde: this.desde,
       hasta: this.hasta,
-    }));
+    })
+  );
 
   getErrorMessage(campo: string) {
-
     if (campo === 'ordenEstructura') {
-      return this.descripcion.hasError('required') ? 'Debes Ingresar OrdenEstructura' : '';
+      return this.descripcion.hasError('required')
+        ? 'Debes Ingresar OrdenEstructura'
+        : '';
     }
 
     if (campo === 'descripcion') {
-      return this.descripcion.hasError('required') ? 'Debes Ingresar Descripción' : '';
+      return this.descripcion.hasError('required')
+        ? 'Debes Ingresar Descripción'
+        : '';
     }
 
     if (campo === 'unidadMedida') {
-      return this.unidadMedida.hasError('required') ? 'Debes Ingresar Unidad Medida' : '';
+      return this.unidadMedida.hasError('required')
+        ? 'Debes Ingresar Unidad Medida'
+        : '';
     }
 
     /*   if (campo === 'resultado') {
@@ -121,17 +160,18 @@ export class ModificaEstructuraFormato1Component implements OnInit {
   }
 
   ngOnInit() {
-    this.cargaUnidadMedida()
-    this.seleccionaLogica(this.data.resultado[this.data.indice!].logica)
+    this.cargaUnidadMedida();
+    this.seleccionaLogica(this.data.resultado[this.data.indice!].logica);
   }
 
   seleccionaLogica(p: any) {
-    console.log('prueba logica:', p)
+    console.log('prueba logica:', p);
     if (p != '-') {
       this.modificaFormato1().controls['hasta'].setValidators([]);
-    }
-    else {
-      this.modificaFormato1().controls['hasta'].setValidators([Validators.required]);
+    } else {
+      this.modificaFormato1().controls['hasta'].setValidators([
+        Validators.required,
+      ]);
     }
     this.modificaFormato1().controls['hasta'].updateValueAndValidity();
   }
@@ -155,38 +195,55 @@ export class ModificaEstructuraFormato1Component implements OnInit {
   }
 
   retorna0NaN(valor: any) {
-    if (isNaN(valor))
-      return 0;
-    else
-      return valor;
+    if (isNaN(valor)) return 0;
+    else return valor;
   }
 
   async validaOrden(valor: number) {
-    console.log('valor de orden', valor)
+    console.log('valor de orden', valor);
     console.log('this.data.resultado:', this.data.resultado);
-    if (valor == this.data.resultado[this.data.indice!].ordenEstructura) return 0
-    if (this.data.resultado == undefined) return 0
+    if (valor == this.data.resultado[this.data.indice!].ordenEstructura)
+      return 0;
+    if (this.data.resultado == undefined) return 0;
 
-    const resultado = this.data.resultado.find((estructuraFormato1) => estructuraFormato1.ordenEstructura == valor);
-    console.log('resultado:', resultado)
-    if (resultado == undefined) return 0
-    if (resultado.ordenEstructura != valor) return 0
+    const resultado = this.data.resultado.find(
+      (estructuraFormato1) => estructuraFormato1.ordenEstructura == valor
+    );
+    console.log('resultado:', resultado);
+    if (resultado == undefined) return 0;
+    if (resultado.ordenEstructura != valor) return 0;
     Swal.fire('ERROR ORDEN ', 'El número de orden ya existe', 'error');
-    this.modificaFormato1().get('ordenEstructura')?.setValue(this.data.resultado[this.data.indice!].ordenEstructura)
-    return 1
+    this.modificaFormato1()
+      .get('ordenEstructura')
+      ?.setValue(this.data.resultado[this.data.indice!].ordenEstructura);
+    return 1;
   }
 
   async enviar() {
-    if (await this.validaOrden(this.modificaFormato1().get('ordenEstructura')!.value) === 1) return
+    if (
+      (await this.validaOrden(
+        this.modificaFormato1().get('ordenEstructura')!.value
+      )) === 1
+    )
+      return;
 
-    let referencia = ''
+    let referencia = '';
     if (this.modificaFormato1().get('logica')!.value == '-') {
-      referencia = this.modificaFormato1().get('desde')!.value + ' - ' + this.modificaFormato1().get('hasta')!.value
+      referencia =
+        this.modificaFormato1().get('desde')!.value +
+        ' - ' +
+        this.modificaFormato1().get('hasta')!.value;
     } else {
-      referencia = this.modificaFormato1().get('logica')!.value + ' ' + this.modificaFormato1().get('desde')!.value
+      referencia =
+        this.modificaFormato1().get('logica')!.value +
+        ' ' +
+        this.modificaFormato1().get('desde')!.value;
     }
 
-    console.log('this.examenEstructura.resultado:', this.examenEstructura.resultado)
+    console.log(
+      'this.examenEstructura.resultado:',
+      this.examenEstructura.resultado
+    );
 
     this.examenEstructura.resultado[this.data.indice!] = {
       ordenEstructura: this.modificaFormato1().get('ordenEstructura')!.value,
@@ -197,11 +254,11 @@ export class ModificaEstructuraFormato1Component implements OnInit {
       logica: this.modificaFormato1().get('logica')!.value,
       desde: this.modificaFormato1().get('desde')!.value,
       hasta: this.modificaFormato1().get('hasta')!.value,
-      flagNegrilla: false
+      flagNegrilla: false,
+      formula: this.data.resultado[this.data.indice!].formula,
+      formulaInterna: this.data.resultado[this.data.indice!].formulaInterna,
     };
 
     this.dialogRef.close(this.examenEstructura);
-
   }
-
 }

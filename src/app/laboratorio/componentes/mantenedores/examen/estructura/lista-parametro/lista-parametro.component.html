@@ -283,7 +283,7 @@
           matTooltip="Función"
           mat-icon-button
           class="tabla"
-          (click)="funcion(row)"
+          (click)="funcion(row._id)"
         >
           <mat-icon>functions</mat-icon>
         </button>
@@ -297,7 +297,7 @@
       class="example-element-row"
     ></tr>
   </table>
-
+  <h1>{{ noExisteParametro() }}</h1>
   <mat-paginator
     #myPaginator
     [pageSizeOptions]="[10, 20, 30, 100]"

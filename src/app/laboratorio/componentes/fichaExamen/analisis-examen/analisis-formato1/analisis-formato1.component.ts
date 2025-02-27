@@ -267,10 +267,63 @@ export class AnalisisFormato1Component implements OnInit {
         'input_' + campo._id,
         new FormControl('')
       );
+      if (campo.formulaInterna != '' && campo.formulaInterna != undefined) {
+        this.ingresaFormato1()
+          .get('input_' + campo._id)!
+          .disable();
+      }
     }
   }
 
-  campoFormula(
+  extraeCampoFormula(idCampo: string, estraeCampoFormula: string) {
+    console.log('campo:', idCampo);
+    console.log('formula:', estraeCampoFormula);
+    let valorFormulaFinal = estraeCampoFormula;
+    let valor = 0;
+    for (let i = 0; i <= estraeCampoFormula.length; i++) {
+      if (estraeCampoFormula[i] == '&') {
+        for (let a = i; a <= estraeCampoFormula.length; a++) {
+          if (estraeCampoFormula[a] == '@') {
+            //Extrae el Id (nombre Campo)
+            console.log('extrae' + i, estraeCampoFormula.slice(i, a + 1));
+            //rescata valor del input
+            valor = this.retorna0NaN(
+              parseFloat(
+                this.ingresaFormato1().get(
+                  'input_' + estraeCampoFormula.slice(i + 1, a)
+                )!.value
+              )
+            );
+            console.log('valor:', valor);
+            // reemplaza el valor por el nombre del campo
+            valorFormulaFinal = valorFormulaFinal.replace(
+              estraeCampoFormula.slice(i, a + 1),
+              valor.toString()
+            );
+            i = a;
+            break;
+          }
+        }
+      }
+    }
+    const valorCalculado = Function(
+      `"use strict";return ${valorFormulaFinal}`
+    )(); //permite realizar el calculo
+    this.ingresaFormato1()
+      .get('input_' + idCampo)!
+      .setValue(valorCalculado);
+    console.log('valor final:', valorFormulaFinal);
+  }
+
+  valorplaceholder(valorFormulaInterna: string) {
+    let valorPlaceholder = 'Ingreso Valor';
+    if (valorFormulaInterna != '' && valorFormulaInterna != undefined)
+      valorPlaceholder = 'Valor Formula';
+    console.log('valor patcheco:', valorPlaceholder);
+    return valorPlaceholder;
+  }
+
+  async campoLogica(
     evento: any,
     id: string,
     desde: string,
@@ -279,6 +332,21 @@ export class AnalisisFormato1Component implements OnInit {
   ) {
     let valor = evento.target.value;
     let variableflag = false;
+    console.log('id:', id);
+    console.log('this.datoResultadoFormato1():', this.datoResultadoFormato1());
+    const camposConFormula = await this.datoResultadoFormato1().filter(
+      (valor) =>
+        valor.formulaInterna != '' &&
+        valor.formulaInterna != undefined &&
+        valor.formulaInterna.indexOf(id) > 0
+    );
+    console.log('camposConFormula:', camposConFormula);
+    for (const camposConFormula_ of camposConFormula) {
+      this.extraeCampoFormula(
+        camposConFormula_._id!,
+        camposConFormula_.formulaInterna
+      ); //Envia formula para calculo
+    }
     switch (logica) {
       case '-':
         if (valor < desde || valor > hasta) variableflag = true;

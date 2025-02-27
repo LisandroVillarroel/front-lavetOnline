@@ -10,7 +10,7 @@ export interface IResultadoEspecieFormato1 {
 }
 
 export interface IResultadoFormato1 {
-  _id?: string
+  _id?: string;
   ordenEstructura: number;
   descripcion: string;
   unidadMedida: string;
@@ -20,5 +20,6 @@ export interface IResultadoFormato1 {
   desde?: string;
   hasta?: string;
   flagNegrilla?: boolean;
+  formula: string;
+  formulaInterna: string;
 }
-

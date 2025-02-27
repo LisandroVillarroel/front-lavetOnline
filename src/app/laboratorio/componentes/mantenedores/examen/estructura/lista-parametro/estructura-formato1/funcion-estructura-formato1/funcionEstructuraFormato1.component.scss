@@ -18,3 +18,34 @@
 .mat-dialog-content{
   margin: auto;
 }
+
+
+
+.example-button-row {
+  display: table-cell;
+  max-width: 600px;
+  align-items: left;
+  align-self: left;
+}
+
+.example-button-row .mat-mdc-button-base {
+  margin: 8px 8px 8px 0;
+  font-size: 20px;
+}
+
+.fuente {
+font-size: 25px;
+}
+
+.mat-mdc-raised-button {
+  min-width: 100%;
+}
+
+.mat-dialog-container {
+  padding: 50px !important;
+
+}
+
+.mat-dialog-content {
+  margin: auto;
+}
