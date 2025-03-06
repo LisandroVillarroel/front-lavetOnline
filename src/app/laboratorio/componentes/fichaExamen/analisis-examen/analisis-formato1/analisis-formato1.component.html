@@ -95,12 +95,16 @@
       }
       <div class="row">
         <div
+          [style]="{ height: '140px' }"
           class="col-md-2 border border-dark border-top-0 alineaV border-end-0 destacado"
         >
           OBSERVACIONES
         </div>
         <div class="col-md-10 border border-dark border-left-0 border-top-0">
-          <ckeditor [formControl]="observaciones"></ckeditor>
+          <p-editor
+            [formControl]="observaciones"
+            [style]="{ height: '80px' }"
+          />
         </div>
       </div>
     </div>

@@ -44,8 +44,7 @@ import { loginInterface } from '@autentica/interface/loginInterface';
 import { SpinnerService } from '@shared/spinner/spinner.service';
 import { IExamen } from '@laboratorio/modelos/examen-modelo';
 import { ExamenService } from '@laboratorio/servicios/examen.service';
-import { ListaParametroComponent } from './estructura/lista-parametro/lista-parametro.component';
-
+import { ListaParametroComponent } from './estructura/formato1/lista-parametro.component';
 
 const MATERIAL_MODELO = [
   MatIconModule,
@@ -99,7 +98,7 @@ export default class ExamenComponent implements OnInit {
   @ViewChild(MatSort) sort!: MatSort;
 
   public nombreArchivo = 'examenes';
-  constructor() { }
+  constructor() {}
 
   ngOnInit() {
     this.spinnerService.mostrar();
@@ -352,7 +351,7 @@ export default class ExamenComponent implements OnInit {
       });
   }
 
-  listaEstructura(Examen_Id: string) {
+  listaEstructura(Examen_Id: string, numeroFormatoInterno: number) {
     const dialogConfig = new MatDialogConfig();
 
     dialogConfig.disableClose = true;
@@ -361,16 +360,48 @@ export default class ExamenComponent implements OnInit {
     dialogConfig.height = '90%';
     dialogConfig.position = { top: '3%' };
 
-    dialogConfig.data = Examen_Id;//datoPar.formato?.formato1?.resultadoEspecie;
-    this.dialog
-      .open(ListaParametroComponent, dialogConfig)
-      .afterClosed()
-      .subscribe((data) => {
-        console.log('Datoas Consulta:', data);
-        if (data === 1) {
-          this.refreshTable();
-        }
-      });
+    dialogConfig.data = Examen_Id; //datoPar.formato?.formato1?.resultadoEspecie;
+
+    switch (numeroFormatoInterno) {
+      case 1:
+        this.dialog
+          .open(ListaParametroComponent, dialogConfig)
+          .afterClosed()
+          .subscribe((data) => {
+            console.log('Datoas Consulta:', data);
+            if (data === 1) {
+              this.refreshTable();
+            }
+          });
+        break;
+      case 2:
+        this.dialog
+          .open(Formato2Component, dialogConfig)
+          .afterClosed()
+          .subscribe((data) => {
+            console.log('Dialog output3333:', data);
+          });
+        break;
+      case 3:
+        break;
+      case 4:
+        break;
+      case 5:
+        break;
+      case 6:
+        break;
+      case 7:
+        break;
+      case 8:
+        break;
+      case 9:
+        break;
+      case 10:
+        break;
+      default:
+        //
+        break;
+    }
   }
 
   elimina(datoPar: IExamen) {

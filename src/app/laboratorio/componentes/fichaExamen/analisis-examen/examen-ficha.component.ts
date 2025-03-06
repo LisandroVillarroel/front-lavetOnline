@@ -122,6 +122,7 @@ export default class ExamenFichaComponent implements OnInit {
       )
       .subscribe({
         next: (res) => {
+          console.log('res.data:', res.data);
           this.dataSource.data = res.data as any[];
         },
         // console.log('yo:', res as PerfilI[]),
@@ -159,16 +160,21 @@ export default class ExamenFichaComponent implements OnInit {
     dialogConfig.data = datoFicha;
 
     console.log('datoFicha:', datoFicha);
-    this.dialog
-      .open(AnalisisFormato1Component, dialogConfig)
-      .afterClosed()
-      .subscribe((data) => {
-        console.log('Dialog output3333:', data);
-        if (data === 1) {
-          console.log('paso dato');
-          this.refreshTable();
-        }
-      });
+
+    switch (datoFicha.fichaC.examen.numeroFormatoInterno) {
+      case 1:
+        this.dialog
+          .open(AnalisisFormato1Component, dialogConfig)
+          .afterClosed()
+          .subscribe((data) => {
+            console.log('Dialog output3333:', data);
+            if (data === 1) {
+              console.log('paso dato');
+              this.refreshTable();
+            }
+          });
+        break;
+    }
     /*
     switch (datoFicha.fichaC.examen.codigoInterno) {
       case 1:

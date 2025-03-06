@@ -1,0 +1,255 @@
+<div class="container">
+  <div class="pt-1">
+    <div class="col-md-12">
+      <h4 class="text-center">LISTA EXAMEN</h4>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12 alinearDerecha">
+      <button
+        mat-raised-button
+        mat-dialog-close
+        class="colorFondoBotonCancelar"
+      >
+        CERRAR
+      </button>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-3 d-flex align-items-center justify-content-end">
+      <button
+        mat-raised-button
+        class="colorFondoBotonExTabla"
+        (click)="
+          exporter.exportTable('xlsx', {
+            fileName: nombreArchivo,
+            sheet: 'facturas',
+            Props: { Author: 'Silave' },
+            columnWidths: [50, 5, 3]
+          })
+        "
+      >
+        Excel
+      </button>
+      <button
+        mat-raised-button
+        class="colorFondoBotonExTabla"
+        (click)="exporter.exportTable('csv', { fileName: nombreArchivo })"
+      >
+        Csv
+      </button>
+      <button
+        mat-raised-button
+        class="colorFondoBotonExTabla"
+        (click)="exporter.exportTable('json', { fileName: nombreArchivo })"
+      >
+        Json
+      </button>
+      <button
+        mat-raised-button
+        class="colorFondoBotonExTabla"
+        (click)="exporter.exportTable('txt', { fileName: nombreArchivo })"
+      >
+        Txt
+      </button>
+    </div>
+    <div class="col-md-7 ml-2 mr-2">
+      <mat-form-field class="inputBuscar">
+        <mat-icon matPrefix>search</mat-icon>
+        <input matInput (keyup)="applyFilter($event)" placeholder="Buscar" />
+      </mat-form-field>
+    </div>
+    <div class="col-md-2">
+      <mat-form-field class="inputSelectBuscar">
+        <mat-label>Especie</mat-label>
+        <mat-select
+          [formControl]="especieForm"
+          (selectionChange)="seleccionaEspecie($event.value)"
+        >
+          @for (especie_ of datoEspecie(); track especie_) {
+          <mat-option [value]="especie_._id">{{ especie_.nombre }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <table
+    mat-table
+    [dataSource]="dataSource"
+    matTableExporter
+    #exporter="matTableExporter"
+    multiTemplateDataRows
+    matSort
+  >
+    <!-- ID Index -->
+    <ng-container matColumnDef="index">
+      <th
+        id="indexI"
+        mat-header-cell
+        *matHeaderCellDef
+        mat-sort-header
+        style="width: 5%"
+      >
+        N°
+      </th>
+      <td mat-cell *matCellDef="let row; let i = dataIndex" style="width: 5%">
+        {{ i + 1 + myPaginator.pageIndex * myPaginator.pageSize }}
+      </td>
+    </ng-container>
+
+    <!-- DESCRIPCIÓN Column -->
+    <ng-container matColumnDef="ordenEstructura">
+      <th
+        id="ordenEstructuraI"
+        mat-header-cell
+        *matHeaderCellDef
+        mat-sort-header
+        style="width: 5%"
+      >
+        ORDEN
+      </th>
+      <td mat-cell *matCellDef="let row" style="width: 5%">
+        {{ row.ordenEstructura }}
+      </td>
+    </ng-container>
+
+    <!-- DESCRIPCIÓN Column -->
+    <ng-container matColumnDef="descripcion">
+      <th
+        id="descripcionI"
+        mat-header-cell
+        *matHeaderCellDef
+        mat-sort-header
+        style="width: 15%"
+      >
+        DESCRIPCIÓN
+      </th>
+      <td mat-cell *matCellDef="let row" style="width: 15%">
+        {{ row.descripcion }}
+      </td>
+    </ng-container>
+
+    <!-- UNIDADMEDIDA  Column -->
+    <ng-container matColumnDef="unidadMedida">
+      <th
+        id="unidadMedidaI"
+        mat-header-cell
+        *matHeaderCellDef
+        mat-sort-header
+        style="width: 10%"
+      >
+        UNIDAD MEDIDA
+      </th>
+      <td mat-cell *matCellDef="let row" style="width: 10%">
+        {{ row.unidadMedida }}
+      </td>
+    </ng-container>
+
+    <!-- RESULTADO Column -->
+    <ng-container matColumnDef="resultado">
+      <th
+        id="resultadoI"
+        mat-header-cell
+        *matHeaderCellDef
+        mat-sort-header
+        style="width: 10%"
+      >
+        RESULTADO
+      </th>
+      <td mat-cell *matCellDef="let row" style="width: 10%">
+        {{ row.resultado }}
+      </td>
+    </ng-container>
+
+    <!-- REFERENCIA Column -->
+    <ng-container matColumnDef="referencia">
+      <th
+        id="referenciaI"
+        mat-header-cell
+        *matHeaderCellDef
+        mat-sort-header
+        style="width: 10%"
+      >
+        REFERENCIA
+      </th>
+      <td mat-cell *matCellDef="let row" style="width: 10%">
+        {{ row.referencia }}
+      </td>
+    </ng-container>
+
+    <!-- Horas LÓGICA Column -->
+    <ng-container matColumnDef="logica">
+      <th
+        id="logicaI"
+        mat-header-cell
+        *matHeaderCellDef
+        mat-sort-header
+        style="width: 7%"
+      >
+        LÓGICA
+      </th>
+      <td mat-cell *matCellDef="let row" style="width: 7%">
+        {{ row.logica }}
+      </td>
+    </ng-container>
+
+    <!-- codigo DESDE Column -->
+    <ng-container matColumnDef="desde">
+      <th
+        id="desdeI"
+        mat-header-cell
+        *matHeaderCellDef
+        mat-sort-header
+        style="width: 7%"
+      >
+        DESDE
+      </th>
+      <td mat-cell *matCellDef="let row" style="width: 7%">
+        {{ row.desde }}
+      </td>
+    </ng-container>
+
+    <!-- Formato del HASTA Column -->
+    <ng-container matColumnDef="hasta">
+      <th
+        id="hastaI"
+        mat-header-cell
+        *matHeaderCellDef
+        mat-sort-headerstyle="width: 7%"
+      >
+        HASTA
+      </th>
+      <td mat-cell *matCellDef="let row" style="width: 7%">
+        {{ row.hasta }}
+      </td>
+    </ng-container>
+
+    <!-- Formato del FORMULA INTERNA Column -->
+    <ng-container matColumnDef="formulaInterna">
+      <th
+        id="formulaInternaI"
+        mat-header-cell
+        *matHeaderCellDef
+        mat-sort-headerstyle="width: 9%"
+      >
+        FORMULA?
+      </th>
+      <td mat-cell *matCellDef="let row" style="width: 9%">
+        @if(row.formulaInterna=='' || row.formulaInterna==undefined){ No }@else{
+        Si }
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="opciones"> </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr
+      mat-row
+      *matRowDef="let row; columns: displayedColumns"
+      class="example-element-row"
+    ></tr>
+  </table>
+  <h1>{{ noExisteParametro() }}</h1>
+  <mat-paginator #myPaginator [pageSizeOptions]="[25, 50]"></mat-paginator>
+</div>

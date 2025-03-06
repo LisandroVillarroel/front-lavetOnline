@@ -23,3 +23,9 @@ export interface IResultadoFormato1 {
   formula: string;
   formulaInterna: string;
 }
+
+export interface IResultadoFinalFormato1 {
+  resultado: IResultadoFormato1[];
+  subTitulo: string;
+  observaciones: string;
+}

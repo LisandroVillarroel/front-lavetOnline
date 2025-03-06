@@ -223,6 +223,7 @@
       <button
         matTooltip="Modificar"
         mat-icon-button
+        class="tabla"
         [disabled]="row.fichaC.examen.internoExterno == 'Externo'"
         style="size: 5px; margin-right: 15px"
         (click)="analizaFicha(row)"
@@ -233,6 +234,7 @@
       <button
         matTooltip="Carga Archivo"
         mat-icon-button
+        class="tabla"
         style="size: 5px"
         (click)="
           subeExterno(row._id, row.fichaC.id_Ficha, row.fichaC.numeroFicha)

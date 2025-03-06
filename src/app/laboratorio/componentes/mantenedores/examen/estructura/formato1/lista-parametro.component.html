@@ -105,11 +105,11 @@
         mat-header-cell
         *matHeaderCellDef
         mat-sort-header
-        style="width: 6%"
+        style="width: 5%"
       >
         ORDEN
       </th>
-      <td mat-cell *matCellDef="let row" style="width: 6%">
+      <td mat-cell *matCellDef="let row" style="width: 5%">
         {{ row.ordenEstructura }}
       </td>
     </ng-container>
@@ -121,11 +121,11 @@
         mat-header-cell
         *matHeaderCellDef
         mat-sort-header
-        style="width: 20%"
+        style="width: 15%"
       >
         DESCRIPCIÓN
       </th>
-      <td mat-cell *matCellDef="let row" style="width: 20%">
+      <td mat-cell *matCellDef="let row" style="width: 15%">
         {{ row.descripcion }}
       </td>
     </ng-container>
@@ -216,12 +216,28 @@
         id="hastaI"
         mat-header-cell
         *matHeaderCellDef
-        mat-sort-headerstyle="width: 9%"
+        mat-sort-headerstyle="width: 7%"
       >
         HASTA
       </th>
-      <td mat-cell *matCellDef="let row" style="width: 9%">
+      <td mat-cell *matCellDef="let row" style="width: 7%">
         {{ row.hasta }}
+      </td>
+    </ng-container>
+
+    <!-- Formato del FORMULA INTERNA Column -->
+    <ng-container matColumnDef="formulaInterna">
+      <th
+        id="formulaInternaI"
+        mat-header-cell
+        *matHeaderCellDef
+        mat-sort-headerstyle="width: 9%"
+      >
+        FORMULA?
+      </th>
+      <td mat-cell *matCellDef="let row" style="width: 9%">
+        @if(row.formulaInterna=='' || row.formulaInterna==undefined){ No }@else{
+        Si }
       </td>
     </ng-container>
 
@@ -230,7 +246,7 @@
         id="opcionesI"
         mat-header-cell
         *matHeaderCellDef
-        style="width: 16%; text-align: center"
+        style="width: 15%; text-align: center"
       >
         @if(especieForm.value!=''){
         <button
@@ -248,7 +264,7 @@
       <td
         mat-cell
         *matCellDef="let row; let i = index"
-        style="width: 16%; text-align: center"
+        style="width: 15%; text-align: center"
       >
         <button
           matTooltip="Modificar"
@@ -298,8 +314,5 @@
     ></tr>
   </table>
   <h1>{{ noExisteParametro() }}</h1>
-  <mat-paginator
-    #myPaginator
-    [pageSizeOptions]="[10, 20, 30, 100]"
-  ></mat-paginator>
+  <mat-paginator #myPaginator [pageSizeOptions]="[25, 50]"></mat-paginator>
 </div>

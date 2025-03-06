@@ -112,6 +112,7 @@ export class ListaParametroComponent {
     'logica',
     'desde',
     'hasta',
+    'formulaInterna',
     'opciones',
   ];
 

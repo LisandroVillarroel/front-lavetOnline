@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, JsonPipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -24,10 +24,12 @@ import { MatAccordion, MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { EditorModule } from 'primeng/editor';
 import { loginInterface } from '@autentica/interface/loginInterface';
 import { ICliente } from '@laboratorio/modelos/cliente-modelo';
 import {
   IFormato1,
+  IResultadoFinalFormato1,
   IResultadoFormato1,
 } from '@laboratorio/modelos/examenes/examenFormato1';
 import { IFicha } from '@laboratorio/modelos/ficha-modelo';
@@ -59,6 +61,8 @@ const MATERIAL_MODELO = [
     ReactiveFormsModule,
     CommonModule,
     FichaCabeceraComponent,
+    JsonPipe,
+    EditorModule,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -79,72 +83,18 @@ export class AnalisisFormato1Component implements OnInit {
 
   usuario!: string;
   datoFicha!: IFicha;
-  datoExamenFormato1!: IFormato1;
 
-  IFormato1!: IFormato1;
-  IResultadoFormato1!: IResultadoFormato1[];
+  IFormato1!: IResultadoFinalFormato1;
   datoResultadoFormato1 = signal<IResultadoFormato1[]>([]);
   datoClienteEmpresa!: ICliente;
   emailRecepcionExamenCliente = '';
 
-  srAlbuminaFlag = false;
-  srBilirrubinaTotalFlag = false;
-  srBilirrubinaIndirectaFlag = false;
-  srBilirrubinaDirectaFlag = false;
-  srCalcioFlag = false;
-  srColesterolFlag = false;
-  srCreatininaFlag = false;
-  srFosfatasaAlcalinaFlag = false;
-  srFosforoFlag = false;
-  srGGTFlag = false;
-  srGlobulinasFlag = false;
-  srGPTFlag = false;
-  srGOTFlag = false;
-  srGlucosaFlag = false;
-  srUreaFlag = false;
-  srNitrogenoUreicoSFlag = false;
-  srProteinasTotalesFlag = false;
-
   constructor() {}
 
-  srAlbumina = new FormControl('', [Validators.required]);
-  srBilirrubinaTotal = new FormControl('', [Validators.required]);
-  srBilirrubinaIndirecta = new FormControl('', [Validators.required]);
-  srBilirrubinaDirecta = new FormControl('', [Validators.required]);
-  srCalcio = new FormControl('', [Validators.required]);
-  srColesterol = new FormControl('', [Validators.required]);
-  srCreatinina = new FormControl('', [Validators.required]);
-  srFosfatasaAlcalina = new FormControl('', [Validators.required]);
-  srFosforo = new FormControl('', [Validators.required]);
-  srGGT = new FormControl('', [Validators.required]);
-  srGlobulinas = new FormControl('', [Validators.required]);
-  srGPT = new FormControl('', [Validators.required]);
-  srGOT = new FormControl('', [Validators.required]);
-  srGlucosa = new FormControl('', [Validators.required]);
-  srUrea = new FormControl('', [Validators.required]);
-  srNitrogenoUreicoS = new FormControl('', [Validators.required]);
-  srProteinasTotales = new FormControl('', [Validators.required]);
   observaciones = new FormControl('', [Validators.required]);
 
   ingresaFormato1 = signal<FormGroup>(
     new FormGroup({
-      srAlbumina: this.srAlbumina,
-      srBilirrubinaTotal: this.srBilirrubinaTotal,
-      srBilirrubinaIndirecta: this.srBilirrubinaIndirecta,
-      srBilirrubinaDirecta: this.srBilirrubinaDirecta,
-      srCalcio: this.srCalcio,
-      srColesterol: this.srColesterol,
-      srCreatinina: this.srCreatinina,
-      srFosfatasaAlcalina: this.srFosfatasaAlcalina,
-      srFosforo: this.srFosforo,
-      srGGT: this.srGGT,
-      srGlobulinas: this.srGlobulinas,
-      srGPT: this.srGPT,
-      srGOT: this.srGOT,
-      srGlucosa: this.srGlucosa,
-      srUrea: this.srUrea,
-      srNitrogenoUreicoS: this.srNitrogenoUreicoS,
-      srProteinasTotales: this.srProteinasTotales,
       observaciones: this.observaciones,
     })
   );
@@ -250,7 +200,6 @@ export class AnalisisFormato1Component implements OnInit {
       )
       .subscribe({
         next: (res) => {
-          console.log('examen especie:', res);
           this.datoResultadoFormato1.set(res.data.resultadoEspecie.resultado);
           this.creaCampos();
         },
@@ -265,7 +214,7 @@ export class AnalisisFormato1Component implements OnInit {
     for (const campo of this.datoResultadoFormato1()) {
       this.ingresaFormato1().addControl(
         'input_' + campo._id,
-        new FormControl('')
+        new FormControl('', [Validators.required])
       );
       if (campo.formulaInterna != '' && campo.formulaInterna != undefined) {
         this.ingresaFormato1()
@@ -275,9 +224,13 @@ export class AnalisisFormato1Component implements OnInit {
     }
   }
 
-  extraeCampoFormula(idCampo: string, estraeCampoFormula: string) {
-    console.log('campo:', idCampo);
-    console.log('formula:', estraeCampoFormula);
+  extraeCampoFormula(
+    idCampo: string,
+    estraeCampoFormula: string,
+    desde: string,
+    hasta: string,
+    logica: string
+  ) {
     let valorFormulaFinal = estraeCampoFormula;
     let valor = 0;
     for (let i = 0; i <= estraeCampoFormula.length; i++) {
@@ -285,7 +238,6 @@ export class AnalisisFormato1Component implements OnInit {
         for (let a = i; a <= estraeCampoFormula.length; a++) {
           if (estraeCampoFormula[a] == '@') {
             //Extrae el Id (nombre Campo)
-            console.log('extrae' + i, estraeCampoFormula.slice(i, a + 1));
             //rescata valor del input
             valor = this.retorna0NaN(
               parseFloat(
@@ -294,33 +246,72 @@ export class AnalisisFormato1Component implements OnInit {
                 )!.value
               )
             );
-            console.log('valor:', valor);
             // reemplaza el valor por el nombre del campo
             valorFormulaFinal = valorFormulaFinal.replace(
               estraeCampoFormula.slice(i, a + 1),
               valor.toString()
             );
+
             i = a;
             break;
           }
         }
       }
     }
-    const valorCalculado = Function(
-      `"use strict";return ${valorFormulaFinal}`
-    )(); //permite realizar el calculo
+    const valorCalculado = parseFloat(
+      Function(`"use strict";return ${valorFormulaFinal}`)().toFixed(2)
+    ); //permite realizar el calculo
     this.ingresaFormato1()
       .get('input_' + idCampo)!
       .setValue(valorCalculado);
-    console.log('valor final:', valorFormulaFinal);
+    this.logica(valorCalculado, idCampo, desde, hasta, logica);
   }
 
   valorplaceholder(valorFormulaInterna: string) {
     let valorPlaceholder = 'Ingreso Valor';
     if (valorFormulaInterna != '' && valorFormulaInterna != undefined)
       valorPlaceholder = 'Valor Formula';
-    console.log('valor patcheco:', valorPlaceholder);
     return valorPlaceholder;
+  }
+  logica(valor: any, id: string, desde: string, hasta: string, logica: string) {
+    console.log('valor:', valor);
+    console.log('id:', id);
+    console.log('desde:', desde);
+    console.log('hasta:', hasta);
+    console.log('logica:', logica);
+
+    valor = this.retorna0NaN(parseFloat(valor));
+    desde = this.retorna0NaN(parseFloat(desde));
+    hasta = this.retorna0NaN(parseFloat(hasta));
+
+    console.log('valor2:', valor);
+    console.log('desde2:', desde);
+    console.log('hasta2:', hasta);
+
+    let variableflag = true;
+    switch (logica) {
+      case '-':
+        console.log('paso -');
+        if (valor >= desde && valor <= hasta) variableflag = false;
+        break;
+      case '<':
+        console.log('paso <');
+        if (valor < desde) variableflag = false;
+        break;
+      case '>':
+        console.log('paso >');
+        if (valor > desde) variableflag = false;
+        break;
+    }
+    console.log('variableflag:', variableflag);
+    // Permite cambiar un valor de la matriz flagNegrilla y resultado buscando por el _Id
+    this.datoResultadoFormato1.update((preResultado) =>
+      preResultado.map((resultado) =>
+        resultado._id === id
+          ? { ...resultado, flagNegrilla: variableflag, resultado: valor }
+          : resultado
+      )
+    );
   }
 
   async campoLogica(
@@ -331,498 +322,34 @@ export class AnalisisFormato1Component implements OnInit {
     logica: string
   ) {
     let valor = evento.target.value;
-    let variableflag = false;
-    console.log('id:', id);
-    console.log('this.datoResultadoFormato1():', this.datoResultadoFormato1());
     const camposConFormula = await this.datoResultadoFormato1().filter(
       (valor) =>
         valor.formulaInterna != '' &&
         valor.formulaInterna != undefined &&
         valor.formulaInterna.indexOf(id) > 0
     );
-    console.log('camposConFormula:', camposConFormula);
+
     for (const camposConFormula_ of camposConFormula) {
       this.extraeCampoFormula(
         camposConFormula_._id!,
-        camposConFormula_.formulaInterna
+        camposConFormula_.formulaInterna,
+        camposConFormula_.desde!,
+        camposConFormula_.hasta!,
+        camposConFormula_.logica
       ); //Envia formula para calculo
     }
-    switch (logica) {
-      case '-':
-        if (valor < desde || valor > hasta) variableflag = true;
-        else variableflag = false;
-        break;
-      case '<':
-        if (valor < desde) variableflag = true;
-        else variableflag = false;
-        break;
-      default:
-        if (valor > desde) variableflag = true;
-        else variableflag = false;
-    }
-    // Permite cambiar un valor de la matriz flagNegrilla y resultado buscando por el _Id
-    this.datoResultadoFormato1.update((preResultado) =>
-      preResultado.map((resultado) =>
-        resultado._id === id
-          ? { ...resultado, flagNegrilla: variableflag, resultado: valor }
-          : resultado
-      )
-    );
-    /*
-    const pos = this.datoResultadoFormato1()
-      .map((val) => val._id)
-      .indexOf(id);
-
-    this.datoResultadoFormato1()[pos].flagNegrilla = variableflag;
-*/
-    console.log('valor flag:', this.datoResultadoFormato1());
-    //  this.sumaTotal();
-  }
-
-  srBilirrubinaTotalFormula() {
-    if (this.data.fichaC.especie!.nombre.toUpperCase() == 'CANINO') {
-      console.log(
-        'valor srBilirrubinaTotal:',
-        this.ingresaFormato1().get('srBilirrubinaTotal')!.value
-      );
-      if (
-        this.ingresaFormato1().get('srBilirrubinaTotal')!.value < 0.1 ||
-        this.ingresaFormato1().get('srBilirrubinaTotal')!.value > 0.7
-      ) {
-        this.srBilirrubinaTotalFlag = true;
-      } else {
-        this.srBilirrubinaTotalFlag = false;
-      }
-    } else {
-      if (
-        this.ingresaFormato1().get('srBilirrubinaTotal')!.value < 0.1 ||
-        this.ingresaFormato1().get('srBilirrubinaTotal')!.value > 0.7
-      ) {
-        this.srBilirrubinaTotalFlag = true;
-      } else {
-        this.srBilirrubinaTotalFlag = false;
-      }
-    }
-    this.srBilirrubinaIndirectaFormula();
-  }
-
-  srBilirrubinaIndirectaFormula() {
-    let total = (
-      this.retorna0NaN(
-        parseFloat(this.ingresaFormato1().get('srBilirrubinaTotal')!.value)
-      ) -
-      this.retorna0NaN(
-        parseFloat(this.ingresaFormato1().get('srBilirrubinaDirecta')!.value)
-      )
-    ).toFixed(2); //Redonmdea a 2 decimales
-
-    this.ingresaFormato1().get('srBilirrubinaIndirecta')!.setValue(total);
-
-    if (this.data.fichaC.especie!.nombre.toUpperCase() == 'CANINO') {
-      console.log(
-        'valor srBilirrubinaIndirecta:',
-        this.ingresaFormato1().get('srBilirrubinaIndirecta')!.value
-      );
-      if (
-        this.ingresaFormato1().get('srBilirrubinaIndirecta')!.value < 0.1 ||
-        this.ingresaFormato1().get('srBilirrubinaIndirecta')!.value > 0.49
-      ) {
-        this.srBilirrubinaIndirectaFlag = true;
-      } else {
-        this.srBilirrubinaIndirectaFlag = false;
-      }
-    } else {
-      if (
-        this.ingresaFormato1().get('srBilirrubinaIndirecta')!.value < 0.1 ||
-        this.ingresaFormato1().get('srBilirrubinaIndirecta')!.value > 0.49
-      ) {
-        this.srBilirrubinaIndirectaFlag = true;
-      } else {
-        this.srBilirrubinaIndirectaFlag = false;
-      }
-    }
-    //   this.sumaTotal();
-  }
-
-  srBilirrubinaDirectaFormula() {
-    if (this.data.fichaC.especie!.nombre.toUpperCase() == 'CANINO') {
-      console.log(
-        'valor srBilirrubinaDirecta:',
-        this.ingresaFormato1().get('srBilirrubinaDirecta')!.value
-      );
-      if (
-        this.ingresaFormato1().get('srBilirrubinaDirecta')!.value < 0 ||
-        this.ingresaFormato1().get('srBilirrubinaDirecta')!.value > 0.3
-      ) {
-        this.srBilirrubinaDirectaFlag = true;
-      } else {
-        this.srBilirrubinaDirectaFlag = false;
-      }
-    } else {
-      if (
-        this.ingresaFormato1().get('srBilirrubinaDirecta')!.value < 0 ||
-        this.ingresaFormato1().get('srBilirrubinaDirecta')!.value > 0.3
-      ) {
-        this.srBilirrubinaDirectaFlag = true;
-      } else {
-        this.srBilirrubinaDirectaFlag = false;
-      }
-    }
-    this.srBilirrubinaIndirectaFormula();
-  }
-
-  srCalcioFormula() {
-    if (this.data.fichaC.especie!.nombre.toUpperCase() == 'CANINO') {
-      console.log(
-        'valor srCalcio:',
-        this.ingresaFormato1().get('srCalcio')!.value
-      );
-      if (
-        this.ingresaFormato1().get('srCalcio')!.value < 9 ||
-        this.ingresaFormato1().get('srCalcio')!.value > 12
-      ) {
-        this.srCalcioFlag = true;
-      } else {
-        this.srCalcioFlag = false;
-      }
-    } else {
-      if (
-        this.ingresaFormato1().get('srCalcio')!.value < 9 ||
-        this.ingresaFormato1().get('srCalcio')!.value > 12
-      ) {
-        this.srCalcioFlag = true;
-      } else {
-        this.srCalcioFlag = false;
-      }
-    }
-    // this.sumaTotal();
-  }
-
-  srColesterolFormula() {
-    if (this.data.fichaC.especie!.nombre.toUpperCase() == 'CANINO') {
-      console.log(
-        'valor srColesterol:',
-        this.ingresaFormato1().get('srColesterol')!.value
-      );
-      if (
-        this.ingresaFormato1().get('srColesterol')!.value < 105 ||
-        this.ingresaFormato1().get('srColesterol')!.value > 300
-      ) {
-        this.srColesterolFlag = true;
-      } else {
-        this.srColesterolFlag = false;
-      }
-    } else {
-      if (
-        this.ingresaFormato1().get('srColesterol')!.value < 70 ||
-        this.ingresaFormato1().get('srColesterol')!.value > 200
-      ) {
-        this.srColesterolFlag = true;
-      } else {
-        this.srColesterolFlag = false;
-      }
-    }
-    // this.sumaTotal();
-  }
-
-  srCreatininaFormula() {
-    if (this.data.fichaC.especie!.nombre.toUpperCase() == 'CANINO') {
-      console.log(
-        'valor srCreatinina:',
-        this.ingresaFormato1().get('srCreatinina')!.value
-      );
-      if (
-        this.ingresaFormato1().get('srCreatinina')!.value < 0.5 ||
-        this.ingresaFormato1().get('srCreatinina')!.value > 1.5
-      ) {
-        this.srCreatininaFlag = true;
-      } else {
-        this.srCreatininaFlag = false;
-      }
-    } else {
-      if (
-        this.ingresaFormato1().get('srCreatinina')!.value < 0.8 ||
-        this.ingresaFormato1().get('srCreatinina')!.value > 1.8
-      ) {
-        this.srCreatininaFlag = true;
-      } else {
-        this.srCreatininaFlag = false;
-      }
-    }
-    //  this.sumaTotal();
-  }
-
-  srFosfatasaAlcalinaFormula() {
-    if (this.data.fichaC.especie!.nombre.toUpperCase() == 'CANINO') {
-      console.log(
-        'valor srFosfatasaAlcalina:',
-        this.ingresaFormato1().get('srFosfatasaAlcalina')!.value
-      );
-      if (this.ingresaFormato1().get('srFosfatasaAlcalina')!.value >= 160) {
-        this.srFosfatasaAlcalinaFlag = true;
-      } else {
-        this.srFosfatasaAlcalinaFlag = false;
-      }
-    } else {
-      if (this.ingresaFormato1().get('srFosfatasaAlcalina')!.value >= 85) {
-        this.srFosfatasaAlcalinaFlag = true;
-      } else {
-        this.srFosfatasaAlcalinaFlag = false;
-      }
-    }
-    //this.sumaTotal();
-  }
-
-  srFosforoFormula() {
-    if (this.data.fichaC.especie!.nombre.toUpperCase() == 'CANINO') {
-      console.log(
-        'valor srFosforo:',
-        this.ingresaFormato1().get('srFosforo')!.value
-      );
-      if (
-        this.ingresaFormato1().get('srFosforo')!.value < 2.6 ||
-        this.ingresaFormato1().get('srFosforo')!.value > 6.2
-      ) {
-        this.srFosforoFlag = true;
-      } else {
-        this.srFosforoFlag = false;
-      }
-    } else {
-      if (
-        this.ingresaFormato1().get('srFosforo')!.value < 4.5 ||
-        this.ingresaFormato1().get('srFosforo')!.value > 8.1
-      ) {
-        this.srFosforoFlag = true;
-      } else {
-        this.srFosforoFlag = false;
-      }
-    }
-    //this.sumaTotal();
-  }
-
-  srGGTFormula() {
-    if (this.data.fichaC.especie!.nombre.toUpperCase() == 'CANINO') {
-      console.log('valor srGGT:', this.ingresaFormato1().get('srGGT')!.value);
-      if (this.ingresaFormato1().get('srGGT')!.value >= 10) {
-        this.srGGTFlag = true;
-      } else {
-        this.srGGTFlag = false;
-      }
-    } else {
-      if (this.ingresaFormato1().get('srGGT')!.value >= 6.5) {
-        this.srGGTFlag = true;
-      } else {
-        this.srGGTFlag = false;
-      }
-    }
-    //this.sumaTotal();
-  }
-
-  srGlobulinasFormula() {
-    let total = (
-      this.retorna0NaN(
-        parseFloat(this.ingresaFormato1().get('srProteinasTotales')!.value)
-      ) -
-      this.retorna0NaN(
-        parseFloat(this.ingresaFormato1().get('srAlbumina')!.value)
-      )
-    ).toFixed(1); //Redonmdea a 1 decimales
-
-    this.ingresaFormato1().get('srGlobulinas')!.setValue(total);
-
-    if (this.data.fichaC.especie!.nombre.toUpperCase() == 'CANINO') {
-      console.log(
-        'valor srGlobulinas:',
-        this.ingresaFormato1().get('srGlobulinas')!.value
-      );
-      if (
-        this.ingresaFormato1().get('srGlobulinas')!.value < 2.6 ||
-        this.ingresaFormato1().get('srGlobulinas')!.value > 4.4
-      ) {
-        this.srGlobulinasFlag = true;
-      } else {
-        this.srGlobulinasFlag = false;
-      }
-    } else {
-      if (
-        this.ingresaFormato1().get('srGlobulinas')!.value < 2.6 ||
-        this.ingresaFormato1().get('srGlobulinas')!.value > 5.1
-      ) {
-        this.srGlobulinasFlag = true;
-      } else {
-        this.srGlobulinasFlag = false;
-      }
-    }
-    //this.sumaTotal();
-  }
-
-  srGPTFormula() {
-    if (this.data.fichaC.especie!.nombre.toUpperCase() == 'CANINO') {
-      console.log('valor srGPT:', this.ingresaFormato1().get('srGPT')!.value);
-      if (this.ingresaFormato1().get('srGPT')!.value >= 68) {
-        this.srGPTFlag = true;
-      } else {
-        this.srGPTFlag = false;
-      }
-    } else {
-      if (this.ingresaFormato1().get('srGPT')!.value >= 68) {
-        this.srGPTFlag = true;
-      } else {
-        this.srGPTFlag = false;
-      }
-    }
-    //this.sumaTotal();
-  }
-
-  srGOTFormula() {
-    if (this.data.fichaC.especie!.nombre.toUpperCase() == 'CANINO') {
-      console.log('valor srGOT:', this.ingresaFormato1().get('srGOT')!.value);
-      if (this.ingresaFormato1().get('srGOT')!.value >= 55) {
-        this.srGOTFlag = true;
-      } else {
-        this.srGOTFlag = false;
-      }
-    } else {
-      if (this.ingresaFormato1().get('srGOT')!.value >= 55) {
-        this.srGOTFlag = true;
-      } else {
-        this.srGOTFlag = false;
-      }
-    }
-    //this.sumaTotal();
-  }
-
-  srGlucosaFormula() {
-    if (this.data.fichaC.especie!.nombre.toUpperCase() == 'CANINO') {
-      console.log(
-        'valor srGlucosa:',
-        this.ingresaFormato1().get('srGlucosa')!.value
-      );
-      if (
-        this.ingresaFormato1().get('srGlucosa')!.value < 65 ||
-        this.ingresaFormato1().get('srGlucosa')!.value > 118
-      ) {
-        this.srGlucosaFlag = true;
-      } else {
-        this.srGlucosaFlag = false;
-      }
-    } else {
-      if (
-        this.ingresaFormato1().get('srGlucosa')!.value < 70 ||
-        this.ingresaFormato1().get('srGlucosa')!.value > 110
-      ) {
-        this.srGlucosaFlag = true;
-      } else {
-        this.srGlucosaFlag = false;
-      }
-    }
-    //this.sumaTotal();
-  }
-
-  srUreaFormula() {
-    if (this.data.fichaC.especie!.nombre.toUpperCase() == 'CANINO') {
-      console.log(
-        'valor srFosbUreasforo:',
-        this.ingresaFormato1().get('srUrea')!.value
-      );
-      if (
-        this.ingresaFormato1().get('srUrea')!.value < 21.5 ||
-        this.ingresaFormato1().get('srUrea')!.value > 64.5
-      ) {
-        this.srUreaFlag = true;
-      } else {
-        this.srUreaFlag = false;
-      }
-    } else {
-      if (
-        this.ingresaFormato1().get('srUrea')!.value < 38.7 ||
-        this.ingresaFormato1().get('srUrea')!.value > 71
-      ) {
-        this.srUreaFlag = true;
-      } else {
-        this.srUreaFlag = false;
-      }
-    }
-    this.srNitrogenoUreicoSFormula();
-  }
-
-  srNitrogenoUreicoSFormula() {
-    let total = (
-      this.retorna0NaN(
-        parseFloat(this.ingresaFormato1().get('srUrea')!.value)
-      ) * this.retorna0NaN(parseFloat('0.28'))
-    ).toFixed(1); //Redonmdea a 1 decimales
-    this.ingresaFormato1().get('srNitrogenoUreicoS')!.setValue(total);
-
-    if (this.data.fichaC.especie!.nombre.toUpperCase() == 'CANINO') {
-      console.log(
-        'valor srNitrogenoUreicoS:',
-        this.ingresaFormato1().get('srNitrogenoUreicoS')!.value
-      );
-      if (
-        this.ingresaFormato1().get('srNitrogenoUreicoS')!.value < 10 ||
-        this.ingresaFormato1().get('srNitrogenoUreicoS')!.value > 30
-      ) {
-        this.srNitrogenoUreicoSFlag = true;
-      } else {
-        this.srNitrogenoUreicoSFlag = false;
-      }
-    } else {
-      if (
-        this.ingresaFormato1().get('srNitrogenoUreicoS')!.value < 18 ||
-        this.ingresaFormato1().get('srNitrogenoUreicoS')!.value > 33
-      ) {
-        this.srNitrogenoUreicoSFlag = true;
-      } else {
-        this.srNitrogenoUreicoSFlag = false;
-      }
-    }
-    //this.sumaTotal();
-  }
-
-  srProteinasTotalesFormula() {
-    if (this.data.fichaC.especie!.nombre.toUpperCase() == 'CANINO') {
-      console.log(
-        'valor srProteinasTotales:',
-        this.ingresaFormato1().get('srProteinasTotales')!.value
-      );
-      if (
-        this.ingresaFormato1().get('srProteinasTotales')!.value < 5.5 ||
-        this.ingresaFormato1().get('srProteinasTotales')!.value > 7.5
-      ) {
-        this.srProteinasTotalesFlag = true;
-      } else {
-        this.srProteinasTotalesFlag = false;
-      }
-    } else {
-      if (
-        this.ingresaFormato1().get('srProteinasTotales')!.value < 5.4 ||
-        this.ingresaFormato1().get('srProteinasTotales')!.value > 7.8
-      ) {
-        this.srProteinasTotalesFlag = true;
-      } else {
-        this.srProteinasTotalesFlag = false;
-      }
-    }
-    this.srGlobulinasFormula();
+    this.logica(valor, id, desde, hasta, logica);
   }
 
   async getCliente() {
-    console.log('pasa emp 2:', this.data.fichaC.cliente!.idCliente);
     this.clienteService
       .getDataClienteActual(this.data.fichaC.cliente!.idCliente!)
       .subscribe({
         next: (res) => {
-          console.log('cliente2: ', res['data'][0] as ICliente);
           this.datoClienteEmpresa = res['data'][0] as ICliente;
           this.data.fichaC.cliente!.correoRecepcionCliente =
             this.datoClienteEmpresa.emailRecepcionExamenCliente;
-          console.log(
-            'this.datoClienteEmpresa.empresa:',
-            this.data.fichaC.cliente!.correoRecepcionCliente
-          );
         },
-        // console.log('yo:', res as PerfilI[]),
         error: (error) => {
           console.log('error carga:', error);
           Swal.fire('ERROR INESPERADO', error, 'error');
@@ -836,6 +363,7 @@ export class AnalisisFormato1Component implements OnInit {
   }
 
   async enviar() {
+    console.log('this.datoResultadoFormato1', this.datoResultadoFormato1());
     /*
     this.IResultadoFormato1 = [
       {
@@ -1026,9 +554,9 @@ export class AnalisisFormato1Component implements OnInit {
         flagNegrilla: this.srProteinasTotalesFlag,
       },
     ];
-
+*/
     this.IFormato1 = {
-      resultado: this.IResultadoFormato1,
+      resultado: this.datoResultadoFormato1(),
       subTitulo: '',
       observaciones: this.ingresaFormato1().get('observaciones')!.value,
     };
@@ -1063,7 +591,7 @@ export class AnalisisFormato1Component implements OnInit {
           this.data.seguimientoEstado.usuarioRecepcionado_modifica_id,
         fechaHora_recepcionado_modifica:
           this.data.seguimientoEstado.fechaHora_recepcionado_modifica,
-        usuarioAnalizado_id: this.currentUsuario.usuarioDato._id,
+        usuarioAnalizado_id: this.localStorage?.usuarioLogin._id!,
         fechaHora_analizado: this.data.seguimientoEstado.fechaHora_analizado,
         usuarioEnviado_id: this.data.seguimientoEstado.usuarioEnviado_id,
         fechaHora_enviado: this.data.seguimientoEstado.fechaHora_enviado,
@@ -1090,7 +618,6 @@ export class AnalisisFormato1Component implements OnInit {
         Swal.fire('', 'ERROR DE SISTEMA', 'error');
       },
     });
-    */
   }
 
   KeyDown(e: any) {

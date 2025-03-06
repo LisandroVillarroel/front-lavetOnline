@@ -1,4 +1,4 @@
-import { IFormato1 } from './examenes/examenFormato1';
+import { IFormato1, IResultadoFinalFormato1 } from './examenes/examenFormato1';
 import { IFormato2 } from './examenes/examenFormato2';
 import { IFormato3 } from './examenes/examenFormato3';
 import { IFormato4 } from './examenes/examenFormato4';
@@ -35,7 +35,7 @@ export interface IFicha {
 
     //hemograma?:IHemograma;
     //perfilBioquimico?:IPerfilBioquimico;
-    pruebasDeCoagulacion?: IPruebasDeCoagulacion;
+    /////pruebasDeCoagulacion?: IPruebasDeCoagulacion;
     // acth?: IActh;
     //analisisDeFluidos?: IAnalisisDeFluidos,
     //coprocultivo?: ICoprocultivo,
@@ -46,7 +46,7 @@ export interface IFicha {
     //cultivoMicrobiologico?: ICultivoMicrobiologico,
     //distemper?: IDistemper,
     //ehrlichia?: IEhrlichia,
-    electrolitos?: IElectrolitos;
+    /////electrolitos?: IElectrolitos;
     //enzimas?: IEnzimas,
     //directoDePeloYEscama?: IDirectoDePeloYEscama,
     //fenobarbital?: IFenobarbital,
@@ -71,7 +71,7 @@ export interface IFicha {
     //brucelosis?:IBrucelosis,
     //parathormona?:IParathormona,
     //calcio?:ICalcio,
-    formato1?: IFormato1;
+    formato1?: IResultadoFinalFormato1;
     formato2?: IFormato2;
     formato3?: IFormato3;
     formato4?: IFormato4;
