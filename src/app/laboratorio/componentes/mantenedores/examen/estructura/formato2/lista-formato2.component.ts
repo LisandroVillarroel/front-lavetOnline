@@ -40,6 +40,7 @@ import { EspecieService } from '@laboratorio/servicios/especie.service';
 import { IEspecie } from '@laboratorio/modelos/especie-modelo';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
+import { AgregaExamenFormatro2Component } from './agrega-examen-formato2/agrega-examen-formato2.component';
 
 const MATERIAL_MODELO = [
   MatIconModule,
@@ -66,7 +67,7 @@ const MATERIAL_MODELO = [
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ListaParametroComponent {
+export class ListaFormato2Component {
   private _storage = inject(StorageService);
   private localStorage = this._storage.get<loginInterface>('sesion');
   private readonly spinnerService = inject(SpinnerService);
@@ -76,10 +77,6 @@ export class ListaParametroComponent {
   private readonly dialog = inject(MatDialog);
   private matPaginatorIntl = inject(MatPaginatorIntl);
 
-  private datoExamenResultadoEspecie: IResultadoEspecieFormato1[] = [];
-  private datoExamenResultado!: IResultadoFormato1[];
-  private examenEstructura!: IExamenEstructura;
-
   private datoExamen!: IExamen;
 
   dataSource = new MatTableDataSource<IResultadoFormato1>();
@@ -88,32 +85,11 @@ export class ListaParametroComponent {
 
   private examenService = inject(ExamenService);
 
-  private especieService = inject(EspecieService);
-
-  public datoEspecie = signal<IEspecie[]>([]);
-  public noExisteParametro = signal<string>('');
-  private maxOrden: number = 0;
-  private resultadoEspecieIndex: number = 0;
-  private especieIdElegido = '';
-
   visible = signal<boolean>(true);
   show = signal<boolean>(true);
   // tslint:disable-next-line:max-line-length
-  displayedColumns: string[] = [
-    'index',
-    'ordenEstructura',
-    'descripcion',
-    'unidadMedida',
-    'resultado',
-    'referencia',
-    'logica',
-    'desde',
-    'hasta',
-    'formulaInterna',
-    'opciones',
-  ];
+  displayedColumns: string[] = ['index', 'ordenEstructura', 'opciones'];
 
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort)
   private _sort!: MatSort;
   public get sort(): MatSort {
@@ -132,54 +108,19 @@ export class ListaParametroComponent {
     this.matPaginatorIntl.itemsPerPageLabel = 'Registros por Página';
     console.log('pasa emp 1');
 
-    if (
-      this.localStorage?.usuarioLogin.empresaConectada.tipoEmpresa?.toUpperCase() ==
-      'Laboratorio'.toUpperCase()
-    ) {
-      this.visible.set(false);
-    }
-    if (
-      this.localStorage?.usuarioLogin.empresaConectada.tipoEmpresa?.toUpperCase() ==
-      'ADMINISTRADOR'.toUpperCase()
-    ) {
-      this.show.set(false);
-    }
-    await this.cargaEspecie();
+    await this.getList();
     this.spinnerService.esconder();
   }
 
-  cargaEspecie() {
-    this.especieService
-      .getDataEspecieTodo(
-        this.localStorage?.usuarioLogin.empresaConectada.empresa_Id!
-      )
-      .subscribe({
-        next: (res: any) => {
-          this.datoEspecie.set(res.data);
-        },
-        // console.log('yo:', res as PerfilI[]),
-
-        error: (error) => {
-          console.log('error carga:', error);
-          Swal.fire('ERROR INESPERADO', error, 'error');
-        },
-      }); // (this.dataSource.data = res as PerfilI[])
-  }
-
-  seleccionaEspecie(especieId: string) {
-    this.getList(especieId);
-  }
-
-  getList(especieId: string) {
+  getList() {
     this.dataSource.data = [];
-    this.noExisteParametro.set('');
-    this.especieIdElegido = especieId;
+    /*
     this.examenService.getDataExamen(this.dataIdExamen).subscribe({
       next: (res) => {
         if (res.codigo == 200) {
           this.datoExamen = res.data[0];
           console.log('examen origen:', this.datoExamen);
-          console.log('especieId:', especieId);
+
           if (
             this.datoExamen.formato?.formato1?.resultadoEspecie == undefined ||
             this.datoExamen.formato?.formato1?.resultadoEspecie.length == 0
@@ -249,11 +190,11 @@ export class ListaParametroComponent {
         Swal.fire('ERROR INESPERADO', error, 'error');
       },
     }); // (this.dataSource.data = res as PerfilI[])
+    */
   }
 
   // tslint:disable-next-line: use-lifecycle-interface
   ngAfterViewInit(): void {
-    this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
   applyFilter(event: Event) {
@@ -265,114 +206,25 @@ export class ListaParametroComponent {
     }
   }
 
-  consultaFormato(row: any) {
-    console.log('row:', row);
-
+  agregaExamenEstructura() {
     const dialogConfig = new MatDialogConfig();
 
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
-    dialogConfig.width = '55%';
+    dialogConfig.width = '70%';
     dialogConfig.height = '90%';
-    dialogConfig.position = { top: '2%' };
+    dialogConfig.position = { top: '3%' };
+    dialogConfig.data = '';
 
-    dialogConfig.data = row;
-
-    /*
-          this.dialog.open(Formato1Component, dialogConfig)
-          .afterClosed().subscribe(
-           data => {console.log('Datoas Consulta:', data);
-            }
-          );
-    */
-    /*
-    switch (row.numeroFormatoInterno) {
-      case 1:
-        this.dialog
-          .open(Formato1Component, dialogConfig)
-          .afterClosed()
-          .subscribe((data) => {
-            console.log('Dialog output3333:', data);
-          });
-        break;
-      case 2:
-        this.dialog
-          .open(Formato2Component, dialogConfig)
-          .afterClosed()
-          .subscribe((data) => {
-            console.log('Dialog output3333:', data);
-          });
-        break;
-      case 3:
-        this.dialog
-          .open(Formato3Component, dialogConfig)
-          .afterClosed()
-          .subscribe((data) => {
-            console.log('Dialog output3333:', data);
-          });
-        break;
-      case 4:
-        this.dialog
-          .open(Formato4Component, dialogConfig)
-          .afterClosed()
-          .subscribe((data) => {
-            console.log('Dialog CortisolComponent:', data);
-          });
-        break;
-      case 5:
-        this.dialog
-          .open(Formato5Component, dialogConfig)
-          .afterClosed()
-          .subscribe((data) => {
-            console.log('Dialog output3333:', data);
-          });
-        break;
-      case 6:
-        this.dialog
-          .open(Formato6Component, dialogConfig)
-          .afterClosed()
-          .subscribe((data) => {
-            console.log('Dialog output3333:', data);
-          });
-        break;
-      case 7:
-        this.dialog
-          .open(Formato7Component, dialogConfig)
-          .afterClosed()
-          .subscribe((data) => {
-            console.log('Dialog output3333:', data);
-          });
-        break;
-      case 8:
-        this.dialog
-          .open(Formato8Component, dialogConfig)
-          .afterClosed()
-          .subscribe((data) => {
-            console.log('Dialog output3333:', data);
-          });
-        break;
-      case 9:
-        this.dialog
-          .open(Formato9Component, dialogConfig)
-          .afterClosed()
-          .subscribe((data) => {
-            console.log('Dialog output3333:', data);
-          });
-        break;
-      case 10:
-        this.dialog
-          .open(Formato10Component, dialogConfig)
-          .afterClosed()
-          .subscribe((data) => {
-            console.log('Dialog output3333:', data);
-          });
-        break;
-      default:
-        //
-        break;
-    }
-    */
+    this.dialog
+      .open(AgregaExamenFormatro2Component, dialogConfig)
+      .afterClosed()
+      .subscribe((data: IExamenEstructura) => {
+        console.log('examen111:', this.datoExamen);
+      });
   }
+  actualizaExamenEstructura(row: any) {}
+  eliminaExamenEstructura(row: any) {}
 
   private refreshTable() {
     // Refreshing table using paginator
@@ -381,7 +233,6 @@ export class ListaParametroComponent {
     // this.dataSource.paginator._changePageSize(this.paginator.pageSize);
     // this.noticia=this.servicio.getNoticias();
 
-    this.getList(this.especieForm.value!);
-    this.dataSource.paginator!.pageSize = this.paginator.pageSize;
+    this.getList();
   }
 }

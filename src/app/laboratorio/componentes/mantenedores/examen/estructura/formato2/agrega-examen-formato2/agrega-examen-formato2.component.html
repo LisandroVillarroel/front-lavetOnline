@@ -1,0 +1,69 @@
+<h2 mat-dialog-title>AGREGA EXAMEN</h2>
+
+<mat-dialog-content
+  [formGroup]="agregaExamen()"
+  name="agregaExamen"
+  class="agrega-container"
+>
+  <mat-form-field class="inputSelect">
+    <mat-label class="labelI">Tipo Estructura</mat-label>
+    <mat-select
+      [formControl]="tipoEstructura"
+      (selectionChange)="seleccionaTipoEstructura($event.value)"
+      required
+    >
+      <mat-option value="Campo">Campo</mat-option>
+      <mat-option value="Estructura">Estructura</mat-option>
+    </mat-select>
+    @if(tipoEstructura.invalid){
+    <mat-error>{{ getErrorMessage("tipoEstructura") }}</mat-error>
+    }
+  </mat-form-field>
+
+  <mat-form-field [hidden]="visibleCampo()" class="inputInput">
+    <mat-label class="labelI">Nombre Exámen</mat-label>
+    <input matInput [formControl]="nombreExamen" />
+    @if(nombreExamen.invalid){
+    <mat-error>{{ getErrorMessage("nombreExamen") }}</mat-error>
+    }
+  </mat-form-field>
+
+  <mat-form-field [hidden]="visibleEstructura()" class="inputInput">
+    <mat-label class="labelI">Nombre Título Descripción</mat-label>
+    <input matInput [formControl]="nombreTituloDescripcion" />
+    @if(nombreTituloDescripcion.invalid){
+    <mat-error>{{ getErrorMessage("nombreTituloDescripcion") }}</mat-error>
+    }
+  </mat-form-field>
+
+  <mat-form-field [hidden]="visibleEstructura()" class="inputInput">
+    <mat-label class="labelI">Código Formato Interno</mat-label>
+    <input matInput [formControl]="nombreTituloResultado" />
+    @if(nombreTituloResultado.invalid){
+    <mat-error>{{ getErrorMessage("nombreTituloResultado") }}</mat-error>
+    }
+  </mat-form-field>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <div class="col-md-6">
+    <button
+      mat-raised-button
+      class="colorFondoBotonCancelar"
+      mat-dialog-close
+      [disabled]="false"
+    >
+      CANCELAR
+    </button>
+  </div>
+  <div class="col-md-6">
+    <button
+      class="colorFondoBotonGrabar"
+      mat-raised-button
+      (click)="enviar()"
+      [disabled]="agregaExamen().invalid"
+    >
+      GRABAR
+    </button>
+  </div>
+</mat-dialog-actions>

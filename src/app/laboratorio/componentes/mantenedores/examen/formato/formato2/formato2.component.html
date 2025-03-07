@@ -2,7 +2,7 @@
 <div class="consulta-container">
   <div class="row altura mb-1 mt-2">
     <div class="col-md-3 border border-dark alineaV border-end-0 destacado">
-      {{ data.formato?.formato2?.liquido }}
+      {{ "data.formato?.formato2?.liquido" }}
     </div>
     <div class="col-md-7 border border-dark"></div>
   </div>
@@ -25,6 +25,7 @@
         RESULTADO
       </div>
     </div>
+    <!--
     @for(item of data.formato?.formato2?.examenFisico; track item){
     <div class="row altura">
       <div
@@ -37,6 +38,7 @@
       </div>
     </div>
     }
+    -->
   </div>
 
   <div id="examenQuimico">
@@ -59,6 +61,7 @@
         RESULTADO
       </div>
     </div>
+    <!--
     @for(item of data.formato?.formato2?.examenQuimico; track item){
     <div class="row altura">
       <div
@@ -71,7 +74,7 @@
       </div>
     </div>
     }
-  </div>
+  --></div>
 
   <div id="citologico">
     <div class="row mt-1">
@@ -93,6 +96,7 @@
         RESULTADO
       </div>
     </div>
+    <!--
     @for(item of data.formato?.formato2?.examenCitologico; track item){
     <div class="row altura">
       <div
@@ -105,7 +109,7 @@
       </div>
     </div>
     }
-  </div>
+  --></div>
 
   <div class="col-md-12 mt-5">
     <button

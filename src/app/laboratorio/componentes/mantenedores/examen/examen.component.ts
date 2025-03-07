@@ -45,6 +45,7 @@ import { SpinnerService } from '@shared/spinner/spinner.service';
 import { IExamen } from '@laboratorio/modelos/examen-modelo';
 import { ExamenService } from '@laboratorio/servicios/examen.service';
 import { ListaParametroComponent } from './estructura/formato1/lista-parametro.component';
+import { ListaFormato2Component } from './estructura/formato2/lista-formato2.component';
 
 const MATERIAL_MODELO = [
   MatIconModule,
@@ -352,6 +353,7 @@ export default class ExamenComponent implements OnInit {
   }
 
   listaEstructura(Examen_Id: string, numeroFormatoInterno: number) {
+    console.log('numeroFormatoInterno:', numeroFormatoInterno);
     const dialogConfig = new MatDialogConfig();
 
     dialogConfig.disableClose = true;
@@ -376,7 +378,7 @@ export default class ExamenComponent implements OnInit {
         break;
       case 2:
         this.dialog
-          .open(Formato2Component, dialogConfig)
+          .open(ListaFormato2Component, dialogConfig)
           .afterClosed()
           .subscribe((data) => {
             console.log('Dialog output3333:', data);

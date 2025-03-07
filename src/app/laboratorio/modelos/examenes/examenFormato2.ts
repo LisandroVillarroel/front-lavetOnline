@@ -16,13 +16,10 @@ export interface IFormato2 {
 }
 export interface IResultadoFormato2 {
   nombreExamen: string;
-  tipoEstructura: IListaTipoEstructura; //Titulo-Estructura
-  estructura: IEstructuraFormato2Titulo;
-}
-
-export interface IEstructuraFormato2Titulo {
-  nombreDescripcion: string;
-  nombreResultado: string;
+  resultadoNombreExamen: string;
+  tipoEstructura: string; //Campo-Estructura
+  nombreTituloDescripcion: string;
+  nombreTituloResultado: string;
   estructuraDetalle: IEstructuraDetalleFormato2[];
 }
 
@@ -40,11 +37,6 @@ export interface IEstructuraDetalleFormato2 {
 export interface IListaResultadoFormato2 {
   idLista: string;
   nombreLista: string;
-}
-
-export enum IListaTipoEstructura {
-  'Titulo',
-  'Estructura',
 }
 
 export enum IListaTipoCampoResultado {

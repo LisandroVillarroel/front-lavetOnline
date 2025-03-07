@@ -61,7 +61,6 @@ const MATERIAL_MODELO = [
     ReactiveFormsModule,
     CommonModule,
     FichaCabeceraComponent,
-    JsonPipe,
     EditorModule,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
