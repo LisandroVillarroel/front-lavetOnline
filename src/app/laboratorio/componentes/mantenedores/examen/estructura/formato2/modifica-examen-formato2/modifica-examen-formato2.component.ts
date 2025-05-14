@@ -11,7 +11,6 @@ import {
   Validators,
   ReactiveFormsModule,
 } from '@angular/forms';
-import Swal from 'sweetalert2';
 import {
   MatDialogRef,
   MAT_DIALOG_DATA,
@@ -36,18 +35,19 @@ const MATERIAL_MODELO = [
 ];
 
 @Component({
-  selector: 'app-agrega-examen-formato2',
-  templateUrl: './agrega-examen-formato2.component.html',
-  styleUrls: ['./agrega-examen-formato2.component.scss'],
+  selector: 'app-modifica-examen-formato2',
+  templateUrl: './modifica-examen-formato2.component.html',
+  styleUrls: ['./modifica-examen-formato2.component.scss'],
   imports: [MATERIAL_MODELO, ReactiveFormsModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AgregaExamenFormatro2Component implements OnInit {
+export class ModificaExamenFormatro2Component implements OnInit {
   private _storage = inject(StorageService);
   private localStorage = this._storage.get<loginInterface>('sesion');
   private readonly spinnerService = inject(SpinnerService);
 
-  readonly dialogRef = inject(MatDialogRef<AgregaExamenFormatro2Component>);
+  readonly datoExamen = inject<IResultadoFormato2>(MAT_DIALOG_DATA);
+  readonly dialogRef = inject(MatDialogRef<ModificaExamenFormatro2Component>);
 
   resultadoExamenFormato2: IResultadoFormato2 | undefined;
 
@@ -55,12 +55,20 @@ export class AgregaExamenFormatro2Component implements OnInit {
   visibleEstructura = signal<boolean>(true);
   constructor() {}
 
-  tipoEstructura = new FormControl('', [Validators.required]);
-  nombreExamen = new FormControl('', [Validators.required]);
-  nombreTituloDescripcion = new FormControl('');
-  nombreTituloResultado = new FormControl('');
+  tipoEstructura = new FormControl(this.datoExamen.tipoEstructura, [
+    Validators.required,
+  ]);
+  nombreExamen = new FormControl(this.datoExamen.nombreExamen, [
+    Validators.required,
+  ]);
+  nombreTituloDescripcion = new FormControl(
+    this.datoExamen.nombreTituloDescripcion
+  );
+  nombreTituloResultado = new FormControl(
+    this.datoExamen.nombreTituloResultado
+  );
 
-  agregaExamen = signal<FormGroup>(
+  modificaExamen = signal<FormGroup>(
     new FormGroup({
       tipoEstructura: this.tipoEstructura,
       nombreExamen: this.nombreExamen,
@@ -96,18 +104,17 @@ export class AgregaExamenFormatro2Component implements OnInit {
   ngOnInit() {}
 
   seleccionaTipoEstructura(p: any) {
-    /*
-    this.agregaExamen()
+    /*  this.modificaExamen()
       .get('nombreTituloDescripcion')!
       .setValidators([Validators.nullValidator]);
 
-    this.agregaExamen()
+    this.modificaExamen()
       .get('nombreTituloResultado')!
       .setValidators([Validators.nullValidator]);
 */
-    this.agregaExamen().get('nombreTituloDescripcion')!.setValue('');
+    this.modificaExamen().get('nombreTituloDescripcion')!.setValue('');
 
-    this.agregaExamen().get('nombreTituloResultado')!.setValue('');
+    this.modificaExamen().get('nombreTituloResultado')!.setValue('');
 
     if (p == 'Campo') {
       this.visibleCampo.set(false);
@@ -117,11 +124,13 @@ export class AgregaExamenFormatro2Component implements OnInit {
       this.visibleEstructura.set(false);
     }
     /*
-    this.agregaExamen()
+    this.modificaExamen()
       .get('nombreTituloDescripcion')!
       .updateValueAndValidity();
-    this.agregaExamen().get('nombreTituloResultado')!.updateValueAndValidity();
-*/
+    this.modificaExamen()
+      .get('nombreTituloResultado')!
+      .updateValueAndValidity();
+      */
     return;
   }
 
@@ -130,18 +139,19 @@ export class AgregaExamenFormatro2Component implements OnInit {
     let nombreTituloDescripcion_ = '';
     let nombreTituloResultado_ = '';
 
-    if (this.agregaExamen().get('tipoEstructura')!.value == 'Estructura') {
-      nombreTituloDescripcion_ = this.agregaExamen().get(
+    if (this.modificaExamen().get('tipoEstructura')!.value == 'Estructura') {
+      nombreTituloDescripcion_ = this.modificaExamen().get(
         'nombreTituloDescripcion'
       )!.value;
-      nombreTituloResultado_ = this.agregaExamen().get(
+      nombreTituloResultado_ = this.modificaExamen().get(
         'nombreTituloResultado'
       )!.value;
     }
     this.resultadoExamenFormato2 = {
-      nombreExamen: this.agregaExamen().get('nombreExamen')!.value,
+      _id: this.datoExamen._id,
+      nombreExamen: this.modificaExamen().get('nombreExamen')!.value,
       resultadoNombreExamen: resultadoNombreExamen_,
-      tipoEstructura: this.agregaExamen().get('tipoEstructura')!.value,
+      tipoEstructura: this.modificaExamen().get('tipoEstructura')!.value,
       nombreTituloDescripcion: nombreTituloDescripcion_,
       nombreTituloResultado: nombreTituloResultado_,
       estructuraDetalle: [],

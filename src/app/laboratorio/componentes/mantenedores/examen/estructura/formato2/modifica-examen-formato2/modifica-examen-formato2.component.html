@@ -1,9 +1,9 @@
-<h2 mat-dialog-title>AGREGA EXAMEN</h2>
+<h2 mat-dialog-title>MODIFICA EXAMEN</h2>
 
 <mat-dialog-content
-  [formGroup]="agregaExamen()"
-  name="agregaExamen"
-  class="agrega-container"
+  [formGroup]="modificaExamen()"
+  name="modificaExamen"
+  class="modifica-container"
 >
   <mat-form-field class="inputInput">
     <mat-label class="labelI">Nombre Exámen</mat-label>
@@ -61,7 +61,7 @@
       class="colorFondoBotonGrabar"
       mat-raised-button
       (click)="enviar()"
-      [disabled]="agregaExamen().invalid"
+      [disabled]="modificaExamen().invalid"
     >
       GRABAR
     </button>

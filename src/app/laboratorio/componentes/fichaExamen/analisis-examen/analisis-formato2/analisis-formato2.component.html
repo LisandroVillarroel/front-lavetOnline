@@ -1,0 +1,325 @@
+<h2 mat-dialog-title>INGRESO EXAMEN {{ data.fichaC.examen?.nombre }}</h2>
+
+<mat-dialog-content
+  [formGroup]="ingresaFormato2()"
+  name="agregaFormato2"
+  class="agrega-container"
+>
+  <mat-accordion class="example-headers-align largoAcordion" multi>
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title> </mat-panel-title>
+        <mat-panel-description class="fuente">
+          FICHA PACIENTE
+          <mat-icon>account_circle</mat-icon>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <app-ficha-cabecera [datoFichaRecibeFicha]="data"></app-ficha-cabecera>
+    </mat-expansion-panel>
+  </mat-accordion>
+
+  <div class="container">
+    @for(datoResultadoFormato2_ of datoResultadoFormato2(); track
+    datoResultadoFormato2_){
+    @if(datoResultadoFormato2_.tipoEstructura=='Campo'){
+    <div id="campo" class="row altura mb-1 mt-2">
+      <div class="col-md-3 border border-dark alineaV border-end-0 destacado">
+        {{ datoResultadoFormato2_.nombreExamen }}
+      </div>
+      <div class="col-md-7 border border-dark">
+        <mat-form-field class="anchoTituloLinea1">
+          <input
+            matInput
+            placeholder=" {{
+              valorplaceholder(datoResultadoFormato2_.tipoEstructura)
+            }} "
+            formControlName="{{ 'input_campo_' + datoResultadoFormato2_._id }}"
+            (keydown)="KeyDown($event)"
+          />
+        </mat-form-field>
+      </div>
+    </div>
+    } @if(datoResultadoFormato2_.tipoEstructura=='Estructura'){
+    <div id="etructura">
+      <div class="row">
+        <div
+          class="col-md-3 mt-2 border border-dark alineaVertical destacadoTitulo1"
+        >
+          {{ datoResultadoFormato2_.nombreExamen }}
+        </div>
+      </div>
+      <div class="row anchoTitulo">
+        <div
+          class="col-md-3 border border-dark alineaVertical border-end-0 border-top-0 destacado"
+        >
+          {{ datoResultadoFormato2_.nombreTituloDescripcion }}
+        </div>
+        <div class="col-md-7 border border-dark alineaVertical destacado">
+          {{ datoResultadoFormato2_.nombreTituloResultado }}
+        </div>
+      </div>
+      @for(datoResultadoFormato2_Estructura of
+      datoResultadoFormato2_.estructuraDetalle; track
+      datoResultadoFormato2_Estructura){
+      <div class="row altura">
+        <div
+          class="col-md-3 border border-dark border-top-0 alineaV border-end-0 destacado"
+        >
+          {{ datoResultadoFormato2_Estructura.nombreDescripcion }}
+        </div>
+        <div class="col-md-7 border border-dark border-top-0">
+          @if (datoResultadoFormato2_Estructura.tipoCampoResultado=='texto'){
+          <mat-form-field class="anchoTituloLinea1">
+            <input
+              matInput
+              placeholder=" {{
+                valorplaceholder(
+                  datoResultadoFormato2_Estructura.nombreDescripcion
+                )
+              }} "
+              formControlName="{{
+                'input_estructura_' + datoResultadoFormato2_Estructura._id
+              }}"
+              [ngStyle]="{
+                'font-weight':
+                  datoResultadoFormato2_Estructura.flagNegrilla == true
+                    ? 'bold'
+                    : 'normal'
+              }"
+            />
+          </mat-form-field>
+          } @if (datoResultadoFormato2_Estructura.tipoCampoResultado=='Numero'){
+          <mat-form-field class="anchoTituloLinea1">
+            <input
+              matInput
+              placeholder=" {{
+                valorplaceholder(
+                  datoResultadoFormato2_Estructura.nombreDescripcion
+                )
+              }} "
+              formControlName="{{
+                'input_estructura_' + datoResultadoFormato2_Estructura._id
+              }}"
+              (keydown)="KeyDown($event)"
+              [ngStyle]="{
+                'font-weight':
+                  datoResultadoFormato2_Estructura.flagNegrilla == true
+                    ? 'bold'
+                    : 'normal'
+              }"
+            />
+          </mat-form-field>
+          } @if (datoResultadoFormato2_Estructura.tipoCampoResultado=='Lista'){
+          <mat-form-field class="anchoTituloLinea1">
+            <input
+              matInput
+              placeholder=" {{
+                valorplaceholder(
+                  datoResultadoFormato2_Estructura.nombreDescripcion
+                )
+              }} "
+              formControlName="{{
+                'input_estructura_' + datoResultadoFormato2_Estructura._id
+              }}"
+              (keydown)="KeyDown($event)"
+              [ngStyle]="{
+                'font-weight':
+                  datoResultadoFormato2_Estructura.flagNegrilla == true
+                    ? 'bold'
+                    : 'normal'
+              }"
+            />
+          </mat-form-field>
+          }
+        </div>
+      </div>
+      }
+      <!--
+      <div class="row">
+        <div class="col-md-3 border border-dark border-top-0 alineaV border-end-0 destacado">
+          ASPECTO (pre-centifugado)
+        </div>
+        <div class="col-md-7 border border-dark border-left-0 border-top-0">
+          <ckeditor [formControl]="aspectoPre"></ckeditor>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-3 border border-dark border-top-0 alineaV border-end-0 destacado">
+          ASPECTO (post-centifugado)
+        </div>
+        <div class="col-md-7 border border-dark border-left-0 border-top-0">
+          <ckeditor [formControl]="aspectoPos"></ckeditor>
+        </div>
+      </div>
+    </div>
+  }
+    <div id="examenQuimico">
+      <div class="row mt-1">
+        <div class="col-md-3 mt-2 border border-dark alineaVertical destacadoTitulo1">
+          EXAMEN QUÍMICO
+        </div>
+      </div>
+      <div class="row anchoTitulo">
+        <div class="col-md-3 border border-dark alineaVertical border-top-0 border-end-0 destacado">
+          PARÁMETRO
+        </div>
+        <div class="col-md-7 border border-dark border-left-0 alineaVertical destacado">
+          RESULTADO
+        </div>
+      </div>
+
+      <div class="row altura">
+        <div class="col-md-3 border border-dark border-top-0 alineaV border-end-0 destacado">
+          DENSIDAD
+        </div>
+        <div class="col-md-7 border border-dark border-left-0 border-top-0">
+          <mat-form-field class="anchoTituloLinea1">
+            <input matInput placeholder="Ingrese Valor" [formControl]="densidad" [ngStyle]="{
+                'font-weight': densidadFlag == true ? 'bold' : 'normal'
+              }" (blur)="densidadFormula()" />
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row altura">
+        <div class="col-md-3 border border-dark border-top-0 alineaV border-end-0 destacado">
+          PH
+        </div>
+        <div class="col-md-7 border border-dark border-left-0 border-top-0">
+          <mat-form-field class="anchoTituloLinea1">
+            <input matInput placeholder="Ingrese Valor" [formControl]="ph"
+              [ngStyle]="{ 'font-weight': phFlag == true ? 'bold' : 'normal' }" (blur)="phFormula()" />
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row altura">
+        <div class="col-md-3 border border-dark border-top-0 alineaV border-end-0 destacado">
+          PROTEINAS (g/dl)
+        </div>
+        <div class="col-md-7 border border-dark border-left-0 border-top-0">
+          <mat-form-field class="anchoTituloLinea1">
+            <input matInput placeholder="Ingrese Valor" [formControl]="proteinas" [ngStyle]="{
+                'font-weight': proteinasFlag == true ? 'bold' : 'normal'
+              }" (blur)="proteinasFormula()" />
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row altura">
+        <div class="col-md-3 border border-dark border-top-0 alineaV border-end-0 destacado">
+          GLUCOSA (mg/dl)
+        </div>
+        <div class="col-md-7 border border-dark border-left-0 border-top-0">
+          <mat-form-field class="anchoTituloLinea1">
+            <input matInput placeholder="Ingrese Valor" [formControl]="glucosa" [ngStyle]="{
+                'font-weight': glucosaFlag == true ? 'bold' : 'normal'
+              }" (blur)="glucosaFormula()" />
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+
+    <div id="citologico">
+      <div class="row mt-1">
+        <div class="col-md-3 mt-2 border border-dark alineaVertical destacadoTitulo1">
+          CITOLOGICO
+        </div>
+      </div>
+      <div class="row anchoTitulo">
+        <div class="col-md-3 border border-dark alineaVertical border-end-0 border-top-0 destacado">
+          PARÁMETRO
+        </div>
+        <div class="col-md-7 border border-dark border-left-0 alineaVertical destacado">
+          RESULTADO
+        </div>
+      </div>
+
+      <div class="row altura">
+        <div class="col-md-3 border border-dark border-top-0 alineaV border-end-0 destacado">
+          LEUCOCITOS (mm3)
+        </div>
+        <div class="col-md-7 border border-dark border-left-0 border-top-0">
+          <mat-form-field class="anchoTituloLinea1">
+            <input matInput placeholder="Ingrese Valor" [formControl]="leucocitos" [ngStyle]="{
+                'font-weight': leucocitosFlag == true ? 'bold' : 'normal'
+              }" (blur)="leucocitosFormula()" />
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row altura">
+        <div class="col-md-3 border border-dark border-top-0 alineaV border-end-0 destacado">
+          SEGMENTADOS (%)
+        </div>
+        <div class="col-md-7 border border-dark border-left-0 border-top-0">
+          <mat-form-field class="anchoTituloLinea1">
+            <input matInput placeholder="Ingrese Valor" [formControl]="segmentados" [ngStyle]="{
+                'font-weight': segmentadosFlag == true ? 'bold' : 'normal'
+              }" (blur)="segmentadosFormula()" />
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row altura">
+        <div class="col-md-3 border border-dark border-top-0 border-end-0 alineaV destacado">
+          LINFOCITOS (%)
+        </div>
+        <div class="col-md-7 border border-dark border-left-0 border-top-0">
+          <mat-form-field class="anchoTituloLinea1">
+            <input matInput placeholder="Ingrese Valor" [formControl]="linfocitos" [ngStyle]="{
+                'font-weight': linfocitosFlag == true ? 'bold' : 'normal'
+              }" (blur)="linfocitosFormula()" />
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row altura">
+        <div class="col-md-3 border border-dark border-top-0 alineaV border-end-0 destacado">
+          HEMATIES ( mm3)
+        </div>
+        <div class="col-md-7 border border-dark border-left-0 border-top-0">
+          <mat-form-field class="anchoTituloLinea1">
+            <input matInput placeholder="Ingrese Valor" [formControl]="hematies" [ngStyle]="{
+                'font-weight': hematiesFlag == true ? 'bold' : 'normal'
+              }" (blur)="hematiesFormula()" />
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-3 border border-dark border-top-0 alineaV border-end-0 destacado">
+          OTROS
+        </div>
+        <div class="col-md-7 border border-dark border-left-0 border-top-0">
+          <ckeditor [formControl]="otros"></ckeditor>
+        </div>
+      </div>
+    </div>
+    --></div>
+    } }
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <div class="col-md-6">
+    <button
+      mat-raised-button
+      class="colorFondoBotonCancelar"
+      mat-dialog-close
+      [disabled]="false"
+    >
+      CANCELAR
+    </button>
+  </div>
+  <div class="col-md-6">
+    <button
+      class="colorFondoBotonGrabar"
+      mat-raised-button
+      (click)="enviar()"
+      [disabled]="ingresaFormato2().invalid"
+    >
+      GRABAR
+    </button>
+  </div>
+</mat-dialog-actions>

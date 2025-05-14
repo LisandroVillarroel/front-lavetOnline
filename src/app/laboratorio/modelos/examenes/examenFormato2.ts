@@ -12,9 +12,11 @@ export interface IResultadoFormato2 {
 }
 */
 export interface IFormato2 {
-  resultado: IResultadoFormato2[];
+  estructura: IResultadoFormato2[];
 }
+
 export interface IResultadoFormato2 {
+  _id?: string;
   nombreExamen: string;
   resultadoNombreExamen: string;
   tipoEstructura: string; //Campo-Estructura
@@ -24,31 +26,18 @@ export interface IResultadoFormato2 {
 }
 
 export interface IEstructuraDetalleFormato2 {
+  _id?: string;
   nombreDescripcion: string;
-  tipoCampoResultado: IListaTipoCampoResultado; // string - float - lista
+  tipoCampoResultado: string; // string(texto) - numerico(Número) - lista
   cantidadDecimales: number;
   listaResultado: IListaResultadoFormato2[]; //lista solo si el tipoCampoResultado es lista
-  unidadMedida: IListaUnidadMedida;
+  unidadMedida: string; //'',  'g/dl';  'mg/dl';  mm3;  '%';
   flagNegrilla: boolean;
   formula: string;
   formulaInterna: string;
 }
 
 export interface IListaResultadoFormato2 {
-  idLista: string;
+  // idLista: string;
   nombreLista: string;
-}
-
-export enum IListaTipoCampoResultado {
-  'string',
-  'float',
-  'lista',
-}
-
-export enum IListaUnidadMedida {
-  '',
-  'g/dl',
-  'mg/dl',
-  'mm3',
-  '%',
 }

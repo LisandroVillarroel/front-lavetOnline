@@ -30,6 +30,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatTableExporterModule } from 'mat-table-exporter';
 import { CommonModule } from '@angular/common';
 import { AnalisisFormato1Component } from './analisis-formato1/analisis-formato1.component';
+import { AnalisisFormato2Component } from './analisis-formato2/analisis-formato2.component';
 
 const MATERIAL_MODELO = [
   MatIconModule,
@@ -165,6 +166,18 @@ export default class ExamenFichaComponent implements OnInit {
       case 1:
         this.dialog
           .open(AnalisisFormato1Component, dialogConfig)
+          .afterClosed()
+          .subscribe((data) => {
+            console.log('Dialog output3333:', data);
+            if (data === 1) {
+              console.log('paso dato');
+              this.refreshTable();
+            }
+          });
+        break;
+      case 2:
+        this.dialog
+          .open(AnalisisFormato2Component, dialogConfig)
           .afterClosed()
           .subscribe((data) => {
             console.log('Dialog output3333:', data);

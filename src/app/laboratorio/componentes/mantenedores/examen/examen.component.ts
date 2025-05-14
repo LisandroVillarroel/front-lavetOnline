@@ -362,7 +362,7 @@ export default class ExamenComponent implements OnInit {
     dialogConfig.height = '90%';
     dialogConfig.position = { top: '3%' };
 
-    dialogConfig.data = Examen_Id; //datoPar.formato?.formato1?.resultadoEspecie;
+    dialogConfig.data = Examen_Id;
 
     switch (numeroFormatoInterno) {
       case 1:

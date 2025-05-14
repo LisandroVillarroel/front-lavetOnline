@@ -1,4 +1,4 @@
-import { CommonModule, JsonPipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -27,10 +27,7 @@ import { MatInputModule } from '@angular/material/input';
 import { EditorModule } from 'primeng/editor';
 import { loginInterface } from '@autentica/interface/loginInterface';
 import { ICliente } from '@laboratorio/modelos/cliente-modelo';
-import {
-  IResultadoFinalFormato1,
-  IResultadoFormato1,
-} from '@laboratorio/modelos/examenes/examenFormato1';
+import { IResultadoFormato2 } from '@laboratorio/modelos/examenes/examenFormato2';
 import { IFicha } from '@laboratorio/modelos/ficha-modelo';
 import { ClienteService } from '@laboratorio/servicios/cliente.service';
 import { ExamenService } from '@laboratorio/servicios/examen.service';
@@ -52,9 +49,9 @@ const MATERIAL_MODELO = [
 ];
 
 @Component({
-  selector: 'app-analisis-formato1',
-  templateUrl: './analisis-formato1.component.html',
-  styleUrls: ['./analisis-formato1.component.scss'],
+  selector: 'app-analisis-formato2',
+  templateUrl: './analisis-formato2.component.html',
+  styleUrls: ['./analisis-formato2.component.scss'],
   imports: [
     MATERIAL_MODELO,
     ReactiveFormsModule,
@@ -64,12 +61,12 @@ const MATERIAL_MODELO = [
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AnalisisFormato1Component implements OnInit {
+export class AnalisisFormato2Component implements OnInit {
   private readonly _storage = inject(StorageService);
   private readonly localStorage = this._storage.get<loginInterface>('sesion');
   private readonly spinnerService = inject(SpinnerService);
 
-  readonly dialogRef = inject(MatDialogRef<AnalisisFormato1Component>);
+  readonly dialogRef = inject(MatDialogRef<AnalisisFormato2Component>);
   public data = inject<IFicha>(MAT_DIALOG_DATA);
 
   @ViewChild('htmlData') htmlData!: ElementRef;
@@ -82,20 +79,14 @@ export class AnalisisFormato1Component implements OnInit {
   usuario!: string;
   datoFicha!: IFicha;
 
-  IFormato1!: IResultadoFinalFormato1;
-  datoResultadoFormato1 = signal<IResultadoFormato1[]>([]);
+  IFormato2!: IResultadoFormato2;
+  datoResultadoFormato2 = signal<IResultadoFormato2[]>([]);
   datoClienteEmpresa!: ICliente;
   emailRecepcionExamenCliente = '';
 
   constructor() {}
 
-  observaciones = new FormControl('', [Validators.required]);
-
-  ingresaFormato1 = signal<FormGroup>(
-    new FormGroup({
-      observaciones: this.observaciones,
-    })
-  );
+  ingresaFormato2 = signal<FormGroup>(new FormGroup({}));
 
   getErrorMessage(campo: string) {
     /*
@@ -191,14 +182,13 @@ export class AnalisisFormato1Component implements OnInit {
 
   getEstructuraExamen() {
     this.examenService
-      .getDataExamenEstructura(
+      .getDataExamenEstructuraFormato2(
         this.localStorage?.usuarioLogin.empresaConectada.empresa_Id!,
-        this.data.fichaC.examen?.codigoInterno!,
-        this.data.fichaC.especie?.idEspecie!
+        this.data.fichaC.examen?.codigoInterno!
       )
       .subscribe({
         next: (res) => {
-          this.datoResultadoFormato1.set(res.data.resultadoEspecie.resultado);
+          this.datoResultadoFormato2.set(res.data);
           this.creaCampos();
         },
 
@@ -209,15 +199,20 @@ export class AnalisisFormato1Component implements OnInit {
   }
 
   creaCampos() {
-    for (const campo of this.datoResultadoFormato1()) {
-      this.ingresaFormato1().addControl(
-        'input_' + campo._id,
-        new FormControl('', [Validators.required])
-      );
-      if (campo.formulaInterna != '' && campo.formulaInterna != undefined) {
-        this.ingresaFormato1()
-          .get('input_' + campo._id)!
-          .disable();
+    for (const campo of this.datoResultadoFormato2()) {
+      if (campo.tipoEstructura == 'Campo') {
+        this.ingresaFormato2().addControl(
+          'input_' + campo._id,
+          new FormControl('', [Validators.required])
+        );
+      }
+      if (campo.tipoEstructura == 'Estructura') {
+        for (const estructura of campo.estructuraDetalle) {
+          this.ingresaFormato2().addControl(
+            'input_' + estructura._id,
+            new FormControl('', [Validators.required])
+          );
+        }
       }
     }
   }
@@ -239,7 +234,7 @@ export class AnalisisFormato1Component implements OnInit {
             //rescata valor del input
             valor = this.retorna0NaN(
               parseFloat(
-                this.ingresaFormato1().get(
+                this.ingresaFormato2().get(
                   'input_' + estraeCampoFormula.slice(i + 1, a)
                 )!.value
               )
@@ -259,7 +254,7 @@ export class AnalisisFormato1Component implements OnInit {
     const valorCalculado = parseFloat(
       Function(`"use strict";return ${valorFormulaFinal}`)().toFixed(2)
     ); //permite realizar el calculo
-    this.ingresaFormato1()
+    this.ingresaFormato2()
       .get('input_' + idCampo)!
       .setValue(valorCalculado);
     this.logica(valorCalculado, idCampo, desde, hasta, logica);
@@ -303,7 +298,7 @@ export class AnalisisFormato1Component implements OnInit {
     }
     console.log('variableflag:', variableflag);
     // Permite cambiar un valor de la matriz flagNegrilla y resultado buscando por el _Id
-    this.datoResultadoFormato1.update((preResultado) =>
+    this.datoResultadoFormato2.update((preResultado) =>
       preResultado.map((resultado) =>
         resultado._id === id
           ? { ...resultado, flagNegrilla: variableflag, resultado: valor }
@@ -319,8 +314,9 @@ export class AnalisisFormato1Component implements OnInit {
     hasta: string,
     logica: string
   ) {
+    /*
     let valor = evento.target.value;
-    const camposConFormula = await this.datoResultadoFormato1().filter(
+    const camposConFormula = await this.datoResultadoFormato2().filter(
       (valor) =>
         valor.formulaInterna != '' &&
         valor.formulaInterna != undefined &&
@@ -336,7 +332,8 @@ export class AnalisisFormato1Component implements OnInit {
         camposConFormula_.logica
       ); //Envia formula para calculo
     }
-    this.logica(valor, id, desde, hasta, logica);
+    */
+    this.logica('valor:', id, desde, hasta, logica);
   }
 
   async getCliente() {
@@ -361,7 +358,7 @@ export class AnalisisFormato1Component implements OnInit {
   }
 
   async enviar() {
-    console.log('this.datoResultadoFormato1', this.datoResultadoFormato1());
+    console.log('this.datoResultadoFormato2', this.datoResultadoFormato2());
     /*
     this.IResultadoFormato1 = [
       {
@@ -553,19 +550,19 @@ export class AnalisisFormato1Component implements OnInit {
       },
     ];
 */
-    this.IFormato1 = {
-      resultado: this.datoResultadoFormato1(),
+    /*this.IFormato2 = {
+      resultado: this.datoResultadoFormato2(),
       subTitulo: '',
-      observaciones: this.ingresaFormato1().get('observaciones')!.value,
+      observaciones: this.ingresaFormato2().get('observaciones')!.value,
     };
-
+*/
     this.datoFicha = {
       _id: this.data._id,
       fichaC: this.data.fichaC,
       empresa: this.data.empresa,
       formatoResultado: {
         //    examen: this.data.fichaC.examen,
-        formato1: this.IFormato1,
+        //    formato2: this.IFormato2,
       },
 
       datoArchivo: {

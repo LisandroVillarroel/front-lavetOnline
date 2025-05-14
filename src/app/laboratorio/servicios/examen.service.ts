@@ -23,7 +23,7 @@ export class ExamenService {
 
   // PUT
   putDataExamen(dato: any): Observable<any> {
-    console.log('id:', dato._id);
+    console.log('dato:', dato);
     return this._http
       .put<IExamen>(`${environment.apiUrl}/examen/${dato._id}`, dato)
       .pipe(retry(1), catchError(this.errorHandl));
@@ -74,6 +74,16 @@ export class ExamenService {
       .pipe(retry(1), catchError(this.errorHandl));
   }
 
+  getDataExamenEstructuraFormato2(
+    empresaId: string,
+    codigoInterno: string
+  ): Observable<any> {
+    return this._http
+      .get<IFormato1>(
+        `${environment.apiUrl}/examenEstructuraFormato2/${empresaId}/${codigoInterno}`
+      )
+      .pipe(retry(1), catchError(this.errorHandl));
+  }
   errorHandl(error: HttpErrorResponse) {
     console.log(' exámenes: ', error);
     let errorMessage = '';

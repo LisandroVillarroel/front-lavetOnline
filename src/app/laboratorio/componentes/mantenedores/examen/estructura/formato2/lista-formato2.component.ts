@@ -18,7 +18,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import Swal from 'sweetalert2';
 import {
-  MatPaginator,
   MatPaginatorIntl,
   MatPaginatorModule,
 } from '@angular/material/paginator';
@@ -31,16 +30,15 @@ import { ExamenService } from '@laboratorio/servicios/examen.service';
 import { SpinnerService } from '@shared/spinner/spinner.service';
 import { StorageService } from '@shared/storage.service';
 import { MatTableExporterModule } from 'mat-table-exporter';
-import {
-  IResultadoEspecieFormato1,
-  IResultadoFormato1,
-} from '@laboratorio/modelos/examenes/examenFormato1';
-import { IExamenEstructura } from '@laboratorio/interfaces/examenEstructura-interface';
-import { EspecieService } from '@laboratorio/servicios/especie.service';
-import { IEspecie } from '@laboratorio/modelos/especie-modelo';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { AgregaExamenFormatro2Component } from './agrega-examen-formato2/agrega-examen-formato2.component';
+import {
+  IEstructuraDetalleFormato2,
+  IResultadoFormato2,
+} from '@laboratorio/modelos/examenes/examenFormato2';
+import { ModificaExamenFormatro2Component } from './modifica-examen-formato2/modifica-examen-formato2.component';
+import { ListaEstructuraDetalleComponent } from './lista-estructura-detalle/lista-estructura-detalle.component';
 
 const MATERIAL_MODELO = [
   MatIconModule,
@@ -64,6 +62,7 @@ const MATERIAL_MODELO = [
     CommonModule,
     MatTableExporterModule,
     ReactiveFormsModule,
+    ListaEstructuraDetalleComponent,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -79,16 +78,25 @@ export class ListaFormato2Component {
 
   private datoExamen!: IExamen;
 
-  dataSource = new MatTableDataSource<IResultadoFormato1>();
+  dataSource = new MatTableDataSource<IResultadoFormato2>();
 
   especieForm = new FormControl('');
 
   private examenService = inject(ExamenService);
 
-  visible = signal<boolean>(true);
+  visible = signal<boolean>(false);
   show = signal<boolean>(true);
+  estructuraDetalleInicio!: IResultadoFormato2;
+
   // tslint:disable-next-line:max-line-length
-  displayedColumns: string[] = ['index', 'ordenEstructura', 'opciones'];
+  displayedColumns: string[] = [
+    'index',
+    'nombreExamen',
+    'tipoEstructura',
+    'nombreTituloDescripcion',
+    'nombreTituloResultado',
+    'opciones',
+  ];
 
   @ViewChild(MatSort)
   private _sort!: MatSort;
@@ -103,10 +111,8 @@ export class ListaFormato2Component {
   constructor() {}
 
   async ngOnInit() {
-    console.log('datos llegados', this.dataIdExamen);
     this.spinnerService.mostrar();
     this.matPaginatorIntl.itemsPerPageLabel = 'Registros por Página';
-    console.log('pasa emp 1');
 
     await this.getList();
     this.spinnerService.esconder();
@@ -114,86 +120,24 @@ export class ListaFormato2Component {
 
   getList() {
     this.dataSource.data = [];
-    /*
+
     this.examenService.getDataExamen(this.dataIdExamen).subscribe({
       next: (res) => {
         if (res.codigo == 200) {
           this.datoExamen = res.data[0];
-          console.log('examen origen:', this.datoExamen);
 
-          if (
-            this.datoExamen.formato?.formato1?.resultadoEspecie == undefined ||
-            this.datoExamen.formato?.formato1?.resultadoEspecie.length == 0
-          ) {
-            this.datoExamenResultadoEspecie.push({
-              especie_Id: especieId,
-              resultado: [],
-            }); //Agrega registro vacio para esda especie
-            console.log('paso1');
-          } else {
-            this.datoExamenResultadoEspecie =
-              this.datoExamen.formato?.formato1?.resultadoEspecie; //Rescata todos los parametros por especie
-            console.log('paso2');
-            console.log(
-              'this.datoExamenResultadoEspecie 1:',
-              this.datoExamenResultadoEspecie
-            );
-            this.resultadoEspecieIndex =
-              this.datoExamenResultadoEspecie.findIndex(
-                (valor: any) => valor.especie_Id === especieId
-              );
-          }
-          //Pregunta si la especie existe
-          if (this.resultadoEspecieIndex == -1) {
-            this.noExisteParametro.set('NO EXISTEN PARÁMETROS PARA ESPECIE');
-            return;
-          }
-          this.noExisteParametro.set('');
-          console.log(
-            'this.resultadoEspecieIndex:',
-            this.resultadoEspecieIndex
-          );
-          console.log(
-            'this.datoExamenResultadoEspecie:',
-            this.datoExamenResultadoEspecie
-          );
-
-          this.datoExamenResultado =
-            this.datoExamenResultadoEspecie[
-              this.resultadoEspecieIndex
-            ].resultado;
-          console.log('this.datoExamenResultado:', this.datoExamenResultado);
-          console.log(
-            'this.datoExamenResultado largo:',
-            this.datoExamenResultado.length
-          );
-          this.datoExamenResultado.sort(
-            (a, b) => a.ordenEstructura - b.ordenEstructura
-          );
-          console.log('pasa Examen 2', this.datoExamenResultado);
-
-          if (this.datoExamenResultado.length > 0) {
-            this.maxOrden =
-              this.datoExamenResultado[this.datoExamenResultado.length - 1]
-                .ordenEstructura + 1;
-          }
-          console.log('maxOrden', this.maxOrden);
-          this.dataSource.data = this.datoExamenResultado;
+          this.dataSource.data = this.datoExamen.formato?.formato2?.estructura!;
         } else {
-          console.log('error carga:', res.mensaje);
           Swal.fire('ERROR INESPERADO', res.mensaje, 'error');
         }
       },
-      // console.log('yo:', res as PerfilI[]),
       error: (error) => {
         console.log('error carga:', error);
         Swal.fire('ERROR INESPERADO', error, 'error');
       },
-    }); // (this.dataSource.data = res as PerfilI[])
-    */
+    });
   }
 
-  // tslint:disable-next-line: use-lifecycle-interface
   ngAfterViewInit(): void {
     this.dataSource.sort = this.sort;
   }
@@ -207,6 +151,7 @@ export class ListaFormato2Component {
   }
 
   agregaExamenEstructura() {
+    let estructura_: IResultadoFormato2[] = [];
     const dialogConfig = new MatDialogConfig();
 
     dialogConfig.disableClose = true;
@@ -219,13 +164,85 @@ export class ListaFormato2Component {
     this.dialog
       .open(AgregaExamenFormatro2Component, dialogConfig)
       .afterClosed()
-      .subscribe((data: IExamenEstructura) => {
-        console.log('examen111:', this.datoExamen);
+      .subscribe((dataResultadoFormato2: IResultadoFormato2) => {
+        if (dataResultadoFormato2.nombreExamen == null) return;
+
+        if (this.datoExamen.formato?.formato2?.estructura != undefined)
+          estructura_ = this.datoExamen.formato!.formato2!.estructura;
+        estructura_!.push(dataResultadoFormato2);
+
+        this.datoExamen.formato!.formato2!.estructura = estructura_!;
+
+        this.enviar(this.datoExamen, 'Se agregó con Éxito');
       });
   }
-  actualizaExamenEstructura(row: any) {}
-  eliminaExamenEstructura(row: any) {}
+  modificaExamenEstructura(row: IResultadoFormato2) {
+    let indice = 0;
+    const dialogConfig = new MatDialogConfig();
 
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = '70%';
+    dialogConfig.height = '90%';
+    dialogConfig.position = { top: '3%' };
+    dialogConfig.data = row;
+
+    this.dialog
+      .open(ModificaExamenFormatro2Component, dialogConfig)
+      .afterClosed()
+      .subscribe((dataResultadoFormato2: IResultadoFormato2) => {
+        if (dataResultadoFormato2.nombreExamen == null) return;
+        indice = this.datoExamen.formato!.formato2!.estructura.findIndex(
+          (valor: any) => valor._id === row._id
+        );
+        this.datoExamen.formato!.formato2!.estructura[indice] =
+          dataResultadoFormato2;
+
+        this.enviar(this.datoExamen, 'Se Modificó con Éxito');
+      });
+  }
+  eliminaExamenEstructura(row: IResultadoFormato2) {
+    let estructura_: IResultadoFormato2[] = [];
+    Swal.fire({
+      title: 'Elimina  - ' + row.nombreExamen + ' !',
+      showCancelButton: true,
+      confirmButtonText: 'Eliminar',
+      confirmButtonColor: 'green',
+      cancelButtonText: 'Cancelar',
+      validationMessage: 'Elimina Erróneo ',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        estructura_ = this.datoExamen.formato?.formato2?.estructura!.filter(
+          function (valor) {
+            return valor._id !== row._id;
+          }
+        )!;
+
+        this.datoExamen.formato!.formato2!.estructura = estructura_;
+
+        this.enviar(this.datoExamen, 'Se eliminó con Éxito');
+      }
+    });
+  }
+
+  clickDetalle(row: IResultadoFormato2) {
+    console.log('row Detalle:', row);
+    this.visible.set(true);
+    this.estructuraDetalleInicio = row;
+  }
+
+  grabaListaEstructuraDetalle(
+    resultadoFormato2_: IResultadoFormato2,
+    mensajeConfirma: string
+  ) {
+    let indice = 0;
+    if (resultadoFormato2_.nombreExamen == null) return;
+    indice = this.datoExamen.formato!.formato2!.estructura.findIndex(
+      (valor: any) => valor._id === resultadoFormato2_._id
+    );
+    this.datoExamen.formato!.formato2!.estructura[indice] = resultadoFormato2_;
+    this.enviar(this.datoExamen, mensajeConfirma);
+  }
   private refreshTable() {
     // Refreshing table using paginator
     // Thanks yeager-j for tips
@@ -234,5 +251,29 @@ export class ListaFormato2Component {
     // this.noticia=this.servicio.getNoticias();
 
     this.getList();
+  }
+
+  enviar(datoExamen_: IExamen, mensajeConfirma: string) {
+    this.spinnerService.mostrar();
+    this.examenService.putDataExamen(datoExamen_).subscribe({
+      next: (dato) => {
+        this.spinnerService.esconder();
+        if (dato.codigo === 200) {
+          Swal.fire(mensajeConfirma, '', 'success'); // ,
+          this.refreshTable();
+        } else {
+          if (dato.codigo != 500) {
+            Swal.fire(dato.mensaje, '', 'error');
+          } else {
+            Swal.fire('', 'ERROR SISTEMA', 'error');
+          }
+        }
+      },
+      error: (error) => {
+        this.spinnerService.esconder();
+        console.log('error carga:', error);
+        Swal.fire('ERROR INESPERADO', error, 'error');
+      },
+    });
   }
 }
