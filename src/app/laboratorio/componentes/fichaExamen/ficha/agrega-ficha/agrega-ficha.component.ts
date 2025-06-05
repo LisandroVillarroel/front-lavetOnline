@@ -123,7 +123,7 @@ export class AgregaFichaComponent implements OnInit {
   public datoCategoriaExamenInterface = signal<ICategoriaExamenInterface[]>([]);
   private datoExamen!: IExamen[];
 
-  datoCategoriaHormona = signal<IExamen[]>([]);
+  /*datoCategoriaHormona = signal<IExamen[]>([]);*/
 
   datoUsuario = signal<IUsuario[]>([]);
 
@@ -508,6 +508,8 @@ export class AgregaFichaComponent implements OnInit {
       .getDataCategoriaExamenTodo(idLaboratorio)
       .subscribe({
         next: (res) => {
+          // Carga categorías
+          console.log('Carga Categoria:', res.data);
           for (const _examenCategoria of res.data) {
             this.agregaFicha().addControl(
               _examenCategoria.sigla,
@@ -527,6 +529,14 @@ export class AgregaFichaComponent implements OnInit {
               ]
             );
           }
+          console.log(
+            'datoCategoriaExamenInterface:',
+            this.datoCategoriaExamenInterface()
+          );
+          console.log(
+            'registroCategoriaExamenInterface:',
+            registroCategoriaExamenInterface
+          );
         },
         error: (error) => {
           console.log('error carga:', error);
@@ -536,6 +546,7 @@ export class AgregaFichaComponent implements OnInit {
   }
 
   async cargaExamen(idLaboratorio: string) {
+    // Trae todo los exámenes
     this.examenService.getDataExamenTodo(idLaboratorio).subscribe({
       next: (res) => {
         this.datoExamen = res.data;
@@ -550,13 +561,16 @@ export class AgregaFichaComponent implements OnInit {
           // a must be equal to b
           return 0;
         });
+        console.log('carga examen:', this.datoExamen);
         this.categoriaExamen(this.data.datoIngreso.empresa_Id);
 
-        this.datoCategoriaHormona.set(
+        /*this.datoCategoriaHormona.set(
           this.datoExamen.filter(
             (item) => item.categoria == 'Hormonas' && item.tipoExamen != 'Padre'
           )
-        );
+        );*/
+
+        //Exámenes que se van a mostrar cuando se seleccionen
         let internoExternoBoolean: boolean;
         for (const element of this.datoExamen) {
           if (element.internoExterno == 'Interno')

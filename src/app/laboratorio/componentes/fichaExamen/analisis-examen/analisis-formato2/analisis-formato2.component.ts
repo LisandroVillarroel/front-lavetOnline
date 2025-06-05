@@ -37,6 +37,7 @@ import { StorageService } from '@shared/storage.service';
 
 import Swal from 'sweetalert2';
 import { FichaCabeceraComponent } from '../ficha-cabecera/ficha-cabecera.component';
+import { MatSelectModule } from '@angular/material/select';
 
 const MATERIAL_MODELO = [
   MatIconModule,
@@ -46,6 +47,7 @@ const MATERIAL_MODELO = [
   MatDialogModule,
   MatButtonModule,
   MatExpansionModule,
+  MatSelectModule,
 ];
 
 @Component({
@@ -336,6 +338,24 @@ export class AnalisisFormato2Component implements OnInit {
     this.logica('valor:', id, desde, hasta, logica);
   }
 
+  seleccionaTipoEstructura(p: any) {
+    /*
+    this.agregaExamen()
+      .get('nombreTituloDescripcion')!
+      .setValidators([Validators.nullValidator]);
+
+    this.agregaExamen()
+      .get('nombreTituloResultado')!
+      .setValidators([Validators.nullValidator]);
+*/
+    /*
+    this.agregaExamen()
+      .get('nombreTituloDescripcion')!
+      .updateValueAndValidity();
+    this.agregaExamen().get('nombreTituloResultado')!.updateValueAndValidity();
+*/
+    return;
+  }
   async getCliente() {
     this.clienteService
       .getDataClienteActual(this.data.fichaC.cliente!.idCliente!)

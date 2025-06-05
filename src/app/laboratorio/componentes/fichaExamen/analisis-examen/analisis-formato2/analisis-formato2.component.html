@@ -67,8 +67,8 @@
         >
           {{ datoResultadoFormato2_Estructura.nombreDescripcion }}
         </div>
-        <div class="col-md-7 border border-dark border-top-0">
-          @if (datoResultadoFormato2_Estructura.tipoCampoResultado=='texto'){
+        <div class="col-md-7 border border-dark">
+          @if (datoResultadoFormato2_Estructura.tipoCampoResultado=='Texto'){
           <mat-form-field class="anchoTituloLinea1">
             <input
               matInput
@@ -110,25 +110,22 @@
             />
           </mat-form-field>
           } @if (datoResultadoFormato2_Estructura.tipoCampoResultado=='Lista'){
-          <mat-form-field class="anchoTituloLinea1">
-            <input
-              matInput
-              placeholder=" {{
-                valorplaceholder(
-                  datoResultadoFormato2_Estructura.nombreDescripcion
-                )
-              }} "
+          <mat-form-field class="inputSelect">
+            <mat-label class="labelI">Tipo Estructura</mat-label>
+            <mat-select
               formControlName="{{
                 'input_estructura_' + datoResultadoFormato2_Estructura._id
               }}"
-              (keydown)="KeyDown($event)"
-              [ngStyle]="{
-                'font-weight':
-                  datoResultadoFormato2_Estructura.flagNegrilla == true
-                    ? 'bold'
-                    : 'normal'
-              }"
-            />
+              (selectionChange)="seleccionaTipoEstructura($event)"
+              required
+            >
+              @for(_lista of datoResultadoFormato2_Estructura.listaResultado;
+              track _lista){
+              <mat-option [value]="_lista._id">
+                {{ _lista.nombreLista }}
+              </mat-option>
+              }
+            </mat-select>
           </mat-form-field>
           }
         </div>

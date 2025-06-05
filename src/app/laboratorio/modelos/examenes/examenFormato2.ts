@@ -38,6 +38,6 @@ export interface IEstructuraDetalleFormato2 {
 }
 
 export interface IListaResultadoFormato2 {
-  // idLista: string;
+  _id?: string;
   nombreLista: string;
 }
